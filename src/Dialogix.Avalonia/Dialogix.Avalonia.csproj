@@ -12,4 +12,8 @@
         <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="12.1.3" />
+    </ItemGroup>
+    
 </Project>
