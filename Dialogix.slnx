@@ -1,0 +1,12 @@
+<Solution>
+  <Folder Name="/samples/">
+    <Project Path="samples/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj" />
+    <Project Path="samples/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Dialogix.Avalonia/Dialogix.Avalonia.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Dialogix.Avalonia.Tests/Dialogix.Avalonia.Tests.csproj" />
+  </Folder>
+</Solution>
