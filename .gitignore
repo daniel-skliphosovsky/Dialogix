@@ -55,3 +55,49 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+*.sln.DotSettings.user
+*.DotSettings.user
+_ReSharper.Caches/
+.fleet/
+
+# Visual Studio Code
+.vscode/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Local environment / secrets
+.env.*
+!.env.example
+*.local
+*.local.json
+
+# Misc
+*.swp
+*.orig
+*.rej
+*.tmp
+*.bak
