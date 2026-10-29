@@ -1,4 +1,30 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Dialogix.Avalonia.Demo.Views.MainView">
+
+    <Grid ColumnDefinitions="220,*"
+          Background="{DynamicResource DemoPageBackgroundBrush}">
+
+        <Grid Grid.Column="0"
+              RowDefinitions="*,Auto">
+
+            <ListBox x:Name="NavigationList"
+                     Margin="8"
+                     SelectionChanged="OnNavigationSelectionChanged">
+                <ListBoxItem Content="Message Bubble" />
+            </ListBox>
+
+            <ToggleSwitch x:Name="ThemeSwitch"
+                          Grid.Row="1"
+                          Margin="16,8,16,16"
+                          IsChecked="True"
+                          Content="Dark theme"
+                          IsCheckedChanged="OnThemeSwitchChanged" />
+
+        </Grid>
+
+        <ContentControl x:Name="PageHost"
+                        Grid.Column="1"
+                        Margin="8" />
+    </Grid>
 </UserControl>

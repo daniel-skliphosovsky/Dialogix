@@ -1,0 +1,198 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Dialogix.Avalonia.Controls"
+             x:Class="Dialogix.Avalonia.Demo.Views.Controls.MessageBubbleView">
+
+    <UserControl.Styles>
+
+        <Style Selector="controls|MessageBubble">
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="BoxShadow" Value="0 0 28 -8 #26000000" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="760"
+                    Margin="24"
+                    Spacing="16">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="MessageBubble"
+                           FontSize="26"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Chat bubbles for Avalonia"
+                           Opacity="0.6" />
+            </StackPanel>
+
+            <Border Background="{DynamicResource DemoChatBackgroundBrush}"
+                    CornerRadius="16"
+                    Padding="16"
+                    BoxShadow="0 6 48 -20 #1F000000">
+
+                <StackPanel Spacing="12">
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Text="Hey!" />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Text="Hi! This is the default bubble — just text and an author." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:41"
+                        Text="Timestamps are optional." />
+
+                    <controls:MessageBubble
+                        Timestamp="12:42"
+                        Text="So is the author." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:43"
+                        IsOutgoing="True"
+                        Text="Outgoing bubbles align right and use the accent palette." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:43"
+                        Text="Incoming ones stay on the left." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:44"
+                        MinBubbleWidth="200"
+                        Text="Min width keeps short replies readable." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:44"
+                        MinBubbleWidth="200"
+                        Text="Same floor here." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:45"
+                        MaxBubbleWidth="300"
+                        Text="Max width caps a bubble and wraps the rest onto new lines." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:45"
+                        IsOutgoing="True"
+                        MaxBubbleWidth="300"
+                        Text="Useful in narrow columns." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:46"
+                        Background="#FFE8F5E9"
+                        Foreground="#FF1B5E20"
+                        Text="Background and Foreground accept any palette." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:46"
+                        IsOutgoing="True"
+                        Background="#FFEDE7F6"
+                        Foreground="#FF311B92"
+                        Text="Even per message." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:47"
+                        IsOutgoing="True"
+                        CornerRadius="20"
+                        Text="CornerRadius can turn bubbles into pills." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:47"
+                        CornerRadius="4"
+                        Text="Or keep them sharp." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:48"
+                        Padding="20,14"
+                        Text="Padding controls the density." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:48"
+                        IsOutgoing="True"
+                        Padding="8,4"
+                        Text="Compact." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:49"
+                        Background="#FFFFFFFF"
+                        Foreground="#FF111111"
+                        BorderBrush="#FFBDBDBD"
+                        BorderThickness="1"
+                        Text="BorderBrush and BorderThickness add an outline." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:49"
+                        IsOutgoing="True"
+                        Background="#FF0A0F0A"
+                        Foreground="#FF39FF14"
+                        BorderBrush="#FF39FF14"
+                        BorderThickness="1"
+                        Text="In any color." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:50"
+                        Background="#FF0A0F0A"
+                        Foreground="#FF39FF14"
+                        BorderBrush="#FF39FF14"
+                        BorderThickness="1"
+                        BoxShadow="0 0 34 -6 #B339FF14"
+                        Text="BoxShadow adds depth — or a neon glow." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:50"
+                        IsOutgoing="True"
+                        Background="#FFEDE7F6"
+                        Foreground="#FF311B92"
+                        BoxShadow="0 0 30 -8 #80311B92"
+                        Text="Tune the color and the blur." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:51"
+                        Padding="0"
+                        Background="Transparent"
+                        BoxShadow="0 0 0 0 #00000000"
+                        Text="No bubble at all — Padding 0 and a transparent Background." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:51"
+                        IsOutgoing="True"
+                        Padding="0"
+                        Background="Transparent"
+                        BoxShadow="0 0 0 0 #00000000"
+                        Text="Just the message." />
+
+                    <controls:MessageBubble
+                        Author="Guest"
+                        Timestamp="12:52"
+                        Text="Manual line breaks work too.&#10;Put a newline anywhere in the text." />
+
+                    <controls:MessageBubble
+                        Author="You"
+                        Timestamp="12:52"
+                        IsOutgoing="True"
+                        Text="In XAML write &amp;#10;. In C# use \n." />
+
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

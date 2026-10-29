@@ -1,9 +1,26 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="Dialogix.Avalonia.Demo.App"
-             RequestedThemeVariant="Default">
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <ResourceDictionary x:Key="Default">
+                    <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FFF4F5F7" />
+                    <SolidColorBrush x:Key="DemoChatBackgroundBrush" Color="#FFEDEFF3" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FF121212" />
+                    <SolidColorBrush x:Key="DemoChatBackgroundBrush" Color="#FF1C1C1C" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
 
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Generic.axaml" />
     </Application.Styles>
+
 </Application>

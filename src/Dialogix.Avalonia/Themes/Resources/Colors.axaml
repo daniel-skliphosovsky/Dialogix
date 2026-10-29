@@ -1,0 +1,21 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+
+        <ResourceDictionary x:Key="Default">
+            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF111111" />
+            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FFD6EEFF" />
+            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FF111111" />
+        </ResourceDictionary>
+
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2B2B2B" />
+            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFF2F2F2" />
+            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF1F4E6B" />
+            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFF2F2F2" />
+        </ResourceDictionary>
+
+    </ResourceDictionary.ThemeDictionaries>
+</ResourceDictionary>
