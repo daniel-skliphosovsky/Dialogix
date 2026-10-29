@@ -1,7 +1,7 @@
 <Solution>
-  <Folder Name="/samples/">
-    <Project Path="samples/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj" />
-    <Project Path="samples/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo.csproj" />
+  <Folder Name="/demo/">
+    <Project Path="demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj" />
+    <Project Path="demo/Dialogix.Avalonia.Demo/Dialogix.Avalonia.Demo.csproj" />
   </Folder>
   <Folder Name="/src/">
     <Project Path="src/Dialogix.Avalonia/Dialogix.Avalonia.csproj" />
