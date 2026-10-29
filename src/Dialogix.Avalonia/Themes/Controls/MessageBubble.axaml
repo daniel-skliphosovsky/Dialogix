@@ -29,7 +29,8 @@
 
                             <StackPanel Spacing="4">
 
-                                <TextBlock Text="{TemplateBinding Author}"
+                                <TextBlock Name="PART_Author"
+                                           Text="{TemplateBinding Author}"
                                            FontSize="12"
                                            FontWeight="SemiBold"
                                            Opacity="0.7"
@@ -37,11 +38,13 @@
                                            IsVisible="{TemplateBinding Author,
                                                Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
 
-                                <SelectableTextBlock Text="{TemplateBinding Text}"
+                                <SelectableTextBlock Name="PART_Text"
+                                                     Text="{TemplateBinding Text}"
                                                      TextWrapping="Wrap"
                                                      Foreground="{TemplateBinding Foreground}" />
 
-                                <TextBlock Text="{TemplateBinding Timestamp}"
+                                <TextBlock Name="PART_Timestamp"
+                                           Text="{TemplateBinding Timestamp}"
                                            FontSize="11"
                                            HorizontalAlignment="Right"
                                            Opacity="0.7"
