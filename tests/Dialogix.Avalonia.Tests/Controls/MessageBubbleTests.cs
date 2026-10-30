@@ -3,6 +3,7 @@ using Avalonia.Headless.XUnit;
 using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
+
 using Dialogix.Avalonia.Controls;
 
 namespace Dialogix.Avalonia.Tests.Controls;
