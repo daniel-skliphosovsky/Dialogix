@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+
 using Dialogix.Avalonia.Demo.Views;
 
 namespace Dialogix.Avalonia.Demo;

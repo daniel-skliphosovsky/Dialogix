@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
+
 using Dialogix.Avalonia.Demo.Views.Controls;
 
 namespace Dialogix.Avalonia.Demo.Views;
