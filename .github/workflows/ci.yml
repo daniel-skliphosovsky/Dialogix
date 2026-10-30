@@ -44,6 +44,9 @@ jobs:
         run: dotnet publish demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj -c Release -o demo-pub
 
       - if: env.MAIN == 'true'
+        run: touch demo-pub/wwwroot/.nojekyll
+
+      - if: env.MAIN == 'true'
         uses: actions/upload-pages-artifact@v3
         with:
           path: demo-pub/wwwroot
