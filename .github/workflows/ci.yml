@@ -5,6 +5,7 @@ on:
   push:
     branches: ["**"]
     tags: ["v*"]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -49,7 +50,7 @@ jobs:
 
   publish:
     needs: check
-    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -69,7 +70,8 @@ jobs:
           if [ "$GITHUB_REF_TYPE" = "tag" ]; then
             VERSION="${GITHUB_REF_NAME#v}"
           else
-            VERSION="0.1.0-alpha.${GITHUB_RUN_NUMBER}"
+            BASE="$(dotnet msbuild src/Dialogix.Avalonia/Dialogix.Avalonia.csproj -getProperty:Version)"
+            VERSION="${BASE}.${GITHUB_RUN_NUMBER}"
           fi
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "Publishing $VERSION"
