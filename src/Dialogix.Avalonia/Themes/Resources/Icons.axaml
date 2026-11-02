@@ -1,0 +1,7 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <StreamGeometry x:Key="DialogixSendIconGeometry">M10 16 V4 M4 10 L10 4 L16 10</StreamGeometry>
+    <StreamGeometry x:Key="DialogixScrollDownIconGeometry">M4 9 L10 15 L16 9</StreamGeometry>
+
+</ResourceDictionary>

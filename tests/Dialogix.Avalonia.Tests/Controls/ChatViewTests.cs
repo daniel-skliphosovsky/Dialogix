@@ -1,0 +1,339 @@
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Headless.XUnit;
+using Avalonia.Input;
+using Avalonia.Interactivity;
+using Avalonia.Threading;
+using Avalonia.VisualTree;
+
+using Dialogix.Avalonia.Controls;
+
+namespace Dialogix.Avalonia.Tests.Controls;
+
+public class ChatViewTests
+{
+    [AvaloniaFact]
+    public void Defaults_are_expected()
+    {
+        ChatView chat = new ChatView();
+
+        Assert.Null(chat.Messages);
+        Assert.False(chat.HasMore);
+        Assert.False(chat.IsLoadingMore);
+        Assert.Null(chat.LoadMoreCommand);
+        Assert.Equal(48d, chat.LoadMoreThreshold);
+        Assert.Null(chat.InputText);
+        Assert.Equal("Message", chat.InputWatermark);
+        Assert.Null(chat.SendCommand);
+    }
+
+    [AvaloniaFact]
+    public void Messages_are_bound_to_items_control()
+    {
+        ObservableCollection<MessageBubble> messages = [new MessageBubble { Text = "Hello" }];
+        ChatView chat = new ChatView { Messages = messages };
+        Show(chat);
+
+        ItemsControl items = Part<ItemsControl>(chat, "PART_Items");
+        Assert.Same(messages, items.ItemsSource);
+    }
+
+    [AvaloniaFact]
+    public void Footer_updates_input_text()
+    {
+        ChatView chat = new ChatView();
+        Show(chat);
+
+        MessageInput input = Footer(chat);
+        Part<TextBox>(input, "PART_TextBox").Text = "Hi";
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal("Hi", chat.InputText);
+    }
+
+    [AvaloniaFact]
+    public void Input_text_prefills_footer()
+    {
+        ChatView chat = new ChatView { InputText = "Prefill" };
+        Show(chat);
+
+        Assert.Equal("Prefill", Footer(chat).Text);
+        Assert.Equal("Prefill", Part<TextBox>(Footer(chat), "PART_TextBox").Text);
+    }
+
+    [AvaloniaFact]
+    public void Send_command_receives_typed_text_and_clears_footer()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView { SendCommand = recorder };
+        Show(chat);
+
+        MessageInput input = Footer(chat);
+        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        textBox.Text = "Hi";
+        Dispatcher.UIThread.RunJobs();
+
+        textBox.RaiseEvent(new KeyEventArgs
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = Key.Enter,
+            KeyModifiers = KeyModifiers.None,
+            Source = textBox
+        });
+
+        Assert.Equal(["Hi"], recorder.Executed);
+        Assert.Equal(string.Empty, chat.InputText);
+        Assert.Equal(string.Empty, textBox.Text);
+    }
+
+    [AvaloniaFact]
+    public void Sending_scrolls_to_the_bottom_even_while_reading_history()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(40);
+        ChatView chat = new ChatView { Messages = messages };
+        chat.SendCommand = new ActionCommand(parameter =>
+            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty }));
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+
+        TextBox textBox = Part<TextBox>(Footer(chat), "PART_TextBox");
+        textBox.Text = "Hello";
+        Dispatcher.UIThread.RunJobs();
+
+        textBox.RaiseEvent(new KeyEventArgs
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = Key.Enter,
+            KeyModifiers = KeyModifiers.None,
+            Source = textBox
+        });
+
+        Dispatcher.UIThread.RunJobs();
+
+        double max = scroll.Extent.Height - scroll.Viewport.Height;
+        Assert.Equal(max, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void Opens_scrolled_to_the_latest_message()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(40) };
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        double max = scroll.Extent.Height - scroll.Viewport.Height;
+
+        Assert.True(max > 0);
+        Assert.Equal(max, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void New_message_scrolls_to_the_bottom_when_already_there()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(40);
+        ChatView chat = new ChatView { Messages = messages };
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        messages.Add(new MessageBubble { Text = "New message" });
+        Dispatcher.UIThread.RunJobs();
+        Dispatcher.UIThread.RunJobs();
+
+        double max = scroll.Extent.Height - scroll.Viewport.Height;
+        Assert.Equal(max, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void New_message_does_not_scroll_when_the_user_reads_history()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(40);
+        ChatView chat = new ChatView { Messages = messages, SmoothScrolling = false };
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+
+        messages.Add(new MessageBubble { Text = "New message" });
+        Dispatcher.UIThread.RunJobs();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(0d, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_runs_at_the_top_when_more_messages_exist()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_runs_only_once_until_the_user_scrolls_away()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        scroll.Offset = new Vector(0, 1);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_does_not_run_when_no_more_messages_exist()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = false,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Empty(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Prepended_messages_keep_the_scroll_anchor()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(40);
+        ChatView chat = new ChatView { Messages = messages, HasMore = true };
+        chat.LoadMoreCommand = new ActionCommand(() => messages.Insert(0, new MessageBubble { Text = "Older" }));
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        double extent = scroll.Extent.Height;
+
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Dispatcher.UIThread.RunJobs();
+
+        double added = scroll.Extent.Height - extent;
+        Assert.True(added > 0);
+        Assert.Equal(added, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void Scroll_to_end_icon_is_themed()
+    {
+        ChatView chat = new ChatView();
+        Show(chat);
+
+        Assert.NotNull(chat.ScrollToEndIcon);
+    }
+
+    [AvaloniaFact]
+    public void Scroll_to_end_button_is_hidden_at_the_bottom()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(40) };
+        Show(chat, 400, 200);
+
+        Assert.False(Part<Button>(chat, "PART_ScrollToEnd").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Scroll_to_end_button_returns_to_the_latest_message()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(40), SmoothScrolling = false };
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        Button button = Part<Button>(chat, "PART_ScrollToEnd");
+
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Assert.True(button.IsVisible);
+
+        double max = scroll.Extent.Height - scroll.Viewport.Height;
+        button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(max, scroll.Offset.Y, 1d);
+        Assert.False(button.IsVisible);
+    }
+
+    private static MessageInput Footer(ChatView chat) =>
+        chat.GetVisualDescendants().OfType<MessageInput>().First();
+
+    private static ObservableCollection<MessageBubble> ManyMessages(int count)
+    {
+        ObservableCollection<MessageBubble> messages = [];
+
+        for (int i = 0; i < count; i++)
+            messages.Add(new MessageBubble { Text = $"Message {i}" });
+
+        return messages;
+    }
+
+    private static void Show(Control control, double width = 400, double height = 300)
+    {
+        Window window = new Window { Content = control, Width = width, Height = height };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+    }
+
+    private static T Part<T>(Control control, string name) where T : Control =>
+        control.GetVisualDescendants().OfType<T>().First(x => x.Name == name);
+
+    private sealed class ActionCommand : ICommand
+    {
+        private readonly Action<object?> _action;
+
+        public ActionCommand(Action action) => _action = _ => action();
+
+        public ActionCommand(Action<object?> action) => _action = action;
+
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+
+        public bool CanExecute(object? parameter) => true;
+
+        public void Execute(object? parameter) => _action(parameter);
+    }
+
+    private sealed class Recorder : ICommand
+    {
+        public List<object?> Executed { get; } = [];
+
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+
+        public bool CanExecute(object? parameter) => true;
+
+        public void Execute(object? parameter) => Executed.Add(parameter);
+    }
+}

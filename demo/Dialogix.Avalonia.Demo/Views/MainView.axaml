@@ -12,6 +12,7 @@
                      Margin="8"
                      SelectionChanged="OnNavigationSelectionChanged">
                 <ListBoxItem Content="Message Bubble" />
+                <ListBoxItem Content="Chat View" />
             </ListBox>
 
             <ToggleSwitch x:Name="ThemeSwitch"
