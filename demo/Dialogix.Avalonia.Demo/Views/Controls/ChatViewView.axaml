@@ -1,0 +1,138 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Dialogix.Avalonia.Controls"
+             x:Class="Dialogix.Avalonia.Demo.Views.Controls.ChatViewView">
+
+    <UserControl.Styles>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource DemoChatBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="BoxShadow" Value="0 6 48 -20 #1F000000" />
+        </Style>
+
+        <Style Selector="TextBlock.cardTitle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="TextBlock.cardHint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.55" />
+        </Style>
+
+        <!-- Restyling a control by selector, without touching the library theme. -->
+        <Style Selector="controls|ChatView.mono">
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="Foreground" Value="#FF111111" />
+            <Setter Property="BorderBrush" Value="#FF111111" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+        </Style>
+
+        <Style Selector="controls|ChatView.mono controls|MessageBubble">
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="Foreground" Value="#FF111111" />
+            <Setter Property="BorderBrush" Value="#FF111111" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+        <Style Selector="controls|ChatView.mono controls|MessageBubble:outgoing">
+            <Setter Property="Background" Value="#FF111111" />
+            <Setter Property="Foreground" Value="#FFFFFFFF" />
+        </Style>
+
+        <Style Selector="controls|ChatView.mono controls|MessageInput">
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="Foreground" Value="#FF111111" />
+            <Setter Property="BorderBrush" Value="#FF111111" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="1140"
+                    Margin="24"
+                    Spacing="20">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="ChatView"
+                           FontSize="26"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Same control, three different looks — everything is themeable."
+                           Opacity="0.6" />
+            </StackPanel>
+
+            <WrapPanel ItemWidth="326"
+                       Orientation="Horizontal">
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Default" />
+                            <TextBlock Classes="cardHint" Text="Library brushes, light and dark." />
+                        </StackPanel>
+                        <controls:ChatView x:Name="ChatDefault"
+                                           Height="420"
+                                           CornerRadius="12" />
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Violet" />
+                            <TextBlock Classes="cardHint" Text="Scoped brush overrides in Resources." />
+                        </StackPanel>
+                        <controls:ChatView x:Name="ChatViolet"
+                                           Height="420"
+                                           CornerRadius="12"
+                                           Padding="14">
+                            <controls:ChatView.Resources>
+                                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1B1035" />
+                                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2A1B4D" />
+                                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFEDE9FE" />
+                                <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF8B5CF6" />
+                                <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
+                                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
+                                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF241540" />
+                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
+                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
+                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF9F7BFA" />
+                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF7C4BEF" />
+                            </controls:ChatView.Resources>
+                        </controls:ChatView>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Mono" />
+                            <TextBlock Classes="cardHint" Text="Restyled by selectors, square and sharp." />
+                        </StackPanel>
+                        <controls:ChatView x:Name="ChatMono"
+                                           Classes="mono"
+                                           Height="420"
+                                           Padding="14">
+                            <controls:ChatView.Resources>
+                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF111111" />
+                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF333333" />
+                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF000000" />
+                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF666666" />
+                            </controls:ChatView.Resources>
+                        </controls:ChatView>
+                    </StackPanel>
+                </Border>
+
+            </WrapPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

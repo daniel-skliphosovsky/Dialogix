@@ -1,0 +1,106 @@
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+
+using Avalonia.Controls;
+
+using Dialogix.Avalonia.Controls;
+
+namespace Dialogix.Avalonia.Demo.Views.Controls;
+
+public partial class ChatViewView : UserControl
+{
+    private static readonly (string Author, string Text)[] DefaultSeed =
+    [
+        ("Guest", "Hey! Have you seen these chat controls?"),
+        ("You", "Just added Dialogix to the project."),
+        ("Guest", "So you no longer rebuild bubbles in every screen?"),
+        ("You", "Right. One control, and the theme handles the rest."),
+        ("Guest", "Does it do pagination?"),
+        ("You", "Scroll up — older messages load in."),
+        ("Guest", "Nice. What about the input?"),
+        ("You", "Enter sends, Shift+Enter adds a line."),
+        ("Guest", "And the outgoing bubbles?"),
+        ("You", "Same control, just IsOutgoing."),
+        ("Guest", "Clean."),
+        ("You", "Try sending something.")
+    ];
+
+    private static readonly (string Author, string Text)[] VioletSeed =
+    [
+        ("Guest", "Dark background, violet accent."),
+        ("You", "Every brush is a resource."),
+        ("Guest", "Even the send button?"),
+        ("You", "It picks up the scoped primary color."),
+        ("Guest", "Send something and scroll up.")
+    ];
+
+    private static readonly (string Author, string Text)[] MonoSeed =
+    [
+        ("Guest", "Monospace, square corners."),
+        ("You", "Restyled with plain selectors."),
+        ("Guest", "No custom control needed."),
+        ("You", "And the scroll-down button still works.")
+    ];
+
+    public ChatViewView()
+    {
+        InitializeComponent();
+
+        Setup(ChatDefault, DefaultSeed, 3);
+        Setup(ChatViolet, VioletSeed, 2);
+        Setup(ChatMono, MonoSeed, 2);
+    }
+
+    private static void Setup(ChatView chat, (string Author, string Text)[] seed, int pages)
+    {
+        ObservableCollection<MessageBubble> messages = [];
+        int pagesLeft = pages;
+        int index = 0;
+
+        foreach ((string author, string text) in seed)
+            messages.Add(CreateBubble(author, text, index++));
+
+        chat.Messages = messages;
+        chat.HasMore = pages > 0;
+
+        chat.LoadMoreCommand = new RelayCommand(_ =>
+        {
+            if (pagesLeft <= 0)
+            {
+                chat.HasMore = false;
+                return;
+            }
+
+            pagesLeft--;
+            chat.HasMore = pagesLeft > 0;
+
+            for (int i = 0; i < 4; i++)
+                messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
+        });
+
+        chat.SendCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is not string text || string.IsNullOrWhiteSpace(text))
+                return;
+
+            messages.Add(CreateBubble("You", text, messages.Count));
+        });
+    }
+
+    private static MessageBubble CreateBubble(string author, string text, int index) => new()
+    {
+        Author = author,
+        Text = text,
+        Timestamp = $"12:{index:D2}",
+        IsOutgoing = author == "You"
+    };
+
+    private sealed class RelayCommand(Action<object?> execute) : ICommand
+    {
+        public event EventHandler? CanExecuteChanged { add { } remove { } }
+
+        public bool CanExecute(object? parameter) => true;
+
+        public void Execute(object? parameter) => execute(parameter);
+    }
+}

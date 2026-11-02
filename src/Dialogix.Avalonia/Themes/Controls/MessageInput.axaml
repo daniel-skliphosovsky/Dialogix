@@ -1,0 +1,153 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dialogix.Avalonia.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters">
+
+    <Styles.Resources>
+
+        <ControlTheme x:Key="DialogixSendButtonTheme"
+                      TargetType="Button">
+
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="{DynamicResource DialogixPrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixPrimaryForegroundBrush}" />
+            <Setter Property="Cursor" Value="Hand" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Root"
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Root">
+                <Setter Property="Background" Value="{DynamicResource DialogixPrimaryHoverBrush}" />
+            </Style>
+
+            <Style Selector="^:pressed /template/ Border#PART_Root">
+                <Setter Property="Background" Value="{DynamicResource DialogixPrimaryPressedBrush}" />
+            </Style>
+
+            <Style Selector="^:disabled">
+                <Setter Property="Opacity" Value="0.45" />
+            </Style>
+
+        </ControlTheme>
+
+        <ControlTheme x:Key="{x:Type controls:MessageInput}"
+                      TargetType="controls:MessageInput">
+
+            <Setter Property="Background" Value="{DynamicResource DialogixInputBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="22" />
+            <Setter Property="Padding" Value="6,5" />
+            <Setter Property="SendIcon" Value="{DynamicResource DialogixSendIconGeometry}" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Frame"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+
+                            <TextBox Name="PART_TextBox"
+                                     Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                     PlaceholderText="{TemplateBinding Watermark}"
+                                     PlaceholderForeground="{DynamicResource DialogixMutedForegroundBrush}"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     MinLines="1"
+                                     MaxLines="{TemplateBinding MaxLines}"
+                                     MinHeight="36"
+                                     Padding="10,8"
+                                     FontSize="14"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     VerticalContentAlignment="Center"
+                                     Foreground="{TemplateBinding Foreground}" />
+
+                            <Button Name="PART_SendButton"
+                                    Grid.Column="1"
+                                    Theme="{StaticResource DialogixSendButtonTheme}"
+                                    VerticalAlignment="Bottom"
+                                    IsEnabled="{Binding Text, RelativeSource={RelativeSource TemplatedParent},
+                                        Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}">
+                                <Path Width="18"
+                                      Height="18"
+                                      Stretch="Uniform"
+                                      Data="{TemplateBinding SendIcon}"
+                                      Stroke="{DynamicResource DialogixPrimaryForegroundBrush}"
+                                      StrokeThickness="2"
+                                      StrokeLineCap="Round"
+                                      StrokeJoin="Round" />
+                            </Button>
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:focused /template/ Border#PART_Frame">
+                <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
+            </Style>
+
+        </ControlTheme>
+
+    </Styles.Resources>
+
+    <Style Selector="controls|MessageInput TextBox">
+        <Setter Property="FocusAdorner" Value="{x:Null}" />
+        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+    </Style>
+
+    <!-- Fluent draws its own blue frame around a focused TextBox; the pill border is the frame here. -->
+    <Style Selector="controls|MessageInput TextBox /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BoxShadow" Value="none" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:focus">
+        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:pointerover">
+        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BoxShadow" Value="none" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BoxShadow" Value="none" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:pointerover:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BoxShadow" Value="none" />
+    </Style>
+
+</Styles>

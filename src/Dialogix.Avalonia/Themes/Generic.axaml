@@ -5,9 +5,12 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceInclude Source="avares://Dialogix.Avalonia/Themes/Resources/Colors.axaml" />
+                <ResourceInclude Source="avares://Dialogix.Avalonia/Themes/Resources/Icons.axaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Styles.Resources>
 
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageBubble.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageInput.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatView.axaml" />
 </Styles>

@@ -1,0 +1,113 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dialogix.Avalonia.Controls">
+
+    <Styles.Resources>
+
+        <ControlTheme x:Key="DialogixScrollButtonTheme"
+                      TargetType="Button">
+
+            <Setter Property="Width" Value="36" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Background" Value="{DynamicResource DialogixSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Cursor" Value="Hand" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Root"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            BoxShadow="0 2 8 0 #33000000">
+                        <ContentPresenter Content="{TemplateBinding Content}"
+                                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center" />
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover /template/ Border#PART_Root">
+                <Setter Property="Background" Value="{DynamicResource DialogixInputBackgroundBrush}" />
+            </Style>
+
+        </ControlTheme>
+
+        <ControlTheme x:Key="{x:Type controls:ChatView}"
+                      TargetType="controls:ChatView">
+
+            <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="ScrollToEndIcon" Value="{DynamicResource DialogixScrollDownIconGeometry}" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Frame"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+
+                        <Grid RowDefinitions="*,Auto" RowSpacing="12">
+
+                            <Grid>
+
+                                <ScrollViewer Name="PART_Scroll"
+                                              HorizontalScrollBarVisibility="Disabled"
+                                              VerticalScrollBarVisibility="Auto">
+                                    <ItemsControl Name="PART_Items"
+                                                  ItemsSource="{TemplateBinding Messages}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Spacing="8" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
+
+                                <Button Name="PART_ScrollToEnd"
+                                        Theme="{StaticResource DialogixScrollButtonTheme}"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Bottom"
+                                        Margin="0,0,6,6"
+                                        IsVisible="False">
+                                    <Path Width="18"
+                                          Height="18"
+                                          Margin="0,12,0,0"
+                                          Stretch="Uniform"
+                                          Data="{TemplateBinding ScrollToEndIcon}"
+                                          Stroke="{DynamicResource DialogixSurfaceForegroundBrush}"
+                                          StrokeThickness="2"
+                                          StrokeLineCap="Round"
+                                          StrokeJoin="Round" />
+                                </Button>
+
+                            </Grid>
+
+                            <controls:MessageInput Name="PART_Input"
+                                                   Grid.Row="1"
+                                                   Text="{TemplateBinding InputText, Mode=TwoWay}"
+                                                   Watermark="{TemplateBinding InputWatermark}"
+                                                   SendCommand="{TemplateBinding SendCommand}"
+                                                   Foreground="{TemplateBinding Foreground}" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+        </ControlTheme>
+
+    </Styles.Resources>
+</Styles>
