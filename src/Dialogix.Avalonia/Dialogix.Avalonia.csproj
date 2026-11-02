@@ -8,6 +8,7 @@
         <Description>Chat controls for Avalonia. Build messenger interfaces without rebuilding the same bubbles.</Description>
         <PackageTags>avalonia;chat;messenger;ui;controls</PackageTags>
         <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageIcon>Icon.png</PackageIcon>
 
         <Authors>daniel-skliphosovsky</Authors>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
@@ -23,6 +24,7 @@
 
     <ItemGroup>
         <None Include="../../README.md" Pack="true" PackagePath="/" />
+        <None Include="Icon.png" Pack="true" PackagePath="/" />
     </ItemGroup>
 
 </Project>
