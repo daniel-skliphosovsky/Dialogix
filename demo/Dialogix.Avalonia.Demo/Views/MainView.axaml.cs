@@ -26,6 +26,7 @@ public partial class MainView : UserControl
         PageHost.Content = NavigationList.SelectedIndex switch
         {
             0 => new MessageBubbleView(),
+            1 => new ChatViewView(),
             _ => null
         };
     }
