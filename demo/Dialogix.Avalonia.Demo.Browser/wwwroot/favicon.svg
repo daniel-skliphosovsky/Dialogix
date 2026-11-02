@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <g fill="none" stroke="#6366F1" stroke-linejoin="round" stroke-linecap="round">
+      
+    <!-- D-shaped message -->
+    <path d="M110 92 H250 A152 152 0 0 1 250 396 H192 L110 460 Z" stroke-width="38"/>
+      
+    <!-- message bubbles -->
+    <line x1="176" y1="204" x2="316" y2="204" stroke-width="28"/>
+    <line x1="206" y1="288" x2="338" y2="288" stroke-width="28"/>
+      
+  </g>
+</svg>
