@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
+using Avalonia;
 using Avalonia.Controls;
 
 using Dialogix.Avalonia.Controls;
@@ -49,6 +49,28 @@ public partial class ChatViewView : UserControl
         Setup(ChatDefault, DefaultSeed, 3);
         Setup(ChatViolet, VioletSeed, 2);
         Setup(ChatMono, MonoSeed, 2);
+
+        SizeChanged += OnSizeChanged;
+
+    }
+
+    private void OnSizeChanged(object? sender, SizeChangedEventArgs e) => ApplyWidth(e.NewSize.Width);
+
+    private void ApplyWidth(double width)
+    {
+        if (PageContent is null)
+            return;
+
+        bool narrow = width < 1000;
+        double margin = narrow ? 16 : 24;
+        double available = Math.Max(240, width - (margin * 2) - 1);
+
+        PageContent.Margin = new Thickness(margin);
+        PageTitle.FontSize = narrow ? 22 : 26;
+        Cards.ItemWidth = narrow ? available : 326;
+
+        foreach (Border card in Cards.Children.OfType<Border>())
+            card.Margin = narrow ? new Thickness(0, 0, 0, 12) : new Thickness(0, 0, 10, 10);
     }
 
     private static void Setup(ChatView chat, (string Author, string Text)[] seed, int pages)
@@ -94,13 +116,4 @@ public partial class ChatViewView : UserControl
         Timestamp = $"12:{index:D2}",
         IsOutgoing = author == "You"
     };
-
-    private sealed class RelayCommand(Action<object?> execute) : ICommand
-    {
-        public event EventHandler? CanExecuteChanged { add { } remove { } }
-
-        public bool CanExecute(object? parameter) => true;
-
-        public void Execute(object? parameter) => execute(parameter);
-    }
 }
