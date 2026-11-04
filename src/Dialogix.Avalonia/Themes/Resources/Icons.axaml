@@ -3,5 +3,6 @@
 
     <StreamGeometry x:Key="DialogixSendIconGeometry">M10 16 V4 M4 10 L10 4 L16 10</StreamGeometry>
     <StreamGeometry x:Key="DialogixScrollDownIconGeometry">M4 9 L10 15 L16 9</StreamGeometry>
+    <StreamGeometry x:Key="DialogixPaperPlaneIconGeometry">M3 9 L18 3 L14 17 L10 11 Z M10 11 L18 3</StreamGeometry>
 
 </ResourceDictionary>

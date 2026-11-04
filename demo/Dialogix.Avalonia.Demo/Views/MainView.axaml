@@ -1,31 +1,76 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:fa="using:FluentAvalonia.UI.Controls"
              x:Class="Dialogix.Avalonia.Demo.Views.MainView">
 
-    <Grid ColumnDefinitions="220,*"
-          Background="{DynamicResource DemoPageBackgroundBrush}">
+    <UserControl.Resources>
+        <fa:FASymbolIconSource x:Key="BubbleIcon" Symbol="Comment" />
+        <fa:FASymbolIconSource x:Key="InputIcon" Symbol="Edit" />
+        <fa:FASymbolIconSource x:Key="ChatIcon" Symbol="Message" />
+    </UserControl.Resources>
 
-        <Grid Grid.Column="0"
-              RowDefinitions="*,Auto">
+    <UserControl.Styles>
+        <Style Selector="fa|FANavigationView /template/ StackPanel#TopNavArea">
+            <Setter Property="Background" Value="{DynamicResource DemoPageBackgroundBrush}" />
+        </Style>
+    </UserControl.Styles>
 
-            <ListBox x:Name="NavigationList"
-                     Margin="8"
-                     SelectionChanged="OnNavigationSelectionChanged">
-                <ListBoxItem Content="Message Bubble" />
-                <ListBoxItem Content="Chat View" />
-            </ListBox>
+    <Grid>
 
+        <fa:FANavigationView x:Name="Nav"
+                         PaneDisplayMode="Auto"
+                         CompactModeThresholdWidth="720"
+                         ExpandedModeThresholdWidth="1000"
+                         OpenPaneLength="220"
+                         CompactPaneLength="56"
+                         PaneTitle="Dialogix"
+                         IsSettingsVisible="False"
+                         IsBackButtonVisible="False"
+                         IsPaneToggleButtonVisible="False"
+                         AlwaysShowHeader="False"
+                         Background="{DynamicResource DemoPageBackgroundBrush}"
+                         FontFamily="avares://Avalonia.Fonts.Inter/Assets#Inter"
+                         SelectionChanged="OnNavigationSelectionChanged">
+
+        <fa:FANavigationView.MenuItems>
+            <fa:FANavigationViewItem x:Name="BubbleItem" Content="Message Bubble" Tag="bubble" />
+            <fa:FANavigationViewItem x:Name="InputItem" Content="Message Input" Tag="input" />
+            <fa:FANavigationViewItem x:Name="ChatItem" Content="Chat View" Tag="chat" />
+        </fa:FANavigationView.MenuItems>
+
+        <fa:FANavigationView.PaneFooter>
             <ToggleSwitch x:Name="ThemeSwitch"
-                          Grid.Row="1"
-                          Margin="16,8,16,16"
+                          Margin="12,8,12,16"
                           IsChecked="True"
                           Content="Dark theme"
                           IsCheckedChanged="OnThemeSwitchChanged" />
+        </fa:FANavigationView.PaneFooter>
 
-        </Grid>
+        <fa:FANavigationView.Content>
+            <ContentControl x:Name="PageHost" />
+        </fa:FANavigationView.Content>
 
-        <ContentControl x:Name="PageHost"
-                        Grid.Column="1"
-                        Margin="8" />
+        </fa:FANavigationView>
+
+        <StackPanel x:Name="CompactThemePanel"
+                    Orientation="Horizontal"
+                    Spacing="6"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Margin="0,4,44,0"
+                    IsVisible="False">
+
+            <TextBlock Text="Dark"
+                       FontSize="12"
+                       Opacity="0.6"
+                       VerticalAlignment="Center" />
+
+            <ToggleSwitch x:Name="CompactThemeSwitch"
+                          Margin="0"
+                          OnContent=""
+                          OffContent=""
+                          IsChecked="{Binding #ThemeSwitch.IsChecked, Mode=TwoWay}"
+                          IsCheckedChanged="OnThemeSwitchChanged" />
+        </StackPanel>
     </Grid>
 </UserControl>

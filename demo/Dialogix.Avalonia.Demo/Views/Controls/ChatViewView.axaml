@@ -55,19 +55,22 @@
     </UserControl.Styles>
 
     <ScrollViewer>
-        <StackPanel MaxWidth="1140"
+        <StackPanel x:Name="PageContent"
+                    MaxWidth="1140"
                     Margin="24"
                     Spacing="20">
 
             <StackPanel Spacing="4">
-                <TextBlock Text="ChatView"
+                <TextBlock x:Name="PageTitle"
+                           Text="ChatView"
                            FontSize="26"
                            FontWeight="SemiBold" />
                 <TextBlock Text="Same control, three different looks — everything is themeable."
-                           Opacity="0.6" />
+                           Opacity="0.6"
+                           TextWrapping="Wrap" />
             </StackPanel>
 
-            <WrapPanel ItemWidth="326"
+            <WrapPanel x:Name="Cards"
                        Orientation="Horizontal">
 
                 <Border Classes="card"
@@ -123,10 +126,15 @@
                                            Height="420"
                                            Padding="14">
                             <controls:ChatView.Resources>
+                                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FFFFFFFF" />
+                                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
+                                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF111111" />
+                                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF111111" />
+                                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FFF0F0F0" />
+                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF666666" />
                                 <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF111111" />
                                 <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF333333" />
                                 <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF000000" />
-                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF666666" />
                             </controls:ChatView.Resources>
                         </controls:ChatView>
                     </StackPanel>

@@ -12,7 +12,8 @@
     </UserControl.Styles>
 
     <ScrollViewer>
-        <StackPanel MaxWidth="760"
+        <StackPanel x:Name="PageContent"
+                    MaxWidth="760"
                     Margin="24"
                     Spacing="16">
 

@@ -25,6 +25,7 @@ public class MessageInputTests
         Assert.Null(input.Text);
         Assert.Equal("Message", input.Watermark);
         Assert.Equal(5, input.MaxLines);
+        Assert.Equal(0, input.MaxLength);
         Assert.Null(input.SendCommand);
     }
 
@@ -203,6 +204,117 @@ public class MessageInputTests
 
         Border frame = input.GetVisualDescendants().OfType<Border>().First(x => x.Name == "PART_BorderElement");
         Assert.Equal(new Thickness(0), frame.BorderThickness);
+    }
+
+    [AvaloniaFact]
+    public void Grows_up_to_max_lines_then_stops()
+    {
+        MessageInput input = new MessageInput { MaxLines = 3 };
+        Window window = new() { Width = 320, Height = 500, Content = input };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        textBox.Text = "a\nb\nc";
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+        double threeLines = textBox.Bounds.Height;
+
+        textBox.Text = string.Join('\n', Enumerable.Range(0, 12).Select(i => $"line {i}"));
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+
+        Assert.True(double.IsFinite(textBox.MaxHeight));
+        Assert.Equal(textBox.MaxHeight, textBox.Bounds.Height, 1);
+        Assert.Equal(threeLines, textBox.Bounds.Height, 1);
+    }
+
+    [AvaloniaFact]
+    public void Empty_input_stays_one_line()
+    {
+        MessageInput tall = new MessageInput { MaxLines = 5 };
+        MessageInput single = new MessageInput { MaxLines = 1 };
+        StackPanel panel = new() { Spacing = 8, Children = { tall, single } };
+        Window window = new() { Width = 320, Height = 400, Content = panel };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+
+        Assert.Equal(Part<TextBox>(single, "PART_TextBox").Bounds.Height,
+            Part<TextBox>(tall, "PART_TextBox").Bounds.Height, 1);
+
+        Part<TextBox>(tall, "PART_TextBox").Text = "a\nb";
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+
+        Assert.True(Part<TextBox>(tall, "PART_TextBox").Bounds.Height >
+            Part<TextBox>(single, "PART_TextBox").Bounds.Height);
+    }
+
+    [AvaloniaFact]
+    public void Counter_tracks_length_and_flags_overflow()
+    {
+        MessageInput input = new MessageInput { MaxLength = 5, Text = "abc" };
+        Show(input);
+
+        TextBlock counter = Part<TextBlock>(input, "PART_Counter");
+
+        Assert.True(counter.IsVisible);
+        Assert.Equal("3/5", counter.Text);
+        Assert.False(input.IsTextTooLong);
+        Assert.True(Part<Button>(input, "PART_SendButton").IsEnabled);
+
+        Part<TextBox>(input, "PART_TextBox").Text = "abcdef";
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal("6/5", counter.Text);
+        Assert.True(input.IsTextTooLong);
+        Assert.Equal(6, input.CharacterCount);
+        Assert.False(Part<Button>(input, "PART_SendButton").IsEnabled);
+    }
+
+    [AvaloniaFact]
+    public void Too_long_text_is_not_sent()
+    {
+        Recorder recorder = new Recorder();
+        MessageInput input = new MessageInput { MaxLength = 3, Text = "abcd", SendCommand = recorder };
+        Show(input);
+
+        Press(input, Key.Enter, KeyModifiers.None);
+
+        Assert.Empty(recorder.Sent);
+        Assert.Equal("abcd", input.Text);
+    }
+
+    [AvaloniaFact]
+    public void Counter_is_hidden_without_a_limit()
+    {
+        MessageInput input = new MessageInput { Text = "Hello" };
+        Show(input);
+
+        Assert.False(Part<TextBlock>(input, "PART_Counter").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Placeholder_stays_muted_on_pointer_over_and_focus()
+    {
+        MessageInput input = new MessageInput();
+        Show(input);
+
+        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        TextBlock placeholder = input.GetVisualDescendants().OfType<TextBlock>().First(x => x.Name == "PART_Placeholder");
+
+        Assert.True(input.TryFindResource("DialogixMutedForegroundBrush", out object? muted));
+        Color expected = Assert.IsAssignableFrom<ISolidColorBrush>(muted).Color;
+        Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
+
+        ((global::Avalonia.Controls.IPseudoClasses)textBox.Classes).Set(":pointerover", true);
+        Dispatcher.UIThread.RunJobs();
+        Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
+
+        textBox.Focus();
+        Dispatcher.UIThread.RunJobs();
+        Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
     }
 
     [AvaloniaFact]
