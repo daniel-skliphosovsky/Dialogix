@@ -16,6 +16,7 @@
             <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7B7DF5" />
             <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5254CF" />
             <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFDC2626" />
         </ResourceDictionary>
 
         <ResourceDictionary x:Key="Dark">
@@ -31,6 +32,7 @@
             <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7B7DF5" />
             <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5254CF" />
             <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFF87171" />
         </ResourceDictionary>
 
     </ResourceDictionary.ThemeDictionaries>

@@ -1,7 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Dialogix.Avalonia.Controls"
-        xmlns:converters="using:Avalonia.Data.Converters">
+        xmlns:controls="using:Dialogix.Avalonia.Controls">
 
     <Styles.Resources>
 
@@ -63,7 +62,7 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}">
 
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
 
                             <TextBox Name="PART_TextBox"
                                      Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
@@ -71,6 +70,9 @@
                                      PlaceholderForeground="{DynamicResource DialogixMutedForegroundBrush}"
                                      AcceptsReturn="True"
                                      TextWrapping="Wrap"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                     ScrollViewer.AllowAutoHide="False"
                                      MinLines="1"
                                      MaxLines="{TemplateBinding MaxLines}"
                                      MinHeight="36"
@@ -81,12 +83,19 @@
                                      VerticalContentAlignment="Center"
                                      Foreground="{TemplateBinding Foreground}" />
 
+                            <TextBlock Name="PART_Counter"
+                                       Grid.Column="1"
+                                       IsVisible="False"
+                                       Margin="0,0,2,0"
+                                       FontSize="11"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource DialogixMutedForegroundBrush}" />
+
                             <Button Name="PART_SendButton"
-                                    Grid.Column="1"
+                                    Grid.Column="2"
                                     Theme="{StaticResource DialogixSendButtonTheme}"
                                     VerticalAlignment="Bottom"
-                                    IsEnabled="{Binding Text, RelativeSource={RelativeSource TemplatedParent},
-                                        Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}">
+                                    IsEnabled="{TemplateBinding CanSend}">
                                 <Path Width="18"
                                       Height="18"
                                       Stretch="Uniform"
@@ -104,6 +113,14 @@
 
             <Style Selector="^:focused /template/ Border#PART_Frame">
                 <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
+            </Style>
+
+            <Style Selector="^:toolong /template/ TextBlock#PART_Counter">
+                <Setter Property="Foreground" Value="{DynamicResource DialogixDangerBrush}" />
+            </Style>
+
+            <Style Selector="^:toolong /template/ Border#PART_Frame">
+                <Setter Property="BorderBrush" Value="{DynamicResource DialogixDangerBrush}" />
             </Style>
 
         </ControlTheme>
@@ -130,6 +147,15 @@
     <Style Selector="controls|MessageInput TextBox:pointerover">
         <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
         <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
+    </Style>
+
+    <!-- Fluent re-colors the placeholder itself on hover and focus; keep it muted instead. -->
+    <Style Selector="controls|MessageInput TextBox:pointerover /template/ TextBlock#PART_Placeholder">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+    </Style>
+
+    <Style Selector="controls|MessageInput TextBox:focus /template/ TextBlock#PART_Placeholder">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
     </Style>
 
     <Style Selector="controls|MessageInput TextBox:focus /template/ Border#PART_BorderElement">
