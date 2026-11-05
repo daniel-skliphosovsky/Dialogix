@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -47,6 +48,20 @@ public class ChatHeaderTests
 
         Assert.True(Part<TextBlock>(header, "PART_Title").IsVisible);
         Assert.True(Part<TextBlock>(header, "PART_Status").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Min_width_stretches_the_island()
+    {
+        ChatHeader header = new ChatHeader
+        {
+            Title = "Nina",
+            MinWidth = 220,
+            HorizontalAlignment = HorizontalAlignment.Center
+        };
+        Show(header);
+
+        Assert.True(Part<Border>(header, "PART_Island").Bounds.Width >= 220);
     }
 
     private static void Show(Control control)
