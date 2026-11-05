@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Input;
 using Avalonia.Media;
 
 namespace Dialogix.Avalonia.Controls;
@@ -45,4 +46,25 @@ public class ProfileEditorView : TemplatedControl
     public ICommand? CancelCommand { get => GetValue(CancelCommandProperty); set => SetValue(CancelCommandProperty, value); }
     public string? SaveText { get => GetValue(SaveTextProperty); set => SetValue(SaveTextProperty, value); }
     public string? CancelText { get => GetValue(CancelTextProperty); set => SetValue(CancelTextProperty, value); }
+
+    protected override void OnKeyDown(KeyEventArgs e)
+    {
+        base.OnKeyDown(e);
+
+        if (e.Handled)
+            return;
+
+        ICommand? command = e.Key switch
+        {
+            Key.Enter => SaveCommand,
+            Key.Escape => CancelCommand,
+            _ => null
+        };
+
+        if (command is null || !command.CanExecute(null))
+            return;
+
+        e.Handled = true;
+        command.Execute(null);
+    }
 }

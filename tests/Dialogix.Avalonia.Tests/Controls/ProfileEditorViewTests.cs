@@ -89,6 +89,37 @@ public class ProfileEditorViewTests
     }
 
     [AvaloniaFact]
+    public void Enter_saves_and_escape_cancels()
+    {
+        Recorder save = new Recorder();
+        Recorder cancel = new Recorder();
+        TextBox field = new TextBox();
+        ProfileEditorView editor = new ProfileEditorView
+        {
+            Fields = field,
+            SaveCommand = save,
+            CancelCommand = cancel
+        };
+        Show(editor);
+
+        Assert.True(Press(field, Key.Enter).Handled);
+        Assert.True(Press(field, Key.Escape).Handled);
+
+        Assert.Single(save.Executed);
+        Assert.Single(cancel.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Keys_without_commands_are_left_alone()
+    {
+        ProfileEditorView editor = new ProfileEditorView();
+        Show(editor);
+
+        Assert.False(Press(editor, Key.Enter).Handled);
+        Assert.False(Press(editor, Key.Escape).Handled);
+    }
+
+    [AvaloniaFact]
     public void Cancel_command_runs_on_click()
     {
         Recorder recorder = new Recorder();
@@ -105,6 +136,19 @@ public class ProfileEditorViewTests
         Brush = Brushes.Green,
         Geometry = new RectangleGeometry(new Rect(0, 0, 10, 10))
     });
+
+    private static KeyEventArgs Press(Control control, Key key)
+    {
+        KeyEventArgs args = new()
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = key,
+            Source = control
+        };
+
+        control.RaiseEvent(args);
+        return args;
+    }
 
     private static void Click(Button button)
     {
