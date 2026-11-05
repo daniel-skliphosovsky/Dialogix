@@ -24,17 +24,16 @@ public class MessageInput : TemplatedControl
         AvaloniaProperty.Register<MessageInput, int>(nameof(MaxLines), 5);
 
     public static readonly StyledProperty<int> MaxLengthProperty =
-        AvaloniaProperty.Register<MessageInput, int>(nameof(MaxLength), 0);
+        AvaloniaProperty.Register<MessageInput, int>(nameof(MaxLength));
 
-    public static readonly DirectProperty<MessageInput, int> CharacterCountProperty =
-        AvaloniaProperty.RegisterDirect<MessageInput, int>(nameof(CharacterCount), input => input.CharacterCount);
+    public static readonly StyledProperty<int> CharacterCountProperty =
+        AvaloniaProperty.Register<MessageInput, int>(nameof(CharacterCount));
 
-    public static readonly DirectProperty<MessageInput, bool> IsTextTooLongProperty =
-        AvaloniaProperty.RegisterDirect<MessageInput, bool>(
-            nameof(IsTextTooLong), input => input.IsTextTooLong);
+    public static readonly StyledProperty<bool> IsTextTooLongProperty =
+        AvaloniaProperty.Register<MessageInput, bool>(nameof(IsTextTooLong));
 
-    public static readonly DirectProperty<MessageInput, bool> CanSendProperty =
-        AvaloniaProperty.RegisterDirect<MessageInput, bool>(nameof(CanSend), input => input.CanSend);
+    public static readonly StyledProperty<bool> CanSendProperty =
+        AvaloniaProperty.Register<MessageInput, bool>(nameof(CanSend));
 
     public static readonly StyledProperty<ICommand?> SendCommandProperty =
         AvaloniaProperty.Register<MessageInput, ICommand?>(nameof(SendCommand));
@@ -45,9 +44,6 @@ public class MessageInput : TemplatedControl
     private TextBox? _textBox;
     private Button? _sendButton;
     private TextBlock? _counter;
-    private int _characterCount;
-    private bool _isTextTooLong;
-    private bool _canSend;
     private double _lastWidth = -1;
 
     static MessageInput()
@@ -63,9 +59,9 @@ public class MessageInput : TemplatedControl
     public string? Watermark { get => GetValue(WatermarkProperty); set => SetValue(WatermarkProperty, value); }
     public int MaxLines { get => GetValue(MaxLinesProperty); set => SetValue(MaxLinesProperty, value); }
     public int MaxLength { get => GetValue(MaxLengthProperty); set => SetValue(MaxLengthProperty, value); }
-    public int CharacterCount { get => _characterCount; private set => SetAndRaise(CharacterCountProperty, ref _characterCount, value); }
-    public bool IsTextTooLong { get => _isTextTooLong; private set => SetAndRaise(IsTextTooLongProperty, ref _isTextTooLong, value); }
-    public bool CanSend { get => _canSend; private set => SetAndRaise(CanSendProperty, ref _canSend, value); }
+    public int CharacterCount { get => GetValue(CharacterCountProperty); private set => SetValue(CharacterCountProperty, value); }
+    public bool IsTextTooLong { get => GetValue(IsTextTooLongProperty); private set => SetValue(IsTextTooLongProperty, value); }
+    public bool CanSend { get => GetValue(CanSendProperty); private set => SetValue(CanSendProperty, value); }
     public ICommand? SendCommand { get => GetValue(SendCommandProperty); set => SetValue(SendCommandProperty, value); }
     public Geometry? SendIcon { get => GetValue(SendIconProperty); set => SetValue(SendIconProperty, value); }
 
@@ -228,8 +224,7 @@ public class MessageInput : TemplatedControl
         command.Execute(text);
         Text = string.Empty;
 
-        if (_textBox is not null)
-            _textBox.Text = string.Empty;
+        _textBox?.Text = string.Empty;
 
         Sent?.Invoke(this, EventArgs.Empty);
     }
