@@ -13,7 +13,6 @@ using Avalonia.VisualTree;
 
 using Dialogix.Avalonia.Controls;
 
-using ShapePath = Avalonia.Controls.Shapes.Path;
 
 namespace Dialogix.Avalonia.Tests.Controls;
 
@@ -63,7 +62,7 @@ public class ProfileEditorViewTests
         Show(editor);
 
         Assert.NotNull(editor.PlaceholderIcon);
-        Assert.True(Part<ShapePath>(editor, "PART_Placeholder").IsVisible);
+        Assert.True(Part<IconPresenter>(editor, "PART_Placeholder").IsVisible);
         Assert.False(Part<Image>(editor, "PART_Image").IsVisible);
     }
 
@@ -73,7 +72,7 @@ public class ProfileEditorViewTests
         ProfileEditorView editor = new ProfileEditorView { Avatar = SampleImage() };
         Show(editor);
 
-        Assert.False(Part<ShapePath>(editor, "PART_Placeholder").IsVisible);
+        Assert.False(Part<IconPresenter>(editor, "PART_Placeholder").IsVisible);
         Assert.True(Part<Image>(editor, "PART_Image").IsVisible);
     }
 

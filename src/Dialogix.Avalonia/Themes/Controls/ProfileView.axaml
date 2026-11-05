@@ -64,14 +64,13 @@
                                     BorderThickness="1">
 
                                 <Panel>
-                                    <Path Name="PART_Placeholder"
-                                          Width="42"
-                                          Height="42"
-                                          Stretch="Uniform"
-                                          Data="{TemplateBinding PlaceholderIcon}"
-                                          Fill="{DynamicResource DialogixMutedForegroundBrush}"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
+                                    <controls:IconPresenter Name="PART_Placeholder"
+                                                            Width="42"
+                                                            Height="42"
+                                                            Source="{TemplateBinding PlaceholderIcon}"
+                                                            Fill="{DynamicResource DialogixMutedForegroundBrush}"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
                                           IsVisible="{TemplateBinding Avatar,
                                               Converter={x:Static converters:ObjectConverters.IsNull}}" />
 
@@ -89,11 +88,10 @@
                                     IsVisible="{TemplateBinding IsEditVisible}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom">
-                                <Path Width="13"
-                                      Height="13"
-                                      Stretch="Uniform"
-                                      Data="{TemplateBinding EditIcon}"
-                                      Fill="{DynamicResource DialogixSurfaceForegroundBrush}" />
+                                <controls:IconPresenter Width="13"
+                                                        Height="13"
+                                                        Source="{TemplateBinding EditIcon}"
+                                                        Fill="{DynamicResource DialogixSurfaceForegroundBrush}" />
                             </Button>
 
                         </Panel>

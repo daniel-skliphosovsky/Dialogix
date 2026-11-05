@@ -10,13 +10,18 @@ public partial class ProfilePage : UserControl
     {
         InitializeComponent();
 
-        Profile.Items = new[]
-        {
+        ProfileItem[] items =
+        [
             new ProfileItem("Settings", (Geometry)this.FindResource("SettingsIcon")!),
             new ProfileItem("Notifications", (Geometry)this.FindResource("NotificationsIcon")!),
             new ProfileItem("Privacy", (Geometry)this.FindResource("PrivacyIcon")!)
-        };
+        ];
+
+        Profile.Items = items;
         Profile.ItemTemplate = (IDataTemplate)this.FindResource("ProfileItemTemplate")!;
+
+        VioletProfile.Items = items;
+        VioletProfile.ItemTemplate = (IDataTemplate)this.FindResource("VioletRowTemplate")!;
 
         Profile.EditCommand = new RelayCommand(_ => ShowEditor(true));
 

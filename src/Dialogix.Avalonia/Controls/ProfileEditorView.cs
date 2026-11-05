@@ -12,8 +12,8 @@ public class ProfileEditorView : TemplatedControl
     public static readonly StyledProperty<IImage?> AvatarProperty =
         AvaloniaProperty.Register<ProfileEditorView, IImage?>(nameof(Avatar));
 
-    public static readonly StyledProperty<Geometry?> PlaceholderIconProperty =
-        AvaloniaProperty.Register<ProfileEditorView, Geometry?>(nameof(PlaceholderIcon));
+    public static readonly StyledProperty<object?> PlaceholderIconProperty =
+        AvaloniaProperty.Register<ProfileEditorView, object?>(nameof(PlaceholderIcon));
 
     public static readonly StyledProperty<string?> TitleProperty =
         AvaloniaProperty.Register<ProfileEditorView, string?>(nameof(Title), "Edit profile");
@@ -37,7 +37,7 @@ public class ProfileEditorView : TemplatedControl
         AvaloniaProperty.Register<ProfileEditorView, string?>(nameof(CancelText), "Cancel");
 
     public IImage? Avatar { get => GetValue(AvatarProperty); set => SetValue(AvatarProperty, value); }
-    public Geometry? PlaceholderIcon { get => GetValue(PlaceholderIconProperty); set => SetValue(PlaceholderIconProperty, value); }
+    public object? PlaceholderIcon { get => GetValue(PlaceholderIconProperty); set => SetValue(PlaceholderIconProperty, value); }
     public string? Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
     public object? Fields { get => GetValue(FieldsProperty); set => SetValue(FieldsProperty, value); }
     public IDataTemplate? FieldsTemplate { get => GetValue(FieldsTemplateProperty); set => SetValue(FieldsTemplateProperty, value); }
