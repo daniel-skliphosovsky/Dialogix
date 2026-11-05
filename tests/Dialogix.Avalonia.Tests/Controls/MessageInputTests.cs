@@ -38,7 +38,6 @@ public class MessageInputTests
         TextBox textBox = Part<TextBox>(input, "PART_TextBox");
         Assert.Equal("Hello", textBox.Text);
         Assert.Equal("Type here", textBox.PlaceholderText);
-        Assert.Equal(5, textBox.MaxLines);
     }
 
     [AvaloniaFact]

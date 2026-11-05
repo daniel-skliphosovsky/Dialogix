@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
+using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -38,7 +39,7 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
-    public void Input_is_not_part_of_the_template()
+    public void Chat_view_leaves_the_composer_to_the_app()
     {
         ChatView chat = new ChatView();
         Show(chat);
@@ -47,9 +48,43 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
+    public void Message_input_can_live_next_to_the_chat_view()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(3);
+        ChatView chat = new ChatView { Messages = messages };
+        MessageInput input = new MessageInput();
+
+        input.SendCommand = new ActionCommand(parameter =>
+        {
+            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty });
+            chat.ScrollToEnd();
+        });
+
+        StackPanel shell = new StackPanel { Children = { chat, input } };
+        Window window = new Window { Content = shell, Width = 400, Height = 300 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        TextBox textBox = input.GetVisualDescendants().OfType<TextBox>().First(x => x.Name == "PART_TextBox");
+        textBox.Text = "Hi";
+        Dispatcher.UIThread.RunJobs();
+
+        textBox.RaiseEvent(new KeyEventArgs
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = Key.Enter,
+            KeyModifiers = KeyModifiers.None,
+            Source = textBox
+        });
+
+        Assert.Equal(4, messages.Count);
+        Assert.Equal(string.Empty, input.Text);
+    }
+
+    [AvaloniaFact]
     public void Scroll_to_end_returns_to_the_latest_message()
     {
-        ChatView chat = new ChatView { Messages = ManyMessages(40), SmoothScrolling = false };
+        ChatView chat = new ChatView { Messages = ManyMessages(40) };
         Show(chat, 400, 200);
 
         ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
