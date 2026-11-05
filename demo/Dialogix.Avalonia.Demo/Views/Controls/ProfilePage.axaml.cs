@@ -23,6 +23,11 @@ public partial class ProfilePage : UserControl
         VioletProfile.Items = items;
         VioletProfile.ItemTemplate = (IDataTemplate)this.FindResource("VioletRowTemplate")!;
 
+        Profile.ItemCommand = new RelayCommand(parameter =>
+        {
+            ItemStatus.Text = parameter is ProfileItem item ? $"Opened {item.Text}." : null;
+        });
+
         Profile.EditCommand = new RelayCommand(_ => ShowEditor(true));
 
         Editor.SaveCommand = new RelayCommand(_ =>

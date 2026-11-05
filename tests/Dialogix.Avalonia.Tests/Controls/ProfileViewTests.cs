@@ -7,7 +7,6 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
-using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -32,6 +31,7 @@ public class ProfileViewTests
         Assert.Null(profile.EditCommand);
         Assert.Null(profile.EditIcon);
         Assert.True(profile.IsEditVisible);
+        Assert.Null(profile.ItemCommand);
     }
 
     [AvaloniaFact]
@@ -129,6 +129,100 @@ public class ProfileViewTests
         Assert.Same(profile.EditIcon, icon.Source);
     }
 
+    [AvaloniaFact]
+    public void Item_command_runs_for_the_clicked_item()
+    {
+        Recorder recorder = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings", "Privacy" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        Click(RowText(profile, "Privacy"));
+
+        Assert.Equal(["Privacy"], recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Item_command_ignores_clicks_outside_the_items()
+    {
+        Recorder recorder = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            DisplayName = "Guest",
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        Click(Part<TextBlock>(profile, "PART_Name"));
+
+        Assert.Empty(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Item_command_is_not_run_when_it_cannot_execute()
+    {
+        Recorder recorder = new Recorder { CanRun = false };
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        Click(RowText(profile, "Settings"));
+
+        Assert.Empty(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Row_button_keeps_its_own_command()
+    {
+        Recorder row = new Recorder();
+        Recorder item = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = new FuncDataTemplate<object>((_, _) => new Button { Content = "Settings", Command = row }),
+            ItemCommand = item
+        };
+        Show(profile);
+
+        Click(Part<ItemsControl>(profile, "PART_Items").GetVisualDescendants().OfType<Button>().First());
+
+        Assert.Single(row.Executed);
+        Assert.Empty(item.Executed);
+    }
+
+    private static TextBlock RowText(ProfileView profile, string text) =>
+        Part<ItemsControl>(profile, "PART_Items").GetVisualDescendants().OfType<TextBlock>().First(x => x.Text == text);
+
+    private static IDataTemplate RowTemplate() =>
+        new FuncDataTemplate<object>((text, _) => new Border
+        {
+            Background = Brushes.Transparent,
+            Child = new TextBlock { Text = text?.ToString() }
+        });
+
+    private static void Click(Control control)
+    {
+        Window window = (Window)TopLevel.GetTopLevel(control)!;
+        window.UpdateLayout();
+
+        Point point = control.TranslatePoint(
+            new Point(control.Bounds.Width / 2, control.Bounds.Height / 2), window)!.Value;
+
+        window.MouseDown(point, MouseButton.Left);
+        window.MouseUp(point, MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+    }
+
     private static IImage SampleImage() => new DrawingImage(new GeometryDrawing
     {
         Brush = Brushes.Red,
@@ -162,9 +256,11 @@ public class ProfileViewTests
     {
         public List<object?> Executed { get; } = [];
 
+        public bool CanRun { get; init; } = true;
+
         public event EventHandler? CanExecuteChanged { add { } remove { } }
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute(object? parameter) => CanRun;
 
         public void Execute(object? parameter) => Executed.Add(parameter);
     }
