@@ -93,9 +93,12 @@ public class ChatViewTests
     public void Sending_scrolls_to_the_bottom_even_while_reading_history()
     {
         ObservableCollection<MessageBubble> messages = ManyMessages(40);
-        ChatView chat = new ChatView { Messages = messages };
-        chat.SendCommand = new ActionCommand(parameter =>
-            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty }));
+        ChatView chat = new ChatView
+        {
+            Messages = messages,
+            SendCommand = new ActionCommand(parameter =>
+            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty }))
+        };
         Show(chat, 400, 200);
 
         ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
@@ -233,8 +236,7 @@ public class ChatViewTests
     public void Prepended_messages_keep_the_scroll_anchor()
     {
         ObservableCollection<MessageBubble> messages = ManyMessages(40);
-        ChatView chat = new ChatView { Messages = messages, HasMore = true };
-        chat.LoadMoreCommand = new ActionCommand(() => messages.Insert(0, new MessageBubble { Text = "Older" }));
+        ChatView chat = new ChatView { Messages = messages, HasMore = true, LoadMoreCommand = new ActionCommand(() => messages.Insert(0, new MessageBubble { Text = "Older" })) };
         Show(chat, 400, 200);
 
         ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");

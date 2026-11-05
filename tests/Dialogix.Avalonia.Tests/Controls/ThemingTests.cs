@@ -36,8 +36,7 @@ public class ThemingTests
     [AvaloniaFact]
     public void Scoped_brushes_override_the_library_defaults()
     {
-        ChatView chat = new ChatView();
-        chat.Resources["DialogixChatBackgroundBrush"] = Brushes.Green;
+        ChatView chat = new ChatView { Resources = { ["DialogixChatBackgroundBrush"] = Brushes.Green } };
         Show(chat);
 
         Assert.Equal(Brushes.Green, Part<Border>(chat, "PART_Frame").Background);

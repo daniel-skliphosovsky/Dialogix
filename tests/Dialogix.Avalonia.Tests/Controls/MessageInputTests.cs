@@ -199,7 +199,7 @@ public class MessageInputTests
         Show(input);
 
         TextBox textBox = Part<TextBox>(input, "PART_TextBox");
-        ((global::Avalonia.Controls.IPseudoClasses)textBox.Classes).Set(":pointerover", true);
+        ((IPseudoClasses)textBox.Classes).Set(":pointerover", true);
         Dispatcher.UIThread.RunJobs();
 
         Border frame = input.GetVisualDescendants().OfType<Border>().First(x => x.Name == "PART_BorderElement");
@@ -308,7 +308,7 @@ public class MessageInputTests
         Color expected = Assert.IsAssignableFrom<ISolidColorBrush>(muted).Color;
         Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
 
-        ((global::Avalonia.Controls.IPseudoClasses)textBox.Classes).Set(":pointerover", true);
+        ((IPseudoClasses)textBox.Classes).Set(":pointerover", true);
         Dispatcher.UIThread.RunJobs();
         Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
 

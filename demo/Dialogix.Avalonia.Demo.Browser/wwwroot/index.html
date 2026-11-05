@@ -77,6 +77,13 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
+        #splash .note {
+            max-width: 260px;
+            text-align: center;
+            line-height: 1.5;
+            opacity: .7;
+        }
+
         @media (prefers-color-scheme: light) {
             #splash { background: #f6f7fb; color: #12141a; }
             #splash .spinner { border-color: rgba(0, 0, 0, .12); border-top-color: #6366F1; }
@@ -100,9 +107,23 @@
         </div>
         <div class="subtitle">Build messenger UI in Avalonia</div>
         <div class="spinner"></div>
+        <div class="note" id="note" hidden>
+            The demo is desktop only for now.<br>
+            Open it on a computer.
+        </div>
     </div>
 
     <script>
+        const ua = navigator.userAgent;
+        const mobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(ua)
+            || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+
+        if (mobile) {
+            document.body.dataset.mobile = 'true';
+            document.querySelector('#splash .spinner').remove();
+            document.getElementById('note').hidden = false;
+        }
+
         const out = document.getElementById('out');
         const splash = document.getElementById('splash');
         new MutationObserver(() => {
