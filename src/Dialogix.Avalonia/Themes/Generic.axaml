@@ -10,6 +10,8 @@
         </ResourceDictionary>
     </Styles.Resources>
 
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ScrollBar.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/TextBox.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageBubble.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageInput.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatView.axaml" />

@@ -1,0 +1,174 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+
+        <ControlTheme x:Key="DialogixScrollBarThumbTheme"
+                      TargetType="Thumb">
+
+            <Setter Property="Background" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+            <Setter Property="Opacity" Value="0.55" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}"
+                            CornerRadius="4" />
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:pointerover">
+                <Setter Property="Opacity" Value="0.8" />
+            </Style>
+
+            <Style Selector="^:pressed">
+                <Setter Property="Opacity" Value="1" />
+            </Style>
+
+        </ControlTheme>
+
+        <ControlTheme x:Key="DialogixScrollBarPageButtonTheme"
+                      TargetType="RepeatButton">
+
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Focusable" Value="False" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Background="{TemplateBinding Background}" />
+                </ControlTemplate>
+            </Setter>
+
+        </ControlTheme>
+
+        <ControlTheme x:Key="DialogixScrollBarTheme"
+                      TargetType="ScrollBar">
+
+            <Setter Property="MinWidth" Value="12" />
+            <Setter Property="MinHeight" Value="12" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+            <Style Selector="^[AllowAutoHide=true]">
+                <Setter Property="Opacity" Value="0" />
+            </Style>
+
+            <Style Selector="^[AllowAutoHide=true][IsExpanded=true]">
+                <Setter Property="Opacity" Value="1" />
+            </Style>
+
+            <Style Selector="^:vertical">
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Panel>
+                            <Border Background="{TemplateBinding Foreground}"
+                                    Opacity="0.12"
+                                    CornerRadius="6"
+                                    IsHitTestVisible="False" />
+
+                            <Track Minimum="{TemplateBinding Minimum}"
+                                   Maximum="{TemplateBinding Maximum}"
+                                   Value="{TemplateBinding Value, Mode=TwoWay}"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                   Orientation="Vertical"
+                                   IsDirectionReversed="True">
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_PageUpButton"
+                                                  Theme="{StaticResource DialogixScrollBarPageButtonTheme}" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_PageDownButton"
+                                                  Theme="{StaticResource DialogixScrollBarPageButtonTheme}" />
+                                </Track.IncreaseButton>
+                                <Thumb Theme="{StaticResource DialogixScrollBarThumbTheme}"
+                                       Margin="2"
+                                       MinHeight="12" />
+                            </Track>
+                        </Panel>
+                    </ControlTemplate>
+                </Setter>
+            </Style>
+
+            <Style Selector="^:horizontal">
+                <Setter Property="Template">
+                    <ControlTemplate>
+                        <Panel>
+                            <Border Background="{TemplateBinding Foreground}"
+                                    Opacity="0.12"
+                                    CornerRadius="6"
+                                    IsHitTestVisible="False" />
+
+                            <Track Minimum="{TemplateBinding Minimum}"
+                                   Maximum="{TemplateBinding Maximum}"
+                                   Value="{TemplateBinding Value, Mode=TwoWay}"
+                                   ViewportSize="{TemplateBinding ViewportSize}"
+                                   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+                                   Orientation="Horizontal">
+                                <Track.DecreaseButton>
+                                    <RepeatButton Name="PART_PageUpButton"
+                                                  Theme="{StaticResource DialogixScrollBarPageButtonTheme}" />
+                                </Track.DecreaseButton>
+                                <Track.IncreaseButton>
+                                    <RepeatButton Name="PART_PageDownButton"
+                                                  Theme="{StaticResource DialogixScrollBarPageButtonTheme}" />
+                                </Track.IncreaseButton>
+                                <Thumb Theme="{StaticResource DialogixScrollBarThumbTheme}"
+                                       Margin="2"
+                                       MinWidth="12" />
+                            </Track>
+                        </Panel>
+                    </ControlTemplate>
+                </Setter>
+            </Style>
+
+        </ControlTheme>
+
+        <ControlTheme x:Key="DialogixScrollViewerTheme"
+                      TargetType="ScrollViewer">
+
+            <Setter Property="Background" Value="Transparent" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto">
+                        <ScrollContentPresenter Name="PART_ContentPresenter"
+                                                Grid.Row="0"
+                                                Grid.Column="0"
+                                                Background="{TemplateBinding Background}"
+                                                HorizontalSnapPointsType="{TemplateBinding HorizontalSnapPointsType}"
+                                                VerticalSnapPointsType="{TemplateBinding VerticalSnapPointsType}"
+                                                HorizontalSnapPointsAlignment="{TemplateBinding HorizontalSnapPointsAlignment}"
+                                                VerticalSnapPointsAlignment="{TemplateBinding VerticalSnapPointsAlignment}"
+                                                Padding="{TemplateBinding Padding}"
+                                                ScrollViewer.IsScrollInertiaEnabled="{TemplateBinding IsScrollInertiaEnabled}">
+                            <ScrollContentPresenter.GestureRecognizers>
+                                <ScrollGestureRecognizer CanHorizontallyScroll="{Binding CanHorizontallyScroll, ElementName=PART_ContentPresenter}"
+                                                         CanVerticallyScroll="{Binding CanVerticallyScroll, ElementName=PART_ContentPresenter}"
+                                                         IsScrollInertiaEnabled="{Binding (ScrollViewer.IsScrollInertiaEnabled), ElementName=PART_ContentPresenter}"
+                                                         Offset="{Binding Offset, ElementName=PART_ContentPresenter}"
+                                                         Viewport="{Binding Viewport, ElementName=PART_ContentPresenter}"
+                                                         Extent="{Binding Extent, ElementName=PART_ContentPresenter}" />
+                            </ScrollContentPresenter.GestureRecognizers>
+                        </ScrollContentPresenter>
+
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                                   Theme="{StaticResource DialogixScrollBarTheme}"
+                                   Orientation="Horizontal"
+                                   Grid.Row="1" />
+
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                                   Theme="{StaticResource DialogixScrollBarTheme}"
+                                   Orientation="Vertical"
+                                   Grid.Column="1" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^[AllowAutoHide=True] /template/ ScrollContentPresenter#PART_ContentPresenter">
+                <Setter Property="Grid.ColumnSpan" Value="2" />
+                <Setter Property="Grid.RowSpan" Value="2" />
+            </Style>
+
+        </ControlTheme>
+
+    </Styles.Resources>
+</Styles>
