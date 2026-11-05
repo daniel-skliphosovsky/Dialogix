@@ -2,7 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Media;
+
 using Dialogix.Avalonia.Controls;
+
 using Path = Avalonia.Controls.Shapes.Path;
 
 namespace Dialogix.Avalonia.Tests.Controls;
