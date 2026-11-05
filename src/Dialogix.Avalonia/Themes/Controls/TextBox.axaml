@@ -1,0 +1,142 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Styles.Resources>
+
+        <ControlTheme x:Key="DialogixTextBoxTheme"
+                      TargetType="TextBox">
+
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+            <Setter Property="Background" Value="{DynamicResource DialogixInputBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="Padding" Value="10,8" />
+            <Setter Property="MinHeight" Value="36" />
+            <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource Self}}" />
+            <Setter Property="SelectionBrush" Value="{DynamicResource DialogixAccentBrush}" />
+            <Setter Property="SelectionForegroundBrush" Value="{DynamicResource DialogixAccentForegroundBrush}" />
+            <Setter Property="PlaceholderForeground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+            <Setter Property="FocusAdorner" Value="{x:Null}" />
+            <Setter Property="ScrollViewer.IsScrollChainingEnabled" Value="True" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <DataValidationErrors>
+                        <Panel>
+                            <Border Name="PART_BorderElement"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding CornerRadius}"
+                                    MinWidth="{TemplateBinding MinWidth}"
+                                    MinHeight="{TemplateBinding MinHeight}" />
+
+                            <Border Margin="{TemplateBinding BorderThickness}">
+                                <Grid ColumnDefinitions="Auto,*,Auto">
+                                    <ContentPresenter Grid.Column="0"
+                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      Content="{TemplateBinding InnerLeftContent}" />
+
+                                    <DockPanel Name="PART_InnerDockPanel"
+                                               Grid.Column="1"
+                                               Margin="{TemplateBinding Padding}">
+                                        <TextBlock Name="PART_FloatingPlaceholder"
+                                                   Foreground="{TemplateBinding PlaceholderForeground}"
+                                                   IsVisible="False"
+                                                   Text="{TemplateBinding PlaceholderText}"
+                                                   DockPanel.Dock="Top" />
+
+                                        <ScrollViewer Name="PART_ScrollViewer"
+                                                      Theme="{DynamicResource DialogixScrollViewerTheme}"
+                                                      HorizontalScrollBarVisibility="{TemplateBinding (ScrollViewer.HorizontalScrollBarVisibility)}"
+                                                      VerticalScrollBarVisibility="{TemplateBinding (ScrollViewer.VerticalScrollBarVisibility)}"
+                                                      IsScrollChainingEnabled="{TemplateBinding (ScrollViewer.IsScrollChainingEnabled)}"
+                                                      AllowAutoHide="{TemplateBinding (ScrollViewer.AllowAutoHide)}"
+                                                      BringIntoViewOnFocusChange="{TemplateBinding (ScrollViewer.BringIntoViewOnFocusChange)}">
+                                            <Panel>
+                                                <TextBlock Name="PART_Placeholder"
+                                                           Foreground="{TemplateBinding PlaceholderForeground}"
+                                                           Text="{TemplateBinding PlaceholderText}"
+                                                           TextAlignment="{TemplateBinding TextAlignment}"
+                                                           TextWrapping="{TemplateBinding TextWrapping}"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                                    <TextBlock.IsVisible>
+                                                        <MultiBinding Converter="{x:Static BoolConverters.And}">
+                                                            <Binding ElementName="PART_TextPresenter" Path="PreeditText" Converter="{x:Static StringConverters.IsNullOrEmpty}" />
+                                                            <Binding RelativeSource="{RelativeSource TemplatedParent}" Path="Text" Converter="{x:Static StringConverters.IsNullOrEmpty}" />
+                                                        </MultiBinding>
+                                                    </TextBlock.IsVisible>
+                                                </TextBlock>
+
+                                                <TextPresenter Name="PART_TextPresenter"
+                                                               Text="{TemplateBinding Text, Mode=TwoWay}"
+                                                               CaretBlinkInterval="{TemplateBinding CaretBlinkInterval}"
+                                                               CaretIndex="{TemplateBinding CaretIndex}"
+                                                               SelectionStart="{TemplateBinding SelectionStart}"
+                                                               SelectionEnd="{TemplateBinding SelectionEnd}"
+                                                               TextAlignment="{TemplateBinding TextAlignment}"
+                                                               TextWrapping="{TemplateBinding TextWrapping}"
+                                                               LineHeight="{TemplateBinding LineHeight}"
+                                                               LetterSpacing="{TemplateBinding LetterSpacing}"
+                                                               PasswordChar="{TemplateBinding PasswordChar}"
+                                                               RevealPassword="{TemplateBinding RevealPassword}"
+                                                               SelectionBrush="{TemplateBinding SelectionBrush}"
+                                                               SelectionForegroundBrush="{TemplateBinding SelectionForegroundBrush}"
+                                                               CaretBrush="{TemplateBinding CaretBrush}"
+                                                               HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                            </Panel>
+
+                                            <ScrollViewer.Styles>
+                                                <Style Selector="ScrollContentPresenter#PART_ContentPresenter">
+                                                    <Setter Property="Cursor" Value="IBeam" />
+                                                </Style>
+                                            </ScrollViewer.Styles>
+                                        </ScrollViewer>
+                                    </DockPanel>
+
+                                    <ContentPresenter Grid.Column="2"
+                                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                      Content="{TemplateBinding InnerRightContent}" />
+                                </Grid>
+                            </Border>
+                        </Panel>
+                    </DataValidationErrors>
+                </ControlTemplate>
+            </Setter>
+
+            <Style Selector="^:disabled">
+                <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+
+                <Style Selector="^ /template/ Border#PART_BorderElement">
+                    <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+                </Style>
+            </Style>
+
+            <Style Selector="^:pointerover /template/ Border#PART_BorderElement">
+                <Setter Property="BorderBrush" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+            </Style>
+
+            <Style Selector="^:focus /template/ Border#PART_BorderElement">
+                <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
+            </Style>
+
+            <Style Selector="^:error /template/ Border#PART_BorderElement">
+                <Setter Property="BorderBrush" Value="{DynamicResource DialogixDangerBrush}" />
+            </Style>
+
+            <Style Selector="^ /template/ TextBlock#PART_FloatingPlaceholder">
+                <Setter Property="Cursor" Value="IBeam" />
+            </Style>
+
+            <Style Selector="^[UseFloatingPlaceholder=true]:not(:empty) /template/ TextBlock#PART_FloatingPlaceholder">
+                <Setter Property="IsVisible" Value="True" />
+            </Style>
+
+        </ControlTheme>
+
+    </Styles.Resources>
+
+</Styles>
