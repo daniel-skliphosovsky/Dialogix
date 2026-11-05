@@ -58,11 +58,9 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}">
 
-                        <Grid RowDefinitions="*,Auto" RowSpacing="12">
+                        <Grid>
 
-                            <Grid>
-
-                                <ScrollViewer Name="PART_Scroll"
+                            <ScrollViewer Name="PART_Scroll"
                                               HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Name="PART_Items"
@@ -75,7 +73,7 @@
                                     </ItemsControl>
                                 </ScrollViewer>
 
-                                <Button Name="PART_ScrollToEnd"
+                            <Button Name="PART_ScrollToEnd"
                                         Theme="{StaticResource DialogixScrollButtonTheme}"
                                         HorizontalAlignment="Right"
                                         VerticalAlignment="Bottom"
@@ -91,15 +89,6 @@
                                           StrokeLineCap="Round"
                                           StrokeJoin="Round" />
                                 </Button>
-
-                            </Grid>
-
-                            <controls:MessageInput Name="PART_Input"
-                                                   Grid.Row="1"
-                                                   Text="{TemplateBinding InputText, Mode=TwoWay}"
-                                                   Watermark="{TemplateBinding InputWatermark}"
-                                                   SendCommand="{TemplateBinding SendCommand}"
-                                                   Foreground="{TemplateBinding Foreground}" />
 
                         </Grid>
                     </Border>

@@ -6,7 +6,6 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
-using Avalonia.Data;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Threading;
@@ -30,16 +29,6 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<double> LoadMoreThresholdProperty =
         AvaloniaProperty.Register<ChatView, double>(nameof(LoadMoreThreshold), 48d);
 
-    public static readonly StyledProperty<string?> InputTextProperty =
-        AvaloniaProperty.Register<ChatView, string?>(
-            nameof(InputText), defaultBindingMode: BindingMode.TwoWay);
-
-    public static readonly StyledProperty<string?> InputWatermarkProperty =
-        AvaloniaProperty.Register<ChatView, string?>(nameof(InputWatermark), "Message");
-
-    public static readonly StyledProperty<ICommand?> SendCommandProperty =
-        AvaloniaProperty.Register<ChatView, ICommand?>(nameof(SendCommand));
-
     public static readonly StyledProperty<Geometry?> ScrollToEndIconProperty =
         AvaloniaProperty.Register<ChatView, Geometry?>(nameof(ScrollToEndIcon));
 
@@ -48,7 +37,6 @@ public class ChatView : TemplatedControl
 
     private ScrollViewer? _scroll;
     private Button? _scrollToEnd;
-    private MessageInput? _input;
     private INotifyCollectionChanged? _notifyMessages;
     private bool _canLoadMore = true;
     private double _anchorExtent;
@@ -62,9 +50,6 @@ public class ChatView : TemplatedControl
     public bool IsLoadingMore { get => GetValue(IsLoadingMoreProperty); set => SetValue(IsLoadingMoreProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
-    public string? InputText { get => GetValue(InputTextProperty); set => SetValue(InputTextProperty, value); }
-    public string? InputWatermark { get => GetValue(InputWatermarkProperty); set => SetValue(InputWatermarkProperty, value); }
-    public ICommand? SendCommand { get => GetValue(SendCommandProperty); set => SetValue(SendCommandProperty, value); }
     public Geometry? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
     public bool SmoothScrolling { get => GetValue(SmoothScrollingProperty); set => SetValue(SmoothScrollingProperty, value); }
 
@@ -79,14 +64,10 @@ public class ChatView : TemplatedControl
         if (_scrollToEnd is not null)
             _scrollToEnd.Click -= OnScrollToEndClick;
 
-        if (_input is not null)
-            _input.Sent -= OnInputSent;
-
         base.OnApplyTemplate(e);
 
         _scroll = e.NameScope.Find<ScrollViewer>("PART_Scroll");
         _scrollToEnd = e.NameScope.Find<Button>("PART_ScrollToEnd");
-        _input = e.NameScope.Find<MessageInput>("PART_Input");
 
         if (_scroll is not null)
             _scroll.ScrollChanged += OnScrollChanged;
@@ -94,11 +75,9 @@ public class ChatView : TemplatedControl
         if (_scrollToEnd is not null)
             _scrollToEnd.Click += OnScrollToEndClick;
 
-        if (_input is not null)
-            _input.Sent += OnInputSent;
     }
 
-    private void OnInputSent(object? sender, EventArgs e)
+    public void ScrollToEnd()
     {
         _stickToBottom = true;
         _scrollTimer?.Stop();

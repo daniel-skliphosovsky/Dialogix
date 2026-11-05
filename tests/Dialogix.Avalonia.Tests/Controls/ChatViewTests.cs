@@ -25,9 +25,6 @@ public class ChatViewTests
         Assert.False(chat.IsLoadingMore);
         Assert.Null(chat.LoadMoreCommand);
         Assert.Equal(48d, chat.LoadMoreThreshold);
-        Assert.Null(chat.InputText);
-        Assert.Equal("Message", chat.InputWatermark);
-        Assert.Null(chat.SendCommand);
     }
 
     [AvaloniaFact]
@@ -42,37 +39,33 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
-    public void Footer_updates_input_text()
+    public void Chat_view_leaves_the_composer_to_the_app()
     {
         ChatView chat = new ChatView();
         Show(chat);
 
-        MessageInput input = Footer(chat);
-        Part<TextBox>(input, "PART_TextBox").Text = "Hi";
+        Assert.Empty(chat.GetVisualDescendants().OfType<MessageInput>());
+    }
+
+    [AvaloniaFact]
+    public void Message_input_can_live_next_to_the_chat_view()
+    {
+        ObservableCollection<MessageBubble> messages = ManyMessages(3);
+        ChatView chat = new ChatView { Messages = messages };
+        MessageInput input = new MessageInput();
+
+        input.SendCommand = new ActionCommand(parameter =>
+        {
+            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty });
+            chat.ScrollToEnd();
+        });
+
+        StackPanel shell = new StackPanel { Children = { chat, input } };
+        Window window = new Window { Content = shell, Width = 400, Height = 300 };
+        window.Show();
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Equal("Hi", chat.InputText);
-    }
-
-    [AvaloniaFact]
-    public void Input_text_prefills_footer()
-    {
-        ChatView chat = new ChatView { InputText = "Prefill" };
-        Show(chat);
-
-        Assert.Equal("Prefill", Footer(chat).Text);
-        Assert.Equal("Prefill", Part<TextBox>(Footer(chat), "PART_TextBox").Text);
-    }
-
-    [AvaloniaFact]
-    public void Send_command_receives_typed_text_and_clears_footer()
-    {
-        Recorder recorder = new Recorder();
-        ChatView chat = new ChatView { SendCommand = recorder };
-        Show(chat);
-
-        MessageInput input = Footer(chat);
-        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        TextBox textBox = input.GetVisualDescendants().OfType<TextBox>().First(x => x.Name == "PART_TextBox");
         textBox.Text = "Hi";
         Dispatcher.UIThread.RunJobs();
 
@@ -84,39 +77,21 @@ public class ChatViewTests
             Source = textBox
         });
 
-        Assert.Equal(["Hi"], recorder.Executed);
-        Assert.Equal(string.Empty, chat.InputText);
-        Assert.Equal(string.Empty, textBox.Text);
+        Assert.Equal(4, messages.Count);
+        Assert.Equal(string.Empty, input.Text);
     }
 
     [AvaloniaFact]
-    public void Sending_scrolls_to_the_bottom_even_while_reading_history()
+    public void Scroll_to_end_returns_to_the_latest_message()
     {
-        ObservableCollection<MessageBubble> messages = ManyMessages(40);
-        ChatView chat = new ChatView
-        {
-            Messages = messages,
-            SendCommand = new ActionCommand(parameter =>
-            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty }))
-        };
+        ChatView chat = new ChatView { Messages = ManyMessages(40) };
         Show(chat, 400, 200);
 
         ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
         scroll.Offset = new Vector(0, 0);
         Dispatcher.UIThread.RunJobs();
 
-        TextBox textBox = Part<TextBox>(Footer(chat), "PART_TextBox");
-        textBox.Text = "Hello";
-        Dispatcher.UIThread.RunJobs();
-
-        textBox.RaiseEvent(new KeyEventArgs
-        {
-            RoutedEvent = InputElement.KeyDownEvent,
-            Key = Key.Enter,
-            KeyModifiers = KeyModifiers.None,
-            Source = textBox
-        });
-
+        chat.ScrollToEnd();
         Dispatcher.UIThread.RunJobs();
 
         double max = scroll.Extent.Height - scroll.Viewport.Height;
@@ -289,9 +264,6 @@ public class ChatViewTests
         Assert.Equal(max, scroll.Offset.Y, 1d);
         Assert.False(button.IsVisible);
     }
-
-    private static MessageInput Footer(ChatView chat) =>
-        chat.GetVisualDescendants().OfType<MessageInput>().First();
 
     private static ObservableCollection<MessageBubble> ManyMessages(int count)
     {

@@ -45,11 +45,14 @@
             <Setter Property="Foreground" Value="#FFFFFFFF" />
         </Style>
 
-        <Style Selector="controls|ChatView.mono controls|MessageInput">
-            <Setter Property="Background" Value="#FFFFFFFF" />
-            <Setter Property="Foreground" Value="#FF111111" />
-            <Setter Property="BorderBrush" Value="#FF111111" />
+        <Style Selector="controls|ChatHeader.mono">
             <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="BoxShadow" Value="0 0 0 0 #00000000" />
+        </Style>
+
+        <Style Selector="controls|MessageInput.mono">
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
         </Style>
 
     </UserControl.Styles>
@@ -65,10 +68,32 @@
                            Text="ChatView"
                            FontSize="26"
                            FontWeight="SemiBold" />
-                <TextBlock Text="Same control, three different looks — everything is themeable."
+                <TextBlock Text="Messages are the control, the composer is yours to place."
                            Opacity="0.6"
                            TextWrapping="Wrap" />
             </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="10">
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="Desktop" />
+                        <TextBlock Classes="cardHint" Text="Full-width conversation with a separate composer." />
+                    </StackPanel>
+                    <Panel>
+                        <controls:ChatView x:Name="ChatDesktop"
+                                           Height="500"
+                                           Padding="24"
+                                           CornerRadius="14" />
+
+                        <controls:ChatHeader Title="Guest"
+                                             Status="Online"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Margin="0,14,0,0" />
+                    </Panel>
+                    <controls:MessageInput x:Name="InputDesktop" />
+                </StackPanel>
+            </Border>
 
             <WrapPanel x:Name="Cards"
                        Orientation="Horizontal">
@@ -80,63 +105,91 @@
                             <TextBlock Classes="cardTitle" Text="Default" />
                             <TextBlock Classes="cardHint" Text="Library brushes, light and dark." />
                         </StackPanel>
-                        <controls:ChatView x:Name="ChatDefault"
-                                           Height="420"
-                                           CornerRadius="12" />
+                        <Panel>
+                            <controls:ChatView x:Name="ChatDefault"
+                                               Height="360"
+                                               CornerRadius="12" />
+
+                            <controls:ChatHeader Title="Guest"
+                                                 Status="Online"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Top"
+                                                 Margin="0,10,0,0" />
+                        </Panel>
+                        <controls:MessageInput x:Name="InputDefault" />
                     </StackPanel>
                 </Border>
 
                 <Border Classes="card"
                         Margin="0,0,10,10">
                     <StackPanel Spacing="10">
+                        <StackPanel.Resources>
+                            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1B1035" />
+                            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2A1B4D" />
+                            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFEDE9FE" />
+                            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF8B5CF6" />
+                            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
+                            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF241540" />
+                            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
+                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
+                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF9F7BFA" />
+                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF7C4BEF" />
+                        </StackPanel.Resources>
+
                         <StackPanel Spacing="2">
                             <TextBlock Classes="cardTitle" Text="Violet" />
                             <TextBlock Classes="cardHint" Text="Scoped brush overrides in Resources." />
                         </StackPanel>
-                        <controls:ChatView x:Name="ChatViolet"
-                                           Height="420"
-                                           CornerRadius="12"
-                                           Padding="14">
-                            <controls:ChatView.Resources>
-                                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1B1035" />
-                                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2A1B4D" />
-                                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFEDE9FE" />
-                                <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF8B5CF6" />
-                                <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
-                                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
-                                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF241540" />
-                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
-                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
-                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF9F7BFA" />
-                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF7C4BEF" />
-                            </controls:ChatView.Resources>
-                        </controls:ChatView>
+                        <Panel>
+                            <controls:ChatView x:Name="ChatViolet"
+                                               Height="360"
+                                               CornerRadius="12"
+                                               Padding="14" />
+
+                            <controls:ChatHeader Title="Guest"
+                                                 Status="Online"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Top"
+                                                 Margin="0,10,0,0" />
+                        </Panel>
+                        <controls:MessageInput x:Name="InputViolet" />
                     </StackPanel>
                 </Border>
 
                 <Border Classes="card"
                         Margin="0,0,10,10">
                     <StackPanel Spacing="10">
+                        <StackPanel.Resources>
+                            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF111111" />
+                            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF111111" />
+                            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FFF0F0F0" />
+                            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF666666" />
+                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF111111" />
+                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF333333" />
+                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF000000" />
+                        </StackPanel.Resources>
+
                         <StackPanel Spacing="2">
                             <TextBlock Classes="cardTitle" Text="Mono" />
                             <TextBlock Classes="cardHint" Text="Restyled by selectors, square and sharp." />
                         </StackPanel>
-                        <controls:ChatView x:Name="ChatMono"
-                                           Classes="mono"
-                                           Height="420"
-                                           Padding="14">
-                            <controls:ChatView.Resources>
-                                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FFFFFFFF" />
-                                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
-                                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF111111" />
-                                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF111111" />
-                                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FFF0F0F0" />
-                                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF666666" />
-                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF111111" />
-                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF333333" />
-                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF000000" />
-                            </controls:ChatView.Resources>
-                        </controls:ChatView>
+                        <Panel>
+                            <controls:ChatView x:Name="ChatMono"
+                                               Classes="mono"
+                                               Height="360"
+                                               Padding="14" />
+
+                            <controls:ChatHeader Classes="mono"
+                                                 Title="Guest"
+                                                 Status="Last seen 12:41"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Top"
+                                                 Margin="0,10,0,0" />
+                        </Panel>
+                        <controls:MessageInput x:Name="InputMono" Classes="mono" />
                     </StackPanel>
                 </Border>
 
