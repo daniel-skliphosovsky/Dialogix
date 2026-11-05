@@ -32,6 +32,11 @@
                     <fa:FASymbolIconSource Symbol="Message" />
                 </fa:FANavigationViewItem.IconSource>
             </fa:FANavigationViewItem>
+            <fa:FANavigationViewItem x:Name="ProfileNavItem" Content="Profile" Tag="profile">
+                <fa:FANavigationViewItem.IconSource>
+                    <fa:FASymbolIconSource Symbol="Contact" />
+                </fa:FANavigationViewItem.IconSource>
+            </fa:FANavigationViewItem>
         </fa:FANavigationView.MenuItems>
 
         <fa:FANavigationView.PaneFooter>
