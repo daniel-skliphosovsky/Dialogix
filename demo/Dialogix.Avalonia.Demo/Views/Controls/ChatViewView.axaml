@@ -85,7 +85,7 @@
                                            Padding="24"
                                            CornerRadius="14" />
 
-                        <controls:ChatHeader Title="Nina"
+                        <controls:ChatHeader Title="Guest"
                                              Status="Online"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Top"
@@ -110,7 +110,7 @@
                                                Height="360"
                                                CornerRadius="12" />
 
-                            <controls:ChatHeader Title="Nina"
+                            <controls:ChatHeader Title="Guest"
                                                  Status="Online"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Top"
@@ -147,8 +147,8 @@
                                                CornerRadius="12"
                                                Padding="14" />
 
-                            <controls:ChatHeader Title="Design team"
-                                                 Status="12 members, 3 online"
+                            <controls:ChatHeader Title="Guest"
+                                                 Status="Online"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Top"
                                                  Margin="0,10,0,0" />
@@ -183,7 +183,7 @@
                                                Padding="14" />
 
                             <controls:ChatHeader Classes="mono"
-                                                 Title="Alex"
+                                                 Title="Guest"
                                                  Status="Last seen 12:41"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Top"
