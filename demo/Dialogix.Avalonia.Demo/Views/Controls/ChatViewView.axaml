@@ -75,6 +75,27 @@
                            TextWrapping="Wrap" />
             </StackPanel>
 
+            <Border Classes="card">
+                <StackPanel Spacing="10">
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="Desktop" />
+                        <TextBlock Classes="cardHint" Text="Full-width conversation, the way it looks on a PC." />
+                    </StackPanel>
+                    <Panel>
+                        <controls:ChatView x:Name="ChatDesktop"
+                                           Height="560"
+                                           Padding="24"
+                                           CornerRadius="14" />
+
+                        <controls:ChatHeader Title="Nina"
+                                             Status="Online"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Top"
+                                             Margin="0,14,0,0" />
+                    </Panel>
+                </StackPanel>
+            </Border>
+
             <WrapPanel x:Name="Cards"
                        Orientation="Horizontal">
 

@@ -46,6 +46,7 @@ public partial class ChatViewView : UserControl
     {
         InitializeComponent();
 
+        Setup(ChatDesktop, DefaultSeed, 3);
         Setup(ChatDefault, DefaultSeed, 3);
         Setup(ChatViolet, VioletSeed, 2);
         Setup(ChatMono, MonoSeed, 2);
