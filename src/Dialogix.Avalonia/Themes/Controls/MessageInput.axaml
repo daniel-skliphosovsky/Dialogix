@@ -96,14 +96,11 @@
                                     Theme="{StaticResource DialogixSendButtonTheme}"
                                     VerticalAlignment="Bottom"
                                     IsEnabled="{TemplateBinding CanSend}">
-                                <Path Width="18"
-                                      Height="18"
-                                      Stretch="Uniform"
-                                      Data="{TemplateBinding SendIcon}"
-                                      Stroke="{DynamicResource DialogixPrimaryForegroundBrush}"
-                                      StrokeThickness="2"
-                                      StrokeLineCap="Round"
-                                      StrokeJoin="Round" />
+                                <controls:IconPresenter Width="18"
+                                                        Height="18"
+                                                        Source="{TemplateBinding SendIcon}"
+                                                        Stroke="{DynamicResource DialogixPrimaryForegroundBrush}"
+                                                        StrokeThickness="2" />
                             </Button>
 
                         </Grid>

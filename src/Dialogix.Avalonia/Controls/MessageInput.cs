@@ -38,8 +38,8 @@ public class MessageInput : TemplatedControl
     public static readonly StyledProperty<ICommand?> SendCommandProperty =
         AvaloniaProperty.Register<MessageInput, ICommand?>(nameof(SendCommand));
 
-    public static readonly StyledProperty<Geometry?> SendIconProperty =
-        AvaloniaProperty.Register<MessageInput, Geometry?>(nameof(SendIcon));
+    public static readonly StyledProperty<object?> SendIconProperty =
+        AvaloniaProperty.Register<MessageInput, object?>(nameof(SendIcon));
 
     private TextBox? _textBox;
     private Button? _sendButton;
@@ -63,7 +63,7 @@ public class MessageInput : TemplatedControl
     public bool IsTextTooLong { get => GetValue(IsTextTooLongProperty); private set => SetValue(IsTextTooLongProperty, value); }
     public bool CanSend { get => GetValue(CanSendProperty); private set => SetValue(CanSendProperty, value); }
     public ICommand? SendCommand { get => GetValue(SendCommandProperty); set => SetValue(SendCommandProperty, value); }
-    public Geometry? SendIcon { get => GetValue(SendIconProperty); set => SetValue(SendIconProperty, value); }
+    public object? SendIcon { get => GetValue(SendIconProperty); set => SetValue(SendIconProperty, value); }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {

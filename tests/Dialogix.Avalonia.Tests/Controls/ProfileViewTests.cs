@@ -14,7 +14,6 @@ using Avalonia.VisualTree;
 
 using Dialogix.Avalonia.Controls;
 
-using ShapePath = Avalonia.Controls.Shapes.Path;
 
 namespace Dialogix.Avalonia.Tests.Controls;
 
@@ -42,7 +41,7 @@ public class ProfileViewTests
         Show(profile);
 
         Assert.NotNull(profile.PlaceholderIcon);
-        Assert.True(Part<ShapePath>(profile, "PART_Placeholder").IsVisible);
+        Assert.True(Part<IconPresenter>(profile, "PART_Placeholder").IsVisible);
         Assert.False(Part<Image>(profile, "PART_Image").IsVisible);
     }
 
@@ -52,7 +51,7 @@ public class ProfileViewTests
         ProfileView profile = new ProfileView { Avatar = SampleImage() };
         Show(profile);
 
-        Assert.False(Part<ShapePath>(profile, "PART_Placeholder").IsVisible);
+        Assert.False(Part<IconPresenter>(profile, "PART_Placeholder").IsVisible);
         Assert.True(Part<Image>(profile, "PART_Image").IsVisible);
     }
 
@@ -126,8 +125,8 @@ public class ProfileViewTests
         Show(profile);
 
         Assert.NotNull(profile.EditIcon);
-        ShapePath icon = Part<Button>(profile, "PART_Edit").GetVisualDescendants().OfType<ShapePath>().First();
-        Assert.Same(profile.EditIcon, icon.Data);
+        IconPresenter icon = Part<Button>(profile, "PART_Edit").GetVisualDescendants().OfType<IconPresenter>().First();
+        Assert.Same(profile.EditIcon, icon.Source);
     }
 
     private static IImage SampleImage() => new DrawingImage(new GeometryDrawing

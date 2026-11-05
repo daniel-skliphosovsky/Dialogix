@@ -11,7 +11,6 @@ using Avalonia.VisualTree;
 
 using Dialogix.Avalonia.Controls;
 
-using ShapePath = Avalonia.Controls.Shapes.Path;
 
 namespace Dialogix.Avalonia.Tests.Controls;
 
@@ -322,15 +321,15 @@ public class MessageInputTests
         MessageInput input = new MessageInput();
         Show(input);
 
-        ShapePath icon = input.GetVisualDescendants().OfType<ShapePath>().First();
+        IconPresenter icon = input.GetVisualDescendants().OfType<IconPresenter>().First();
         Assert.NotNull(input.SendIcon);
-        Assert.Same(input.SendIcon, icon.Data);
+        Assert.Same(input.SendIcon, icon.Source);
 
         Geometry custom = Geometry.Parse("M0 0 L1 1");
         input.SendIcon = custom;
         Dispatcher.UIThread.RunJobs();
 
-        Assert.Same(custom, input.GetVisualDescendants().OfType<ShapePath>().First().Data);
+        Assert.Same(custom, input.GetVisualDescendants().OfType<IconPresenter>().First().Source);
     }
 
     private static KeyEventArgs Press(MessageInput input, Key key, KeyModifiers modifiers)

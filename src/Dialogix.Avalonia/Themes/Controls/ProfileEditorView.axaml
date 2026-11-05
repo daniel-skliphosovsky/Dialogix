@@ -117,14 +117,13 @@
                                     BorderThickness="1">
 
                                 <Panel>
-                                    <Path Name="PART_Placeholder"
-                                          Width="34"
-                                          Height="34"
-                                          Stretch="Uniform"
-                                          Data="{TemplateBinding PlaceholderIcon}"
-                                          Fill="{DynamicResource DialogixMutedForegroundBrush}"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"
+                                    <controls:IconPresenter Name="PART_Placeholder"
+                                                            Width="34"
+                                                            Height="34"
+                                                            Source="{TemplateBinding PlaceholderIcon}"
+                                                            Fill="{DynamicResource DialogixMutedForegroundBrush}"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
                                           IsVisible="{TemplateBinding Avatar,
                                               Converter={x:Static converters:ObjectConverters.IsNull}}" />
 
