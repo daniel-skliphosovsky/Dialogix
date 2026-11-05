@@ -39,7 +39,7 @@
         </DrawingImage>
 
         <DataTemplate x:Key="ProfileItemTemplate" x:DataType="local:ProfileItem">
-            <Button Classes="row">
+            <Border Classes="row">
                 <StackPanel Orientation="Horizontal" Spacing="12">
                     <Path Width="18"
                           Height="18"
@@ -49,11 +49,11 @@
                           Fill="{DynamicResource DialogixMutedForegroundBrush}" />
                     <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
                 </StackPanel>
-            </Button>
+            </Border>
         </DataTemplate>
 
         <DataTemplate x:Key="VioletRowTemplate" x:DataType="local:ProfileItem">
-            <Button Classes="row">
+            <Border Classes="row">
                 <Grid ColumnDefinitions="Auto,*,Auto">
                     <Path Width="18"
                           Height="18"
@@ -71,7 +71,7 @@
                                VerticalAlignment="Center"
                                Opacity="0.4" />
                 </Grid>
-            </Button>
+            </Border>
         </DataTemplate>
 
     </UserControl.Resources>
@@ -95,16 +95,15 @@
             <Setter Property="Opacity" Value="0.55" />
         </Style>
 
-        <Style Selector="Button.row">
+        <Style Selector="Border.row">
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="12,10" />
             <Setter Property="CornerRadius" Value="10" />
-            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Cursor" Value="Hand" />
         </Style>
 
-        <Style Selector="Button.row:pointerover">
+        <Style Selector="Border.row:pointerover">
             <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
         </Style>
 
@@ -158,13 +157,19 @@
                     <StackPanel Spacing="10">
                         <StackPanel Spacing="2">
                             <TextBlock Classes="cardTitle" Text="Default" />
-                            <TextBlock Classes="cardHint" Text="Library brushes and the edit flow." />
+                            <TextBlock Classes="cardHint" Text="Library brushes, clickable rows and the edit flow." />
                         </StackPanel>
 
                         <Panel>
-                            <controls:ProfileView x:Name="Profile"
-                                                  Width="300"
-                                                  DisplayName="Guest" />
+                            <StackPanel Spacing="10">
+                                <controls:ProfileView x:Name="Profile"
+                                                      Width="300"
+                                                      DisplayName="Guest" />
+                                <TextBlock x:Name="ItemStatus"
+                                           Classes="cardHint"
+                                           HorizontalAlignment="Center"
+                                           Text="Nothing opened yet." />
+                            </StackPanel>
 
                             <controls:ProfileEditorView x:Name="Editor"
                                                         IsVisible="False"
