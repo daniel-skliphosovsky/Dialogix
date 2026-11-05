@@ -29,8 +29,8 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<double> LoadMoreThresholdProperty =
         AvaloniaProperty.Register<ChatView, double>(nameof(LoadMoreThreshold), 48d);
 
-    public static readonly StyledProperty<Geometry?> ScrollToEndIconProperty =
-        AvaloniaProperty.Register<ChatView, Geometry?>(nameof(ScrollToEndIcon));
+    public static readonly StyledProperty<object?> ScrollToEndIconProperty =
+        AvaloniaProperty.Register<ChatView, object?>(nameof(ScrollToEndIcon));
 
     public static readonly StyledProperty<bool> SmoothScrollingProperty =
         AvaloniaProperty.Register<ChatView, bool>(nameof(SmoothScrolling), true);
@@ -50,7 +50,7 @@ public class ChatView : TemplatedControl
     public bool IsLoadingMore { get => GetValue(IsLoadingMoreProperty); set => SetValue(IsLoadingMoreProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
-    public Geometry? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
+    public object? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
     public bool SmoothScrolling { get => GetValue(SmoothScrollingProperty); set => SetValue(SmoothScrollingProperty, value); }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

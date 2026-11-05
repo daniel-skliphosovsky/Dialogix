@@ -3,6 +3,19 @@
              xmlns:controls="using:Dialogix.Avalonia.Controls"
              x:Class="Dialogix.Avalonia.Demo.Views.Controls.MessageInputView">
 
+    <UserControl.Resources>
+        <DrawingImage x:Key="DemoPaperPlaneImage">
+            <GeometryDrawing Geometry="M3 9 L18 3 L14 17 L10 11 Z M10 11 L18 3">
+                <GeometryDrawing.Pen>
+                    <Pen Brush="{DynamicResource DialogixPrimaryForegroundBrush}"
+                         Thickness="2"
+                         LineCap="Round"
+                         LineJoin="Round" />
+                </GeometryDrawing.Pen>
+            </GeometryDrawing>
+        </DrawingImage>
+    </UserControl.Resources>
+
     <UserControl.Styles>
 
         <Style Selector="Border.card">
@@ -170,6 +183,22 @@
                                                Classes="icon"
                                                SendIcon="{DynamicResource DialogixPaperPlaneIconGeometry}" />
                         <TextBlock x:Name="SentIcon"
+                                   Classes="result"
+                                   Text="Nothing sent yet." />
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Image icon" />
+                            <TextBlock Classes="cardHint"
+                                       Text="SendIcon also accepts any IImage." />
+                        </StackPanel>
+                        <controls:MessageInput x:Name="InputImageIcon"
+                                               SendIcon="{DynamicResource DemoPaperPlaneImage}" />
+                        <TextBlock x:Name="SentImageIcon"
                                    Classes="result"
                                    Text="Nothing sent yet." />
                     </StackPanel>

@@ -17,6 +17,7 @@ public partial class MessageInputView : UserControl
         Wire(InputMulti, SentMulti);
         Wire(InputLimit, SentLimit);
         Wire(InputIcon, SentIcon);
+        Wire(InputImageIcon, SentImageIcon);
 
         SizeChanged += OnSizeChanged;
     }

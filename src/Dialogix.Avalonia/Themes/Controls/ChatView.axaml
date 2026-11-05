@@ -79,15 +79,12 @@
                                         VerticalAlignment="Bottom"
                                         Margin="0,0,6,6"
                                         IsVisible="False">
-                                    <Path Width="18"
-                                          Height="18"
-                                          Margin="0,12,0,0"
-                                          Stretch="Uniform"
-                                          Data="{TemplateBinding ScrollToEndIcon}"
-                                          Stroke="{DynamicResource DialogixSurfaceForegroundBrush}"
-                                          StrokeThickness="2"
-                                          StrokeLineCap="Round"
-                                          StrokeJoin="Round" />
+                                    <controls:IconPresenter Width="18"
+                                                            Height="18"
+                                                            Margin="0,12,0,0"
+                                                            Source="{TemplateBinding ScrollToEndIcon}"
+                                                            Stroke="{DynamicResource DialogixSurfaceForegroundBrush}"
+                                                            StrokeThickness="2" />
                                 </Button>
 
                         </Grid>
