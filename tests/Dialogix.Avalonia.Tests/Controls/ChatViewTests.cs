@@ -4,7 +4,6 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
-using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
@@ -25,9 +24,6 @@ public class ChatViewTests
         Assert.False(chat.IsLoadingMore);
         Assert.Null(chat.LoadMoreCommand);
         Assert.Equal(48d, chat.LoadMoreThreshold);
-        Assert.Null(chat.InputText);
-        Assert.Equal("Message", chat.InputWatermark);
-        Assert.Null(chat.SendCommand);
     }
 
     [AvaloniaFact]
@@ -42,81 +38,25 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
-    public void Footer_updates_input_text()
+    public void Input_is_not_part_of_the_template()
     {
         ChatView chat = new ChatView();
         Show(chat);
 
-        MessageInput input = Footer(chat);
-        Part<TextBox>(input, "PART_TextBox").Text = "Hi";
-        Dispatcher.UIThread.RunJobs();
-
-        Assert.Equal("Hi", chat.InputText);
+        Assert.Empty(chat.GetVisualDescendants().OfType<MessageInput>());
     }
 
     [AvaloniaFact]
-    public void Input_text_prefills_footer()
+    public void Scroll_to_end_returns_to_the_latest_message()
     {
-        ChatView chat = new ChatView { InputText = "Prefill" };
-        Show(chat);
-
-        Assert.Equal("Prefill", Footer(chat).Text);
-        Assert.Equal("Prefill", Part<TextBox>(Footer(chat), "PART_TextBox").Text);
-    }
-
-    [AvaloniaFact]
-    public void Send_command_receives_typed_text_and_clears_footer()
-    {
-        Recorder recorder = new Recorder();
-        ChatView chat = new ChatView { SendCommand = recorder };
-        Show(chat);
-
-        MessageInput input = Footer(chat);
-        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
-        textBox.Text = "Hi";
-        Dispatcher.UIThread.RunJobs();
-
-        textBox.RaiseEvent(new KeyEventArgs
-        {
-            RoutedEvent = InputElement.KeyDownEvent,
-            Key = Key.Enter,
-            KeyModifiers = KeyModifiers.None,
-            Source = textBox
-        });
-
-        Assert.Equal(["Hi"], recorder.Executed);
-        Assert.Equal(string.Empty, chat.InputText);
-        Assert.Equal(string.Empty, textBox.Text);
-    }
-
-    [AvaloniaFact]
-    public void Sending_scrolls_to_the_bottom_even_while_reading_history()
-    {
-        ObservableCollection<MessageBubble> messages = ManyMessages(40);
-        ChatView chat = new ChatView
-        {
-            Messages = messages,
-            SendCommand = new ActionCommand(parameter =>
-            messages.Add(new MessageBubble { Text = parameter as string ?? string.Empty }))
-        };
+        ChatView chat = new ChatView { Messages = ManyMessages(40), SmoothScrolling = false };
         Show(chat, 400, 200);
 
         ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
         scroll.Offset = new Vector(0, 0);
         Dispatcher.UIThread.RunJobs();
 
-        TextBox textBox = Part<TextBox>(Footer(chat), "PART_TextBox");
-        textBox.Text = "Hello";
-        Dispatcher.UIThread.RunJobs();
-
-        textBox.RaiseEvent(new KeyEventArgs
-        {
-            RoutedEvent = InputElement.KeyDownEvent,
-            Key = Key.Enter,
-            KeyModifiers = KeyModifiers.None,
-            Source = textBox
-        });
-
+        chat.ScrollToEnd();
         Dispatcher.UIThread.RunJobs();
 
         double max = scroll.Extent.Height - scroll.Viewport.Height;
@@ -289,9 +229,6 @@ public class ChatViewTests
         Assert.Equal(max, scroll.Offset.Y, 1d);
         Assert.False(button.IsVisible);
     }
-
-    private static MessageInput Footer(ChatView chat) =>
-        chat.GetVisualDescendants().OfType<MessageInput>().First();
 
     private static ObservableCollection<MessageBubble> ManyMessages(int count)
     {

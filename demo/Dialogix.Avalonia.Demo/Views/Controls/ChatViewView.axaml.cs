@@ -46,10 +46,10 @@ public partial class ChatViewView : UserControl
     {
         InitializeComponent();
 
-        Setup(ChatDesktop, DefaultSeed, 3);
-        Setup(ChatDefault, DefaultSeed, 3);
-        Setup(ChatViolet, VioletSeed, 2);
-        Setup(ChatMono, MonoSeed, 2);
+        Setup(ChatDesktop, InputDesktop, DefaultSeed, 3);
+        Setup(ChatDefault, InputDefault, DefaultSeed, 3);
+        Setup(ChatViolet, InputViolet, VioletSeed, 2);
+        Setup(ChatMono, InputMono, MonoSeed, 2);
 
         SizeChanged += OnSizeChanged;
 
@@ -74,7 +74,7 @@ public partial class ChatViewView : UserControl
             card.Margin = narrow ? new Thickness(0, 0, 0, 12) : new Thickness(0, 0, 10, 10);
     }
 
-    private static void Setup(ChatView chat, (string Author, string Text)[] seed, int pages)
+    private static void Setup(ChatView chat, MessageInput input, (string Author, string Text)[] seed, int pages)
     {
         ObservableCollection<MessageBubble> messages = [];
         int pagesLeft = pages;
@@ -101,12 +101,13 @@ public partial class ChatViewView : UserControl
                 messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
         });
 
-        chat.SendCommand = new RelayCommand(parameter =>
+        input.SendCommand = new RelayCommand(parameter =>
         {
             if (parameter is not string text || string.IsNullOrWhiteSpace(text))
                 return;
 
             messages.Add(CreateBubble("You", text, messages.Count));
+            chat.ScrollToEnd();
         });
     }
 
