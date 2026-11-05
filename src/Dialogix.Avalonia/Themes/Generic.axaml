@@ -13,4 +13,5 @@
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageBubble.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageInput.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatHeader.axaml" />
 </Styles>
