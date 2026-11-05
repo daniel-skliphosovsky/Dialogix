@@ -178,11 +178,15 @@
                                     <StackPanel Spacing="12">
                                         <StackPanel Spacing="4">
                                             <TextBlock Classes="fieldLabel" Text="Display name" />
-                                            <TextBox x:Name="NameBox" Text="Guest" />
+                                            <TextBox x:Name="NameBox"
+                                             Theme="{DynamicResource DialogixTextBoxTheme}"
+                                             Text="Guest" />
                                         </StackPanel>
                                         <StackPanel Spacing="4">
                                             <TextBlock Classes="fieldLabel" Text="Bio" />
-                                            <TextBox x:Name="BioBox" Text="Avalonia UI enthusiast." />
+                                            <TextBox x:Name="BioBox"
+                                             Theme="{DynamicResource DialogixTextBoxTheme}"
+                                             Text="Avalonia UI enthusiast." />
                                         </StackPanel>
                                     </StackPanel>
                                 </controls:ProfileEditorView.Fields>
@@ -236,11 +240,13 @@
                                 <StackPanel Spacing="12">
                                     <StackPanel Spacing="4">
                                         <TextBlock Classes="fieldLabel" Text="Display name" />
-                                        <TextBox Text="Guest" />
+                                        <TextBox Theme="{DynamicResource DialogixTextBoxTheme}"
+                                             Text="Guest" />
                                     </StackPanel>
                                     <StackPanel Spacing="4">
                                         <TextBlock Classes="fieldLabel" Text="Bio" />
-                                        <TextBox Text="Square corners, monospace." />
+                                        <TextBox Theme="{DynamicResource DialogixTextBoxTheme}"
+                                             Text="Square corners, monospace." />
                                     </StackPanel>
                                 </StackPanel>
                             </controls:ProfileEditorView.Fields>

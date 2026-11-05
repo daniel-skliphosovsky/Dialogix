@@ -65,6 +65,7 @@
                         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
 
                             <TextBox Name="PART_TextBox"
+                                     Theme="{DynamicResource DialogixTextBoxTheme}"
                                      Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                      PlaceholderText="{TemplateBinding Watermark}"
                                      PlaceholderForeground="{DynamicResource DialogixMutedForegroundBrush}"
@@ -123,54 +124,5 @@
         </ControlTheme>
 
     </Styles.Resources>
-
-    <Style Selector="controls|MessageInput TextBox">
-        <Setter Property="FocusAdorner" Value="{x:Null}" />
-        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
-    </Style>
-
-    <!-- Fluent draws its own blue frame around a focused TextBox; the pill border is the frame here. -->
-    <Style Selector="controls|MessageInput TextBox /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BoxShadow" Value="none" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:focus">
-        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
-        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:pointerover">
-        <Setter Property="Foreground" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
-        <Setter Property="CaretBrush" Value="{Binding Foreground, RelativeSource={RelativeSource AncestorType=controls:MessageInput}}" />
-    </Style>
-
-    <!-- Fluent re-colors the placeholder itself on hover and focus; keep it muted instead. -->
-    <Style Selector="controls|MessageInput TextBox:pointerover /template/ TextBlock#PART_Placeholder">
-        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:focus /template/ TextBlock#PART_Placeholder">
-        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:focus /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BoxShadow" Value="none" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:pointerover /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BoxShadow" Value="none" />
-    </Style>
-
-    <Style Selector="controls|MessageInput TextBox:pointerover:focus /template/ Border#PART_BorderElement">
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BoxShadow" Value="none" />
-    </Style>
 
 </Styles>

@@ -61,6 +61,7 @@
                         <Grid>
 
                             <ScrollViewer Name="PART_Scroll"
+                                              Theme="{DynamicResource DialogixScrollViewerTheme}"
                                               HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Name="PART_Items"
@@ -95,4 +96,5 @@
         </ControlTheme>
 
     </Styles.Resources>
+
 </Styles>
