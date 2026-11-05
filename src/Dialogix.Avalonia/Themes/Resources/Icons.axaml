@@ -4,5 +4,7 @@
     <StreamGeometry x:Key="DialogixSendIconGeometry">M10 16 V4 M4 10 L10 4 L16 10</StreamGeometry>
     <StreamGeometry x:Key="DialogixScrollDownIconGeometry">M4 9 L10 15 L16 9</StreamGeometry>
     <StreamGeometry x:Key="DialogixPaperPlaneIconGeometry">M3 9 L18 3 L14 17 L10 11 Z M10 11 L18 3</StreamGeometry>
+    <StreamGeometry x:Key="DialogixUserIconGeometry">M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z</StreamGeometry>
+    <StreamGeometry x:Key="DialogixPencilIconGeometry">M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z</StreamGeometry>
 
 </ResourceDictionary>

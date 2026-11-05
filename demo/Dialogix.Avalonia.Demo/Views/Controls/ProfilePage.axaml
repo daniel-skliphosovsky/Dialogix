@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Dialogix.Avalonia.Controls"
+             xmlns:local="using:Dialogix.Avalonia.Demo.Views.Controls"
+             x:Class="Dialogix.Avalonia.Demo.Views.Controls.ProfilePage">
+
+    <UserControl.Resources>
+
+        <Geometry x:Key="SettingsIcon">M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z</Geometry>
+        <Geometry x:Key="NotificationsIcon">M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z</Geometry>
+        <Geometry x:Key="PrivacyIcon">M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z</Geometry>
+
+        <DataTemplate x:Key="ProfileItemTemplate" x:DataType="local:ProfileItem">
+            <Button Classes="navrow">
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <Path Width="18"
+                          Height="18"
+                          Stretch="Uniform"
+                          VerticalAlignment="Center"
+                          Data="{Binding Icon}"
+                          Fill="{DynamicResource DialogixMutedForegroundBrush}" />
+                    <TextBlock Text="{Binding Text}" VerticalAlignment="Center" />
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource DemoChatBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="BoxShadow" Value="0 6 48 -20 #1F000000" />
+        </Style>
+
+        <Style Selector="Button.navrow">
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+            <Setter Property="Padding" Value="12,10" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+        </Style>
+
+        <Style Selector="Button.navrow:pointerover">
+            <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+        </Style>
+
+        <Style Selector="TextBlock.fieldLabel">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.6" />
+        </Style>
+
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel x:Name="PageContent"
+                    MaxWidth="1140"
+                    Margin="24"
+                    Spacing="20">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="Profile"
+                           FontSize="26"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Avatar, custom rows and an editor the app fills in."
+                           Opacity="0.6"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Classes="card"
+                    Width="420"
+                    HorizontalAlignment="Center">
+                <Panel>
+
+                    <controls:ProfileView x:Name="Profile"
+                                          Width="360"
+                                          HorizontalAlignment="Center"
+                                          DisplayName="Guest" />
+
+                    <controls:ProfileEditorView x:Name="Editor"
+                                                IsVisible="False"
+                                                Title="Edit profile">
+                        <controls:ProfileEditorView.Fields>
+                            <StackPanel Spacing="12">
+                                <StackPanel Spacing="4">
+                                    <TextBlock Classes="fieldLabel" Text="Display name" />
+                                    <TextBox x:Name="NameBox" Text="Guest" />
+                                </StackPanel>
+                                <StackPanel Spacing="4">
+                                    <TextBlock Classes="fieldLabel" Text="Bio" />
+                                    <TextBox x:Name="BioBox" Text="Avalonia UI enthusiast." />
+                                </StackPanel>
+                            </StackPanel>
+                        </controls:ProfileEditorView.Fields>
+                    </controls:ProfileEditorView>
+
+                </Panel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

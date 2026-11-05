@@ -14,4 +14,6 @@
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageInput.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatView.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatHeader.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ProfileView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ProfileEditorView.axaml" />
 </Styles>
