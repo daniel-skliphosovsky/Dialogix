@@ -2,12 +2,13 @@ using Avalonia;
 using Avalonia.Controls;
 
 using Dialogix.Avalonia.Controls;
+using Dialogix.Avalonia.Demo.Infrastructure;
 
-namespace Dialogix.Avalonia.Demo.Views.Controls;
+namespace Dialogix.Avalonia.Demo.Views.Pages;
 
-public partial class MessageInputView : UserControl
+public partial class InputPage : UserControl
 {
-    public MessageInputView()
+    public InputPage()
     {
         InitializeComponent();
 

@@ -6,7 +6,7 @@ using Dialogix.Avalonia.Controls;
 
 using Path = Avalonia.Controls.Shapes.Path;
 
-namespace Dialogix.Avalonia.Tests.Controls;
+namespace Dialogix.Avalonia.Tests.Controls.Primitives;
 
 public class IconPresenterTests
 {

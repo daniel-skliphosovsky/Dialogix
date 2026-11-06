@@ -14,7 +14,7 @@ using Avalonia.VisualTree;
 using Dialogix.Avalonia.Controls;
 
 
-namespace Dialogix.Avalonia.Tests.Controls;
+namespace Dialogix.Avalonia.Tests.Controls.Profile;
 
 public class ProfileViewTests
 {

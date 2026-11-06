@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 
-using Dialogix.Avalonia.Demo.Views.Controls;
+using Dialogix.Avalonia.Demo.Views.Pages;
 
 using FluentAvalonia.UI.Controls;
 
@@ -34,9 +34,9 @@ public partial class MainView : UserControl
     private void ShowPage(string tag) =>
         PageHost.Content = tag switch
         {
-            "bubble" => new MessageBubbleView(),
-            "input" => new MessageInputView(),
-            "chat" => new ChatViewView(),
+            "bubble" => new BubblePage(),
+            "input" => new InputPage(),
+            "chat" => new ChatPage(),
             "profile" => new ProfilePage(),
             _ => null
         };

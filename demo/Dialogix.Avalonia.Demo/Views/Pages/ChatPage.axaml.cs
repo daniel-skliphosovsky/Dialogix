@@ -5,12 +5,13 @@ using Avalonia.Controls;
 using Avalonia.Threading;
 
 using Dialogix.Avalonia.Controls;
+using Dialogix.Avalonia.Demo.Infrastructure;
 
-namespace Dialogix.Avalonia.Demo.Views.Controls;
+namespace Dialogix.Avalonia.Demo.Views.Pages;
 
 public sealed record DemoMessage(string Author, string Text, string Time, bool IsOutgoing);
 
-public partial class ChatViewView : UserControl
+public partial class ChatPage : UserControl
 {
     private static readonly (string Author, string Text)[] DefaultSeed =
     [
@@ -53,7 +54,7 @@ public partial class ChatViewView : UserControl
         ("You", "Try sending something.")
     ];
 
-    public ChatViewView()
+    public ChatPage()
     {
         InitializeComponent();
 

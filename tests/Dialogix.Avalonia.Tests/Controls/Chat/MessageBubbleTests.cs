@@ -6,7 +6,7 @@ using Avalonia.VisualTree;
 
 using Dialogix.Avalonia.Controls;
 
-namespace Dialogix.Avalonia.Tests.Controls;
+namespace Dialogix.Avalonia.Tests.Controls.Chat;
 
 public class MessageBubbleTests
 {
