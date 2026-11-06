@@ -45,6 +45,10 @@
             <Setter Property="Foreground" Value="#FFFFFFFF" />
         </Style>
 
+        <Style Selector="controls|ChatView /template/ Border#PART_LoadingMore">
+            <Setter Property="Margin" Value="0,64,0,0" />
+        </Style>
+
         <Style Selector="controls|ChatView.mono /template/ Border#PART_LoadingMore">
             <Setter Property="Background" Value="#FFF0F0F0" />
             <Setter Property="BorderThickness" Value="0" />
