@@ -217,6 +217,13 @@ public class MessageInput : TemplatedControl
 
     private void OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
+        if (e.Key == Key.Escape)
+        {
+            e.Handled = true;
+            TopLevel.GetTopLevel(this)?.FocusManager?.Focus(null);
+            return;
+        }
+
         if (e.Key != Key.Enter || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             return;
 

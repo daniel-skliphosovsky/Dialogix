@@ -339,6 +339,26 @@ public class MessageInputTests
     }
 
     [AvaloniaFact]
+    public void Escape_removes_focus()
+    {
+        MessageInput input = new MessageInput();
+        Window window = new() { Content = input, Width = 400, Height = 200 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        textBox.Focus();
+        Dispatcher.UIThread.RunJobs();
+        Assert.True(textBox.IsFocused);
+
+        KeyEventArgs args = Press(input, Key.Escape, KeyModifiers.None);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(args.Handled);
+        Assert.False(textBox.IsFocused);
+    }
+
+    [AvaloniaFact]
     public void Send_icon_is_themed_and_replaceable()
     {
         MessageInput input = new MessageInput();
