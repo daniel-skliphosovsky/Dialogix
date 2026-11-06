@@ -262,6 +262,71 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
+    public void Load_more_fills_a_viewport_that_does_not_overflow()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(2),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 300);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_can_run_again_after_messages_are_replaced()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Assert.Single(recorder.Executed);
+
+        chat.Messages = ManyMessages(2);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(2, recorder.Executed.Count);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_runs_when_older_messages_become_available_at_the_top()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = false,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Assert.Empty(recorder.Executed);
+
+        chat.HasMore = true;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
     public void Prepended_messages_keep_the_scroll_anchor()
     {
         ObservableCollection<MessageBubble> messages = ManyMessages(40);
