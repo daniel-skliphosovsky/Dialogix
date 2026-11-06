@@ -239,6 +239,36 @@
                     </StackPanel>
                 </Border>
 
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Empty" />
+                            <TextBlock Classes="cardHint" Text="EmptyContent stands in until the first message." />
+                        </StackPanel>
+                        <controls:ChatView x:Name="ChatEmpty"
+                                           Height="360"
+                                           CornerRadius="12"
+                                           Padding="14">
+                            <controls:ChatView.EmptyContent>
+                                <StackPanel Spacing="4"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="No messages yet"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="Say hello to start."
+                                               FontSize="12"
+                                               Opacity="0.6"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </controls:ChatView.EmptyContent>
+                        </controls:ChatView>
+                        <controls:MessageInput x:Name="InputEmpty" />
+                    </StackPanel>
+                </Border>
+
             </WrapPanel>
         </StackPanel>
     </ScrollViewer>

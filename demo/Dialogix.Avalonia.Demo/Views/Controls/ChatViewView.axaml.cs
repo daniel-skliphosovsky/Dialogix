@@ -62,6 +62,7 @@ public partial class ChatViewView : UserControl
         Setup(ChatViolet, InputViolet, VioletSeed, 2);
         Setup(ChatMono, InputMono, MonoSeed, 2);
         SetupTemplate(ChatTemplate, InputTemplate, TemplateSeed, 2);
+        SetupEmpty(ChatEmpty, InputEmpty);
 
         SizeChanged += OnSizeChanged;
 
@@ -122,6 +123,21 @@ public partial class ChatViewView : UserControl
             };
             timer.Start();
         });
+
+        input.SendCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is not string text || string.IsNullOrWhiteSpace(text))
+                return;
+
+            messages.Add(CreateBubble("You", text, messages.Count));
+            chat.ScrollToEnd();
+        });
+    }
+
+    private static void SetupEmpty(ChatView chat, MessageInput input)
+    {
+        ObservableCollection<MessageBubble> messages = [];
+        chat.Messages = messages;
 
         input.SendCommand = new RelayCommand(parameter =>
         {

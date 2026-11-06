@@ -20,6 +20,15 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> MessageTemplateProperty =
         AvaloniaProperty.Register<ChatView, IDataTemplate?>(nameof(MessageTemplate));
 
+    public static readonly StyledProperty<object?> EmptyContentProperty =
+        AvaloniaProperty.Register<ChatView, object?>(nameof(EmptyContent));
+
+    public static readonly StyledProperty<IDataTemplate?> EmptyContentTemplateProperty =
+        AvaloniaProperty.Register<ChatView, IDataTemplate?>(nameof(EmptyContentTemplate));
+
+    public static readonly DirectProperty<ChatView, bool> IsEmptyProperty =
+        AvaloniaProperty.RegisterDirect<ChatView, bool>(nameof(IsEmpty), view => view.IsEmpty);
+
     public static readonly StyledProperty<bool> HasMoreProperty =
         AvaloniaProperty.Register<ChatView, bool>(nameof(HasMore));
 
@@ -52,10 +61,14 @@ public class ChatView : TemplatedControl
     private double _anchorOffset;
     private bool _stickToBottom = true;
     private bool _initialScrollPending = true;
+    private bool _isEmpty = true;
     private DispatcherTimer? _scrollTimer;
 
     public IEnumerable? Messages { get => GetValue(MessagesProperty); set => SetValue(MessagesProperty, value); }
     public IDataTemplate? MessageTemplate { get => GetValue(MessageTemplateProperty); set => SetValue(MessageTemplateProperty, value); }
+    public object? EmptyContent { get => GetValue(EmptyContentProperty); set => SetValue(EmptyContentProperty, value); }
+    public IDataTemplate? EmptyContentTemplate { get => GetValue(EmptyContentTemplateProperty); set => SetValue(EmptyContentTemplateProperty, value); }
+    public bool IsEmpty { get => _isEmpty; private set => SetAndRaise(IsEmptyProperty, ref _isEmpty, value); }
     public bool HasMore { get => GetValue(HasMoreProperty); set => SetValue(HasMoreProperty, value); }
     public bool IsLoadingMore { get => GetValue(IsLoadingMoreProperty); set => SetValue(IsLoadingMoreProperty, value); }
     public object? LoadingContent { get => GetValue(LoadingContentProperty); set => SetValue(LoadingContentProperty, value); }
@@ -170,6 +183,7 @@ public class ChatView : TemplatedControl
             if (_notifyMessages is not null)
                 _notifyMessages.CollectionChanged += OnMessagesChanged;
 
+            IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
             _canLoadMore = true;
         }
         else if (change.Property == HasMoreProperty && change.GetNewValue<bool>())
@@ -209,6 +223,26 @@ public class ChatView : TemplatedControl
         TryLoadMore();
     }
 
+    private static bool IsCollectionEmpty(IEnumerable? items)
+    {
+        if (items is null)
+            return true;
+
+        if (items is ICollection collection)
+            return collection.Count == 0;
+
+        IEnumerator enumerator = items.GetEnumerator();
+
+        try
+        {
+            return !enumerator.MoveNext();
+        }
+        finally
+        {
+            (enumerator as IDisposable)?.Dispose();
+        }
+    }
+
     private void TryLoadMore()
     {
         if (_scroll is null || !_canLoadMore || !HasMore || IsLoadingMore)
@@ -227,6 +261,8 @@ public class ChatView : TemplatedControl
 
     private void OnMessagesChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
+        IsEmpty = IsCollectionEmpty(Messages);
+
         bool prepended = e is { Action: NotifyCollectionChangedAction.Add, NewStartingIndex: 0 };
 
         if (prepended && _anchorExtent > 0)
