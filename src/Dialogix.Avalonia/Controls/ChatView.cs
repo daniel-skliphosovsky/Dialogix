@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
 using Avalonia.Threading;
 
@@ -15,6 +16,9 @@ public class ChatView : TemplatedControl
 {
     public static readonly StyledProperty<IEnumerable?> MessagesProperty =
         AvaloniaProperty.Register<ChatView, IEnumerable?>(nameof(Messages));
+
+    public static readonly StyledProperty<IDataTemplate?> MessageTemplateProperty =
+        AvaloniaProperty.Register<ChatView, IDataTemplate?>(nameof(MessageTemplate));
 
     public static readonly StyledProperty<bool> HasMoreProperty =
         AvaloniaProperty.Register<ChatView, bool>(nameof(HasMore));
@@ -45,6 +49,7 @@ public class ChatView : TemplatedControl
     private DispatcherTimer? _scrollTimer;
 
     public IEnumerable? Messages { get => GetValue(MessagesProperty); set => SetValue(MessagesProperty, value); }
+    public IDataTemplate? MessageTemplate { get => GetValue(MessageTemplateProperty); set => SetValue(MessageTemplateProperty, value); }
     public bool HasMore { get => GetValue(HasMoreProperty); set => SetValue(HasMoreProperty, value); }
     public bool IsLoadingMore { get => GetValue(IsLoadingMoreProperty); set => SetValue(IsLoadingMoreProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
