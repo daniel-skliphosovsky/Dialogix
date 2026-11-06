@@ -26,6 +26,12 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<bool> IsLoadingMoreProperty =
         AvaloniaProperty.Register<ChatView, bool>(nameof(IsLoadingMore));
 
+    public static readonly StyledProperty<object?> LoadingContentProperty =
+        AvaloniaProperty.Register<ChatView, object?>(nameof(LoadingContent));
+
+    public static readonly StyledProperty<IDataTemplate?> LoadingContentTemplateProperty =
+        AvaloniaProperty.Register<ChatView, IDataTemplate?>(nameof(LoadingContentTemplate));
+
     public static readonly StyledProperty<ICommand?> LoadMoreCommandProperty =
         AvaloniaProperty.Register<ChatView, ICommand?>(nameof(LoadMoreCommand));
 
@@ -52,6 +58,8 @@ public class ChatView : TemplatedControl
     public IDataTemplate? MessageTemplate { get => GetValue(MessageTemplateProperty); set => SetValue(MessageTemplateProperty, value); }
     public bool HasMore { get => GetValue(HasMoreProperty); set => SetValue(HasMoreProperty, value); }
     public bool IsLoadingMore { get => GetValue(IsLoadingMoreProperty); set => SetValue(IsLoadingMoreProperty, value); }
+    public object? LoadingContent { get => GetValue(LoadingContentProperty); set => SetValue(LoadingContentProperty, value); }
+    public IDataTemplate? LoadingContentTemplate { get => GetValue(LoadingContentTemplateProperty); set => SetValue(LoadingContentTemplateProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
     public object? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }

@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 
 using Dialogix.Avalonia.Controls;
 
@@ -96,9 +97,19 @@ public partial class ChatViewView : UserControl
 
             pagesLeft--;
             chat.HasMore = pagesLeft > 0;
+            chat.IsLoadingMore = true;
 
-            for (int i = 0; i < 4; i++)
-                messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
+            DispatcherTimer timer = new(TimeSpan.FromMilliseconds(600), DispatcherPriority.Normal, Dispatcher.UIThread);
+            timer.Tick += (_, _) =>
+            {
+                timer.Stop();
+
+                for (int i = 0; i < 4; i++)
+                    messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
+
+                chat.IsLoadingMore = false;
+            };
+            timer.Start();
         });
 
         input.SendCommand = new RelayCommand(parameter =>
