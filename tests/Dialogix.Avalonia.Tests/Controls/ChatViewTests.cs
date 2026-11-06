@@ -281,6 +281,21 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
+    public void Loading_more_indicator_follows_the_state()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(3) };
+        Show(chat);
+
+        Border indicator = Part<Border>(chat, "PART_LoadingMore");
+        Assert.False(indicator.IsVisible);
+
+        chat.IsLoadingMore = true;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(indicator.IsVisible);
+    }
+
+    [AvaloniaFact]
     public void Scroll_to_end_icon_is_themed()
     {
         ChatView chat = new ChatView();
