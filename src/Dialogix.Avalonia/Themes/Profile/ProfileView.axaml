@@ -68,6 +68,10 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
             </Style>
 
+            <Style Selector="^:selected /template/ Border#PART_Root">
+                <Setter Property="Background" Value="{DynamicResource DialogixInputBackgroundBrush}" />
+            </Style>
+
         </ControlTheme>
 
         <ControlTheme x:Key="{x:Type controls:ProfileView}"
@@ -148,6 +152,7 @@
                                  BorderThickness="0"
                                  Padding="0"
                                  FocusAdorner="{x:Null}"
+                                 KeyboardNavigation.TabNavigation="Once"
                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                  ScrollViewer.VerticalScrollBarVisibility="Disabled">
                             <ListBox.ItemsPanel>
