@@ -109,6 +109,23 @@ public ObservableCollection<Message> Messages { get; } = [];
 `Messages` only needs `INotifyCollectionChanged` to update live. Inserting at index `0` keeps the
 scroll anchor, so older pages do not make the conversation jump.
 
+### Empty state
+
+`EmptyContent` fills the view until the first message arrives (when `Messages` is empty or null).
+`EmptyContentTemplate` works the same way as `MessageTemplate`; `IsEmpty` is read-only and tracks
+the collection.
+
+```xml
+<dx:ChatView Messages="{Binding Messages}">
+    <dx:ChatView.EmptyContent>
+        <StackPanel Spacing="4" HorizontalAlignment="Center">
+            <TextBlock Text="No messages yet" FontWeight="SemiBold" />
+            <TextBlock Text="Say hello to start." Opacity="0.6" />
+        </StackPanel>
+    </dx:ChatView.EmptyContent>
+</dx:ChatView>
+```
+
 ### Paging
 
 Set `HasMore` while older messages exist and handle `LoadMoreCommand`. It runs when the user

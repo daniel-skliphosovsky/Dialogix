@@ -76,6 +76,13 @@
                                 </ItemsControl>
                             </ScrollViewer>
 
+                            <ContentPresenter Name="PART_Empty"
+                                              Content="{TemplateBinding EmptyContent}"
+                                              ContentTemplate="{TemplateBinding EmptyContentTemplate}"
+                                              IsVisible="{TemplateBinding IsEmpty}"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+
                             <Border Name="PART_LoadingMore"
                                     IsVisible="{TemplateBinding IsLoadingMore}"
                                     IsHitTestVisible="False"

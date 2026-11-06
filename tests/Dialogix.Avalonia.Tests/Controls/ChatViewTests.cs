@@ -24,6 +24,9 @@ public class ChatViewTests
 
         Assert.Null(chat.Messages);
         Assert.Null(chat.MessageTemplate);
+        Assert.Null(chat.EmptyContent);
+        Assert.Null(chat.EmptyContentTemplate);
+        Assert.True(chat.IsEmpty);
         Assert.False(chat.HasMore);
         Assert.False(chat.IsLoadingMore);
         Assert.Null(chat.LoadMoreCommand);
@@ -428,6 +431,58 @@ public class ChatViewTests
 
         Assert.Equal(max, scroll.Offset.Y, 1d);
         Assert.False(button.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Empty_state_is_shown_until_the_first_message_arrives()
+    {
+        ObservableCollection<MessageBubble> messages = [];
+        ChatView chat = new ChatView
+        {
+            Messages = messages,
+            EmptyContent = new TextBlock { Text = "No messages yet" }
+        };
+        Show(chat);
+
+        ContentPresenter empty = Part<ContentPresenter>(chat, "PART_Empty");
+        Assert.True(chat.IsEmpty);
+        Assert.True(empty.IsVisible);
+
+        messages.Add(new MessageBubble { Text = "Hello" });
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(chat.IsEmpty);
+        Assert.False(empty.IsVisible);
+
+        messages.Clear();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(chat.IsEmpty);
+        Assert.True(empty.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Empty_state_is_shown_for_missing_messages()
+    {
+        ChatView chat = new ChatView { EmptyContent = new TextBlock { Text = "No messages yet" } };
+        Show(chat);
+
+        Assert.True(chat.IsEmpty);
+        Assert.True(Part<ContentPresenter>(chat, "PART_Empty").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Empty_state_can_come_from_a_template()
+    {
+        ChatView chat = new ChatView
+        {
+            EmptyContent = new ChatMessage("Nothing here", "Guest"),
+            EmptyContentTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new TextBlock { Text = message.Text })
+        };
+        Show(chat);
+
+        TextBlock rendered = chat.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == "Nothing here");
+        Assert.True(rendered.IsVisible);
     }
 
     private sealed record ChatMessage(string Text, string Author);
