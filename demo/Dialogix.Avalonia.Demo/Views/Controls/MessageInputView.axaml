@@ -41,9 +41,13 @@
             <Setter Property="TextWrapping" Value="Wrap" />
         </Style>
 
-        <!-- The paper plane sits a touch low-left in the circle; nudge it back to the optical center. -->
+        <!-- Nudge the paper plane inside the send circle. -->
         <Style Selector="controls|MessageInput.icon Path">
-            <Setter Property="RenderTransform" Value="translate(1.5px,-1.5px)" />
+            <Setter Property="RenderTransform" Value="translate(-0.75px,0.75px)" />
+        </Style>
+
+        <Style Selector="controls|MessageInput.image Image">
+            <Setter Property="RenderTransform" Value="translate(-0.25px,0.25px)" />
         </Style>
 
         <!-- Restyling a control by selector, without touching the library theme. -->
@@ -197,6 +201,7 @@
                                        Text="SendIcon also accepts any IImage." />
                         </StackPanel>
                         <controls:MessageInput x:Name="InputImageIcon"
+                                               Classes="image"
                                                SendIcon="{DynamicResource DemoPaperPlaneImage}" />
                         <TextBlock x:Name="SentImageIcon"
                                    Classes="result"
