@@ -65,15 +65,13 @@
                                           Theme="{DynamicResource DialogixScrollViewerTheme}"
                                           HorizontalScrollBarVisibility="Disabled"
                                           VerticalScrollBarVisibility="Auto">
-                                <ItemsControl Name="PART_Items"
-                                              ItemsSource="{TemplateBinding Messages}"
-                                              ItemTemplate="{TemplateBinding MessageTemplate}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Spacing="8" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
+                                <ItemsRepeater Name="PART_Items"
+                                               ItemsSource="{TemplateBinding Messages}"
+                                               ItemTemplate="{TemplateBinding MessageTemplate}">
+                                    <ItemsRepeater.Layout>
+                                        <StackLayout Spacing="8" />
+                                    </ItemsRepeater.Layout>
+                                </ItemsRepeater>
                             </ScrollViewer>
 
                             <ContentPresenter Name="PART_Empty"

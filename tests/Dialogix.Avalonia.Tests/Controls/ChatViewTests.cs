@@ -40,8 +40,18 @@ public class ChatViewTests
         ChatView chat = new ChatView { Messages = messages };
         Show(chat);
 
-        ItemsControl items = Part<ItemsControl>(chat, "PART_Items");
+        ItemsRepeater items = Part<ItemsRepeater>(chat, "PART_Items");
         Assert.Same(messages, items.ItemsSource);
+    }
+
+    [AvaloniaFact]
+    public void Long_conversations_are_virtualized()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(200) };
+        Show(chat, 400, 300);
+
+        int realized = chat.GetVisualDescendants().OfType<MessageBubble>().Count();
+        Assert.InRange(realized, 1, 100);
     }
 
     [AvaloniaFact]
