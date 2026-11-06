@@ -32,6 +32,7 @@ public class ProfileViewTests
         Assert.Null(profile.EditIcon);
         Assert.True(profile.IsEditVisible);
         Assert.Null(profile.ItemCommand);
+        Assert.Null(profile.SelectedItem);
     }
 
     [AvaloniaFact]
@@ -198,6 +199,79 @@ public class ProfileViewTests
 
         Assert.Single(row.Executed);
         Assert.Empty(item.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Selected_item_follows_the_list()
+    {
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings", "Privacy" },
+            ItemTemplate = RowTemplate()
+        };
+        Show(profile);
+
+        ListBox list = Part<ListBox>(profile, "PART_Items");
+
+        list.SelectedItem = "Privacy";
+        Assert.Equal("Privacy", profile.SelectedItem);
+
+        profile.SelectedItem = "Settings";
+        Assert.Equal("Settings", list.SelectedItem);
+    }
+
+    [AvaloniaFact]
+    public void Enter_runs_the_item_command_for_the_selected_item()
+    {
+        Recorder recorder = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings", "Privacy" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        ListBox list = Part<ListBox>(profile, "PART_Items");
+        list.SelectedItem = "Privacy";
+
+        ListBoxItem row = (ListBoxItem)list.ContainerFromIndex(1)!;
+        row.RaiseEvent(new KeyEventArgs
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = Key.Enter,
+            Source = row
+        });
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(["Privacy"], recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Space_runs_the_item_command_for_the_selected_item()
+    {
+        Recorder recorder = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        ListBox list = Part<ListBox>(profile, "PART_Items");
+        list.SelectedItem = "Settings";
+
+        ListBoxItem row = (ListBoxItem)list.ContainerFromIndex(0)!;
+        row.RaiseEvent(new KeyEventArgs
+        {
+            RoutedEvent = InputElement.KeyDownEvent,
+            Key = Key.Space,
+            Source = row
+        });
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(["Settings"], recorder.Executed);
     }
 
     private static TextBlock RowText(ProfileView profile, string text) =>

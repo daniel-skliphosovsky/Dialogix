@@ -5,7 +5,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
+using Avalonia.Data;
 using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.VisualTree;
 
@@ -40,6 +42,9 @@ public class ProfileView : TemplatedControl
     public static readonly StyledProperty<ICommand?> ItemCommandProperty =
         AvaloniaProperty.Register<ProfileView, ICommand?>(nameof(ItemCommand));
 
+    public static readonly StyledProperty<object?> SelectedItemProperty =
+        AvaloniaProperty.Register<ProfileView, object?>(nameof(SelectedItem), defaultBindingMode: BindingMode.TwoWay);
+
     public IImage? Avatar { get => GetValue(AvatarProperty); set => SetValue(AvatarProperty, value); }
     public object? PlaceholderIcon { get => GetValue(PlaceholderIconProperty); set => SetValue(PlaceholderIconProperty, value); }
     public string? DisplayName { get => GetValue(DisplayNameProperty); set => SetValue(DisplayNameProperty, value); }
@@ -49,8 +54,14 @@ public class ProfileView : TemplatedControl
     public object? EditIcon { get => GetValue(EditIconProperty); set => SetValue(EditIconProperty, value); }
     public bool IsEditVisible { get => GetValue(IsEditVisibleProperty); set => SetValue(IsEditVisibleProperty, value); }
     public ICommand? ItemCommand { get => GetValue(ItemCommandProperty); set => SetValue(ItemCommandProperty, value); }
+    public object? SelectedItem { get => GetValue(SelectedItemProperty); set => SetValue(SelectedItemProperty, value); }
 
     private ItemsControl? _items;
+
+    public ProfileView()
+    {
+        AddHandler(KeyDownEvent, OnItemKeyDown, RoutingStrategies.Bubble, handledEventsToo: true);
+    }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -69,6 +80,21 @@ public class ProfileView : TemplatedControl
             return;
 
         if (!command.CanExecute(item))
+            return;
+
+        e.Handled = true;
+        command.Execute(item);
+    }
+
+    private void OnItemKeyDown(object? sender, KeyEventArgs e)
+    {
+        if (e.Key is not (Key.Enter or Key.Space))
+            return;
+
+        if (e.Source is not ListBoxItem { DataContext: { } item } || !Equals(item, SelectedItem))
+            return;
+
+        if (ItemCommand is not { } command || !command.CanExecute(item))
             return;
 
         e.Handled = true;
