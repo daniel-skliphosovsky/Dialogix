@@ -2,6 +2,7 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -313,6 +314,28 @@ public class MessageInputTests
         textBox.Focus();
         Dispatcher.UIThread.RunJobs();
         Assert.Equal(expected, Assert.IsAssignableFrom<ISolidColorBrush>(placeholder.Foreground).Color);
+    }
+
+    [AvaloniaFact]
+    public void Clicking_the_composer_focuses_the_text_box()
+    {
+        MessageInput input = new MessageInput();
+        Window window = new() { Content = input, Width = 400, Height = 200 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+        window.UpdateLayout();
+
+        TextBox textBox = Part<TextBox>(input, "PART_TextBox");
+        Assert.False(textBox.IsFocused);
+
+        Border frame = Part<Border>(input, "PART_Frame");
+        Point point = frame.TranslatePoint(new Point(2, frame.Bounds.Height / 2), window)!.Value;
+
+        window.MouseDown(point, MouseButton.Left);
+        window.MouseUp(point, MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(textBox.IsFocused);
     }
 
     [AvaloniaFact]

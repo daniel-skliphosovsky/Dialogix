@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.VisualTree;
 
 namespace Dialogix.Avalonia.Controls;
 
@@ -192,6 +193,20 @@ public class MessageInput : TemplatedControl
         {
             UpdateTextHeight();
         }
+    }
+
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+
+        if (_textBox is null || e.Handled)
+            return;
+
+        if (e.Source is Visual source && source.GetSelfAndVisualAncestors().OfType<Button>().Any())
+            return;
+
+        if (!_textBox.IsKeyboardFocusWithin)
+            _textBox.Focus();
     }
 
     private void OnSendButtonClick(object? sender, RoutedEventArgs e) => Send();
