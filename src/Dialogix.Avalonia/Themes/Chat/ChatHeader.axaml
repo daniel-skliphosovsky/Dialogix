@@ -18,6 +18,7 @@
             <Setter Property="Template">
                 <ControlTemplate>
                     <Border Name="PART_Island"
+                            IsVisible="{TemplateBinding HasContent}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}"

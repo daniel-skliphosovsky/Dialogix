@@ -18,6 +18,7 @@ public class ChatHeaderTests
         Assert.Null(header.Title);
         Assert.Null(header.Status);
         Assert.Equal(0, header.BoxShadow.Count);
+        Assert.False(header.HasContent);
     }
 
     [AvaloniaFact]
@@ -31,11 +32,13 @@ public class ChatHeaderTests
     }
 
     [AvaloniaFact]
-    public void Title_and_status_are_hidden_when_missing()
+    public void Island_is_hidden_without_title_and_status()
     {
         ChatHeader header = new ChatHeader();
         Show(header);
 
+        Assert.False(header.HasContent);
+        Assert.False(Part<Border>(header, "PART_Island").IsVisible);
         Assert.False(Part<TextBlock>(header, "PART_Title").IsVisible);
         Assert.False(Part<TextBlock>(header, "PART_Status").IsVisible);
     }
@@ -46,6 +49,8 @@ public class ChatHeaderTests
         ChatHeader header = new ChatHeader { Title = "Nina", Status = "Online" };
         Show(header);
 
+        Assert.True(header.HasContent);
+        Assert.True(Part<Border>(header, "PART_Island").IsVisible);
         Assert.True(Part<TextBlock>(header, "PART_Title").IsVisible);
         Assert.True(Part<TextBlock>(header, "PART_Status").IsVisible);
     }

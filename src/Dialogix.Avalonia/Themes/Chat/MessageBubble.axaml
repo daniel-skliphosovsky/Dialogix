@@ -11,6 +11,7 @@
             <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
             <Setter Property="Padding" Value="12,8" />
             <Setter Property="MaxBubbleWidth" Value="520" />
+            <Setter Property="CornerRadius" Value="12" />
 
             <Setter Property="Template">
                 <ControlTemplate>
