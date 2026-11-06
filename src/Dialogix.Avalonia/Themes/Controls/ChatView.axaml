@@ -65,7 +65,8 @@
                                               HorizontalScrollBarVisibility="Disabled"
                                               VerticalScrollBarVisibility="Auto">
                                     <ItemsControl Name="PART_Items"
-                                                  ItemsSource="{TemplateBinding Messages}">
+                                                  ItemsSource="{TemplateBinding Messages}"
+                                                  ItemTemplate="{TemplateBinding MessageTemplate}">
                                         <ItemsControl.ItemsPanel>
                                             <ItemsPanelTemplate>
                                                 <StackPanel Spacing="8" />

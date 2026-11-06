@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -21,6 +22,7 @@ public class ChatViewTests
         ChatView chat = new ChatView();
 
         Assert.Null(chat.Messages);
+        Assert.Null(chat.MessageTemplate);
         Assert.False(chat.HasMore);
         Assert.False(chat.IsLoadingMore);
         Assert.Null(chat.LoadMoreCommand);
@@ -36,6 +38,58 @@ public class ChatViewTests
 
         ItemsControl items = Part<ItemsControl>(chat, "PART_Items");
         Assert.Same(messages, items.ItemsSource);
+    }
+
+    [AvaloniaFact]
+    public void Message_template_renders_data_items_as_bubbles()
+    {
+        ObservableCollection<ChatMessage> messages = [new ChatMessage("Hello", "Guest")];
+        ChatView chat = new ChatView
+        {
+            Messages = messages,
+            MessageTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new MessageBubble
+            {
+                Text = message.Text,
+                Author = message.Author
+            })
+        };
+        Show(chat);
+
+        MessageBubble bubble = chat.GetVisualDescendants().OfType<MessageBubble>().Single();
+        Assert.Equal("Hello", bubble.Text);
+        Assert.Equal("Guest", bubble.Author);
+    }
+
+    [AvaloniaFact]
+    public void Message_template_can_render_any_control()
+    {
+        ChatView chat = new ChatView
+        {
+            Messages = new[] { new ChatMessage("Hello", "Guest") },
+            MessageTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new TextBlock { Text = message.Text })
+        };
+        Show(chat);
+
+        TextBlock rendered = chat.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == "Hello");
+        Assert.Equal("Hello", rendered.Text);
+    }
+
+    [AvaloniaFact]
+    public void Message_template_keeps_up_with_the_collection()
+    {
+        ObservableCollection<ChatMessage> messages = [new ChatMessage("First", "Guest")];
+        ChatView chat = new ChatView
+        {
+            Messages = messages,
+            MessageTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new MessageBubble { Text = message.Text })
+        };
+        Show(chat);
+
+        messages.Add(new ChatMessage("Second", "You"));
+        Dispatcher.UIThread.RunJobs();
+
+        string[] texts = chat.GetVisualDescendants().OfType<MessageBubble>().Select(x => x.Text ?? string.Empty).ToArray();
+        Assert.Equal(["First", "Second"], texts);
     }
 
     [AvaloniaFact]
@@ -264,6 +318,8 @@ public class ChatViewTests
         Assert.Equal(max, scroll.Offset.Y, 1d);
         Assert.False(button.IsVisible);
     }
+
+    private sealed record ChatMessage(string Text, string Author);
 
     private static ObservableCollection<MessageBubble> ManyMessages(int count)
     {
