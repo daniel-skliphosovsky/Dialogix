@@ -172,8 +172,9 @@ model). The pill itself can be restyled with a selector, like any other part:
 </dx:ProfileView>
 ```
 
-`ItemCommand` receives the clicked row. `IsEditVisible="False"` hides the pencil. `Avatar` takes
-an `IImage`; `PlaceholderIcon` is shown when there is none.
+`ItemCommand` receives the clicked row. Rows also work from the keyboard: Tab into the list, use
+the arrow keys, then Enter or Space. `SelectedItem` tracks the highlighted row. `IsEditVisible="False"`
+hides the pencil. `Avatar` takes an `IImage`; `PlaceholderIcon` is shown when there is none.
 
 ```xml
 <dx:ProfileEditorView Title="Edit profile"
