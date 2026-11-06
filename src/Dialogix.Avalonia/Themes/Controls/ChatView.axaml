@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Dialogix.Avalonia.Controls">
+        xmlns:controls="using:Dialogix.Avalonia.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters">
 
     <Styles.Resources>
 
@@ -86,12 +87,23 @@
                                     Background="{DynamicResource DialogixSurfaceBrush}"
                                     BorderBrush="{DynamicResource DialogixBorderBrush}"
                                     BorderThickness="1">
-                                <ProgressBar Width="64"
-                                             Height="4"
-                                             MinHeight="0"
-                                             IsIndeterminate="True"
-                                             Background="Transparent"
-                                             Foreground="{DynamicResource DialogixPrimaryBrush}" />
+                                <Panel>
+                                    <ProgressBar Name="PART_LoadingBar"
+                                                 Width="64"
+                                                 Height="4"
+                                                 MinHeight="0"
+                                                 IsIndeterminate="True"
+                                                 Background="Transparent"
+                                                 Foreground="{DynamicResource DialogixPrimaryBrush}"
+                                                 IsVisible="{TemplateBinding LoadingContent,
+                                                     Converter={x:Static converters:ObjectConverters.IsNull}}" />
+
+                                    <ContentPresenter Name="PART_LoadingContent"
+                                                      Content="{TemplateBinding LoadingContent}"
+                                                      ContentTemplate="{TemplateBinding LoadingContentTemplate}"
+                                                      IsVisible="{TemplateBinding LoadingContent,
+                                                          Converter={x:Static converters:ObjectConverters.IsNotNull}}" />
+                                </Panel>
                             </Border>
 
                             <Button Name="PART_ScrollToEnd"

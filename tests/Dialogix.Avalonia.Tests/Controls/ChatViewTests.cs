@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
@@ -288,11 +289,41 @@ public class ChatViewTests
 
         Border indicator = Part<Border>(chat, "PART_LoadingMore");
         Assert.False(indicator.IsVisible);
+        Assert.True(Part<ProgressBar>(chat, "PART_LoadingBar").IsVisible);
 
         chat.IsLoadingMore = true;
         Dispatcher.UIThread.RunJobs();
 
         Assert.True(indicator.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Loading_content_replaces_the_default_indicator()
+    {
+        TextBlock custom = new() { Text = "Loading history" };
+        ChatView chat = new ChatView { Messages = ManyMessages(3), IsLoadingMore = true, LoadingContent = custom };
+        Show(chat);
+
+        ContentPresenter content = Part<ContentPresenter>(chat, "PART_LoadingContent");
+        Assert.True(content.IsVisible);
+        Assert.Same(custom, content.Content);
+        Assert.False(Part<ProgressBar>(chat, "PART_LoadingBar").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Loading_content_can_come_from_a_template()
+    {
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(3),
+            IsLoadingMore = true,
+            LoadingContent = new ChatMessage("Loading", "Guest"),
+            LoadingContentTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new TextBlock { Text = message.Text })
+        };
+        Show(chat);
+
+        TextBlock rendered = chat.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == "Loading");
+        Assert.True(rendered.IsVisible);
     }
 
     [AvaloniaFact]
