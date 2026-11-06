@@ -1,5 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Layout;
 using Avalonia.Threading;
@@ -45,6 +47,41 @@ public class MessageBubbleTests
         Show(bubble);
 
         Assert.Equal(new CornerRadius(12), bubble.CornerRadius);
+    }
+
+    [AvaloniaFact]
+    public void Status_is_hidden_without_content()
+    {
+        MessageBubble bubble = new MessageBubble();
+        Show(bubble);
+
+        Assert.Null(bubble.Status);
+        Assert.False(Part<ContentPresenter>(bubble, "PART_Status").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Status_sits_next_to_the_timestamp()
+    {
+        MessageBubble bubble = new MessageBubble { Text = "Hello", Timestamp = "12:00", Status = "Read" };
+        Show(bubble);
+
+        ContentPresenter status = Part<ContentPresenter>(bubble, "PART_Status");
+        Assert.True(status.IsVisible);
+        Assert.Equal("Read", status.Content);
+        Assert.True(Part<TextBlock>(bubble, "PART_Timestamp").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Status_can_come_from_a_template()
+    {
+        MessageBubble bubble = new MessageBubble
+        {
+            Status = "Seen",
+            StatusTemplate = new FuncDataTemplate<string>((text, _) => new TextBlock { Text = text })
+        };
+        Show(bubble);
+
+        Assert.Single(bubble.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "Seen");
     }
 
     [AvaloniaFact]

@@ -8,6 +8,7 @@ using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Threading;
 using Avalonia.VisualTree;
 
@@ -30,6 +31,7 @@ public class ChatViewTests
         Assert.False(chat.HasMore);
         Assert.False(chat.IsLoadingMore);
         Assert.Null(chat.LoadMoreCommand);
+        Assert.Equal(8d, chat.MessageSpacing);
         Assert.Equal(48d, chat.LoadMoreThreshold);
     }
 
@@ -42,6 +44,22 @@ public class ChatViewTests
 
         ItemsRepeater items = Part<ItemsRepeater>(chat, "PART_Items");
         Assert.Same(messages, items.ItemsSource);
+    }
+
+    [AvaloniaFact]
+    public void Message_spacing_is_applied_to_the_layout()
+    {
+        ChatView chat = new ChatView { MessageSpacing = 20 };
+        Show(chat);
+
+        ItemsRepeater items = Part<ItemsRepeater>(chat, "PART_Items");
+        StackLayout layout = Assert.IsType<StackLayout>(items.Layout);
+        Assert.Equal(20d, layout.Spacing);
+
+        chat.MessageSpacing = 4;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(4d, layout.Spacing);
     }
 
     [AvaloniaFact]

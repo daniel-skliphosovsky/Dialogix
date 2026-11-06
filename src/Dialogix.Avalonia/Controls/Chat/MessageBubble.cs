@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Media;
 
 namespace Dialogix.Avalonia.Controls;
@@ -28,6 +29,12 @@ public class MessageBubble : TemplatedControl
     public static readonly StyledProperty<BoxShadows> BoxShadowProperty =
         AvaloniaProperty.Register<MessageBubble, BoxShadows>(nameof(BoxShadow));
 
+    public static readonly StyledProperty<object?> StatusProperty =
+        AvaloniaProperty.Register<MessageBubble, object?>(nameof(Status));
+
+    public static readonly StyledProperty<IDataTemplate?> StatusTemplateProperty =
+        AvaloniaProperty.Register<MessageBubble, IDataTemplate?>(nameof(StatusTemplate));
+
     public string? Text { get => GetValue(TextProperty); set => SetValue(TextProperty, value); }
     public string? Author { get => GetValue(AuthorProperty); set => SetValue(AuthorProperty, value); }
     public string? Timestamp { get => GetValue(TimestampProperty); set => SetValue(TimestampProperty, value); }
@@ -35,6 +42,8 @@ public class MessageBubble : TemplatedControl
     public double MinBubbleWidth { get => GetValue(MinBubbleWidthProperty); set => SetValue(MinBubbleWidthProperty, value); }
     public double MaxBubbleWidth { get => GetValue(MaxBubbleWidthProperty); set => SetValue(MaxBubbleWidthProperty, value); }
     public BoxShadows BoxShadow { get => GetValue(BoxShadowProperty); set => SetValue(BoxShadowProperty, value); }
+    public object? Status { get => GetValue(StatusProperty); set => SetValue(StatusProperty, value); }
+    public IDataTemplate? StatusTemplate { get => GetValue(StatusTemplateProperty); set => SetValue(StatusTemplateProperty, value); }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {

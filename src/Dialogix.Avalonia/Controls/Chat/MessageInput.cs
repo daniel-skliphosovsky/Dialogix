@@ -3,6 +3,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
 using Avalonia.Data;
 using Avalonia.Input;
 using Avalonia.Interactivity;
@@ -42,6 +43,18 @@ public class MessageInput : TemplatedControl
     public static readonly StyledProperty<object?> SendIconProperty =
         AvaloniaProperty.Register<MessageInput, object?>(nameof(SendIcon));
 
+    public static readonly StyledProperty<object?> LeadingContentProperty =
+        AvaloniaProperty.Register<MessageInput, object?>(nameof(LeadingContent));
+
+    public static readonly StyledProperty<IDataTemplate?> LeadingContentTemplateProperty =
+        AvaloniaProperty.Register<MessageInput, IDataTemplate?>(nameof(LeadingContentTemplate));
+
+    public static readonly StyledProperty<object?> ActionContentProperty =
+        AvaloniaProperty.Register<MessageInput, object?>(nameof(ActionContent));
+
+    public static readonly StyledProperty<IDataTemplate?> ActionContentTemplateProperty =
+        AvaloniaProperty.Register<MessageInput, IDataTemplate?>(nameof(ActionContentTemplate));
+
     private TextBox? _textBox;
     private Button? _sendButton;
     private TextBlock? _counter;
@@ -65,6 +78,10 @@ public class MessageInput : TemplatedControl
     public bool CanSend { get => GetValue(CanSendProperty); private set => SetValue(CanSendProperty, value); }
     public ICommand? SendCommand { get => GetValue(SendCommandProperty); set => SetValue(SendCommandProperty, value); }
     public object? SendIcon { get => GetValue(SendIconProperty); set => SetValue(SendIconProperty, value); }
+    public object? LeadingContent { get => GetValue(LeadingContentProperty); set => SetValue(LeadingContentProperty, value); }
+    public IDataTemplate? LeadingContentTemplate { get => GetValue(LeadingContentTemplateProperty); set => SetValue(LeadingContentTemplateProperty, value); }
+    public object? ActionContent { get => GetValue(ActionContentProperty); set => SetValue(ActionContentProperty, value); }
+    public IDataTemplate? ActionContentTemplate { get => GetValue(ActionContentTemplateProperty); set => SetValue(ActionContentTemplateProperty, value); }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {

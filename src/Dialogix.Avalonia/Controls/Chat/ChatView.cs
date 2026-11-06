@@ -8,6 +8,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Interactivity;
+using Avalonia.Layout;
 using Avalonia.Threading;
 
 namespace Dialogix.Avalonia.Controls;
@@ -44,6 +45,9 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<ICommand?> LoadMoreCommandProperty =
         AvaloniaProperty.Register<ChatView, ICommand?>(nameof(LoadMoreCommand));
 
+    public static readonly StyledProperty<double> MessageSpacingProperty =
+        AvaloniaProperty.Register<ChatView, double>(nameof(MessageSpacing), 8d);
+
     public static readonly StyledProperty<double> LoadMoreThresholdProperty =
         AvaloniaProperty.Register<ChatView, double>(nameof(LoadMoreThreshold), 48d);
 
@@ -53,6 +57,7 @@ public class ChatView : TemplatedControl
     public static readonly StyledProperty<bool> SmoothScrollingProperty =
         AvaloniaProperty.Register<ChatView, bool>(nameof(SmoothScrolling), true);
 
+    private ItemsRepeater? _items;
     private ScrollViewer? _scroll;
     private Button? _scrollToEnd;
     private INotifyCollectionChanged? _notifyMessages;
@@ -74,6 +79,7 @@ public class ChatView : TemplatedControl
     public object? LoadingContent { get => GetValue(LoadingContentProperty); set => SetValue(LoadingContentProperty, value); }
     public IDataTemplate? LoadingContentTemplate { get => GetValue(LoadingContentTemplateProperty); set => SetValue(LoadingContentTemplateProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
+    public double MessageSpacing { get => GetValue(MessageSpacingProperty); set => SetValue(MessageSpacingProperty, value); }
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
     public object? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
     public bool SmoothScrolling { get => GetValue(SmoothScrollingProperty); set => SetValue(SmoothScrollingProperty, value); }
@@ -91,8 +97,11 @@ public class ChatView : TemplatedControl
 
         base.OnApplyTemplate(e);
 
+        _items = e.NameScope.Find<ItemsRepeater>("PART_Items");
         _scroll = e.NameScope.Find<ScrollViewer>("PART_Scroll");
         _scrollToEnd = e.NameScope.Find<Button>("PART_ScrollToEnd");
+
+        UpdateMessageSpacing();
 
         if (_scroll is not null)
             _scroll.ScrollChanged += OnScrollChanged;
@@ -186,6 +195,10 @@ public class ChatView : TemplatedControl
             IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
             _canLoadMore = true;
         }
+        else if (change.Property == MessageSpacingProperty)
+        {
+            UpdateMessageSpacing();
+        }
         else if (change.Property == HasMoreProperty && change.GetNewValue<bool>())
         {
             Dispatcher.UIThread.Post(TryLoadMore, DispatcherPriority.Loaded);
@@ -221,6 +234,12 @@ public class ChatView : TemplatedControl
             _canLoadMore = true;
 
         TryLoadMore();
+    }
+
+    private void UpdateMessageSpacing()
+    {
+        if (_items?.Layout is StackLayout layout)
+            layout.Spacing = MessageSpacing;
     }
 
     private static bool IsCollectionEmpty(IEnumerable? items)
