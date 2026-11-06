@@ -8,6 +8,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Media;
 using Avalonia.Media.TextFormatting;
+using Avalonia.VisualTree;
 
 namespace Dialogix.Avalonia.Controls;
 
@@ -194,6 +195,20 @@ public class MessageInput : TemplatedControl
         }
     }
 
+    protected override void OnPointerPressed(PointerPressedEventArgs e)
+    {
+        base.OnPointerPressed(e);
+
+        if (_textBox is null || e.Handled)
+            return;
+
+        if (e.Source is Visual source && source.GetSelfAndVisualAncestors().OfType<Button>().Any())
+            return;
+
+        if (!_textBox.IsKeyboardFocusWithin)
+            _textBox.Focus();
+    }
+
     private void OnSendButtonClick(object? sender, RoutedEventArgs e) => Send();
 
     private void OnTextBoxGotFocus(object? sender, RoutedEventArgs e) => PseudoClasses.Set(":focused", true);
@@ -202,6 +217,13 @@ public class MessageInput : TemplatedControl
 
     private void OnPreviewKeyDown(object? sender, KeyEventArgs e)
     {
+        if (e.Key == Key.Escape)
+        {
+            e.Handled = true;
+            TopLevel.GetTopLevel(this)?.FocusManager?.Focus(null);
+            return;
+        }
+
         if (e.Key != Key.Enter || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             return;
 

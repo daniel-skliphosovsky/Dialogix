@@ -3,6 +3,7 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
@@ -262,6 +263,71 @@ public class ChatViewTests
     }
 
     [AvaloniaFact]
+    public void Load_more_fills_a_viewport_that_does_not_overflow()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(2),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 300);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_can_run_again_after_messages_are_replaced()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = true,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Assert.Single(recorder.Executed);
+
+        chat.Messages = ManyMessages(2);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal(2, recorder.Executed.Count);
+    }
+
+    [AvaloniaFact]
+    public void Load_more_runs_when_older_messages_become_available_at_the_top()
+    {
+        Recorder recorder = new Recorder();
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(40),
+            HasMore = false,
+            LoadMoreCommand = recorder
+        };
+
+        Show(chat, 400, 200);
+
+        ScrollViewer scroll = Part<ScrollViewer>(chat, "PART_Scroll");
+        scroll.Offset = new Vector(0, 0);
+        Dispatcher.UIThread.RunJobs();
+        Assert.Empty(recorder.Executed);
+
+        chat.HasMore = true;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Single(recorder.Executed);
+    }
+
+    [AvaloniaFact]
     public void Prepended_messages_keep_the_scroll_anchor()
     {
         ObservableCollection<MessageBubble> messages = ManyMessages(40);
@@ -278,6 +344,51 @@ public class ChatViewTests
         double added = scroll.Extent.Height - extent;
         Assert.True(added > 0);
         Assert.Equal(added, scroll.Offset.Y, 1d);
+    }
+
+    [AvaloniaFact]
+    public void Loading_more_indicator_follows_the_state()
+    {
+        ChatView chat = new ChatView { Messages = ManyMessages(3) };
+        Show(chat);
+
+        Border indicator = Part<Border>(chat, "PART_LoadingMore");
+        Assert.False(indicator.IsVisible);
+        Assert.True(Part<ProgressBar>(chat, "PART_LoadingBar").IsVisible);
+
+        chat.IsLoadingMore = true;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(indicator.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Loading_content_replaces_the_default_indicator()
+    {
+        TextBlock custom = new() { Text = "Loading history" };
+        ChatView chat = new ChatView { Messages = ManyMessages(3), IsLoadingMore = true, LoadingContent = custom };
+        Show(chat);
+
+        ContentPresenter content = Part<ContentPresenter>(chat, "PART_LoadingContent");
+        Assert.True(content.IsVisible);
+        Assert.Same(custom, content.Content);
+        Assert.False(Part<ProgressBar>(chat, "PART_LoadingBar").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Loading_content_can_come_from_a_template()
+    {
+        ChatView chat = new ChatView
+        {
+            Messages = ManyMessages(3),
+            IsLoadingMore = true,
+            LoadingContent = new ChatMessage("Loading", "Guest"),
+            LoadingContentTemplate = new FuncDataTemplate<ChatMessage>((message, _) => new TextBlock { Text = message.Text })
+        };
+        Show(chat);
+
+        TextBlock rendered = chat.GetVisualDescendants().OfType<TextBlock>().Single(x => x.Text == "Loading");
+        Assert.True(rendered.IsVisible);
     }
 
     [AvaloniaFact]

@@ -2,10 +2,13 @@ using System.Collections.ObjectModel;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Threading;
 
 using Dialogix.Avalonia.Controls;
 
 namespace Dialogix.Avalonia.Demo.Views.Controls;
+
+public sealed record DemoMessage(string Author, string Text, string Time, bool IsOutgoing);
 
 public partial class ChatViewView : UserControl
 {
@@ -42,6 +45,14 @@ public partial class ChatViewView : UserControl
         ("You", "And the scroll-down button still works.")
     ];
 
+    private static readonly (string Author, string Text)[] TemplateSeed =
+    [
+        ("Guest", "This card keeps plain view models."),
+        ("You", "The template turns them into bubbles."),
+        ("Guest", "No control has to know about the data."),
+        ("You", "Try sending something.")
+    ];
+
     public ChatViewView()
     {
         InitializeComponent();
@@ -50,6 +61,7 @@ public partial class ChatViewView : UserControl
         Setup(ChatDefault, InputDefault, DefaultSeed, 3);
         Setup(ChatViolet, InputViolet, VioletSeed, 2);
         Setup(ChatMono, InputMono, MonoSeed, 2);
+        SetupTemplate(ChatTemplate, InputTemplate, TemplateSeed, 2);
 
         SizeChanged += OnSizeChanged;
 
@@ -96,9 +108,19 @@ public partial class ChatViewView : UserControl
 
             pagesLeft--;
             chat.HasMore = pagesLeft > 0;
+            chat.IsLoadingMore = true;
 
-            for (int i = 0; i < 4; i++)
-                messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
+            DispatcherTimer timer = new(TimeSpan.FromMilliseconds(600), DispatcherPriority.Normal, Dispatcher.UIThread);
+            timer.Tick += (_, _) =>
+            {
+                timer.Stop();
+
+                for (int i = 0; i < 4; i++)
+                    messages.Insert(0, CreateBubble("Guest", $"Older message #{i + 1}", 0));
+
+                chat.IsLoadingMore = false;
+            };
+            timer.Start();
         });
 
         input.SendCommand = new RelayCommand(parameter =>
@@ -110,6 +132,46 @@ public partial class ChatViewView : UserControl
             chat.ScrollToEnd();
         });
     }
+
+    private static void SetupTemplate(ChatView chat, MessageInput input, (string Author, string Text)[] seed, int pages)
+    {
+        ObservableCollection<DemoMessage> messages = [];
+        int pagesLeft = pages;
+        int index = 0;
+
+        foreach ((string author, string text) in seed)
+            messages.Add(CreateMessage(author, text, index++));
+
+        chat.Messages = messages;
+        chat.HasMore = pages > 0;
+
+        chat.LoadMoreCommand = new RelayCommand(_ =>
+        {
+            if (pagesLeft <= 0)
+            {
+                chat.HasMore = false;
+                return;
+            }
+
+            pagesLeft--;
+            chat.HasMore = pagesLeft > 0;
+
+            for (int i = 0; i < 4; i++)
+                messages.Insert(0, CreateMessage("Guest", $"Older message #{i + 1}", 0));
+        });
+
+        input.SendCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is not string text || string.IsNullOrWhiteSpace(text))
+                return;
+
+            messages.Add(CreateMessage("You", text, messages.Count));
+            chat.ScrollToEnd();
+        });
+    }
+
+    private static DemoMessage CreateMessage(string author, string text, int index) =>
+        new(author, text, $"12:{index:D2}", author == "You");
 
     private static MessageBubble CreateBubble(string author, string text, int index) => new()
     {
