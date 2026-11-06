@@ -107,7 +107,8 @@ public ObservableCollection<Message> Messages { get; } = [];
 ```
 
 `Messages` only needs `INotifyCollectionChanged` to update live. Inserting at index `0` keeps the
-scroll anchor, so older pages do not make the conversation jump.
+scroll anchor, so older pages do not make the conversation jump. Long conversations are
+virtualized: only the bubbles near the viewport are created.
 
 ### Empty state
 
