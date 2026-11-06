@@ -1,7 +1,7 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:controls="using:Dialogix.Avalonia.Controls"
-             x:Class="Dialogix.Avalonia.Demo.Views.Controls.MessageInputView">
+             x:Class="Dialogix.Avalonia.Demo.Views.Pages.InputPage">
 
     <UserControl.Resources>
         <DrawingImage x:Key="DemoPaperPlaneImage">
@@ -43,11 +43,11 @@
 
         <!-- Nudge the paper plane inside the send circle. -->
         <Style Selector="controls|MessageInput.icon Path">
-            <Setter Property="RenderTransform" Value="translate(-0.75px,0.75px)" />
+            <Setter Property="RenderTransform" Value="translate(-1px,1px)" />
         </Style>
 
         <Style Selector="controls|MessageInput.image Image">
-            <Setter Property="RenderTransform" Value="translate(-0.25px,0.25px)" />
+            <Setter Property="RenderTransform" Value="translate(-0.5px,0.5px)" />
         </Style>
 
         <!-- Restyling a control by selector, without touching the library theme. -->

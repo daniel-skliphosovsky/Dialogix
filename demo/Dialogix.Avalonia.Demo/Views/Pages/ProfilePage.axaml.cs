@@ -2,7 +2,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Media;
 
-namespace Dialogix.Avalonia.Demo.Views.Controls;
+using Dialogix.Avalonia.Demo.Infrastructure;
+
+namespace Dialogix.Avalonia.Demo.Views.Pages;
 
 public partial class ProfilePage : UserControl
 {
