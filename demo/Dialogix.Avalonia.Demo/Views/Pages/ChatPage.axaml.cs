@@ -64,6 +64,7 @@ public partial class ChatPage : UserControl
         Setup(ChatMono, InputMono, MonoSeed, 2);
         SetupTemplate(ChatTemplate, InputTemplate, TemplateSeed, 2);
         SetupEmpty(ChatEmpty, InputEmpty);
+        SetupStress(ChatStress, InputStress);
 
         SizeChanged += OnSizeChanged;
 
@@ -138,6 +139,28 @@ public partial class ChatPage : UserControl
     private static void SetupEmpty(ChatView chat, MessageInput input)
     {
         ObservableCollection<MessageBubble> messages = [];
+        chat.Messages = messages;
+
+        input.SendCommand = new RelayCommand(parameter =>
+        {
+            if (parameter is not string text || string.IsNullOrWhiteSpace(text))
+                return;
+
+            messages.Add(CreateBubble("You", text, messages.Count));
+            chat.ScrollToEnd();
+        });
+    }
+
+    private static void SetupStress(ChatView chat, MessageInput input)
+    {
+        ObservableCollection<MessageBubble> messages = [];
+
+        for (int i = 0; i < 2000; i++)
+        {
+            bool outgoing = i % 3 == 0;
+            messages.Add(CreateBubble(outgoing ? "You" : "Guest", $"Message #{i + 1}", i));
+        }
+
         chat.Messages = messages;
 
         input.SendCommand = new RelayCommand(parameter =>
