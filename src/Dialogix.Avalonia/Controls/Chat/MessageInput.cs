@@ -2,6 +2,7 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Primitives;
 using Avalonia.Data;
 using Avalonia.Input;
@@ -54,6 +55,11 @@ public class MessageInput : TemplatedControl
         TextProperty.Changed.AddClassHandler<MessageInput>((input, _) => input.UpdateTextState());
     }
 
+    public MessageInput()
+    {
+        AddHandler(KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel | RoutingStrategies.Bubble);
+    }
+
     public event EventHandler? Sent;
 
     public string? Text { get => GetValue(TextProperty); set => SetValue(TextProperty, value); }
@@ -70,7 +76,6 @@ public class MessageInput : TemplatedControl
     {
         if (_textBox is not null)
         {
-            _textBox.RemoveHandler(KeyDownEvent, OnPreviewKeyDown);
             _textBox.GotFocus -= OnTextBoxGotFocus;
             _textBox.LostFocus -= OnTextBoxLostFocus;
             _textBox.PropertyChanged -= OnTextBoxPropertyChanged;
@@ -90,7 +95,6 @@ public class MessageInput : TemplatedControl
 
         if (_textBox is not null)
         {
-            _textBox.AddHandler(KeyDownEvent, OnPreviewKeyDown, RoutingStrategies.Tunnel);
             _textBox.GotFocus += OnTextBoxGotFocus;
             _textBox.LostFocus += OnTextBoxLostFocus;
             _textBox.PropertyChanged += OnTextBoxPropertyChanged;
@@ -219,6 +223,9 @@ public class MessageInput : TemplatedControl
     {
         if (e.Key == Key.Escape)
         {
+            if (IsComposing())
+                return;
+
             e.Handled = true;
             TopLevel.GetTopLevel(this)?.FocusManager?.Focus(null);
             return;
@@ -227,9 +234,22 @@ public class MessageInput : TemplatedControl
         if (e.Key != Key.Enter || e.KeyModifiers.HasFlag(KeyModifiers.Shift))
             return;
 
+        if (!IsFromTextBox(e) || IsComposing())
+            return;
+
         e.Handled = true;
         Send();
     }
+
+    private bool IsFromTextBox(KeyEventArgs e) =>
+        _textBox is not null
+        && e.Source is Visual source
+        && source.GetSelfAndVisualAncestors().Contains(_textBox);
+
+    private bool IsComposing() =>
+        _textBox?.GetVisualDescendants()
+            .OfType<TextPresenter>()
+            .Any(presenter => !string.IsNullOrEmpty(presenter.PreeditText)) == true;
 
     private void Send()
     {
@@ -247,6 +267,7 @@ public class MessageInput : TemplatedControl
         Text = string.Empty;
 
         _textBox?.Text = string.Empty;
+        _textBox?.Focus();
 
         Sent?.Invoke(this, EventArgs.Empty);
     }
