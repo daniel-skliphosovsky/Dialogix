@@ -1,6 +1,7 @@
 using System.Windows.Input;
 
 using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
@@ -362,6 +363,16 @@ public class MessageInputTests
 
         Assert.True(args.Handled);
         Assert.False(textBox.IsFocused);
+    }
+
+    [AvaloniaFact]
+    public void Send_button_and_text_box_are_labelled()
+    {
+        MessageInput input = new MessageInput();
+        Show(input);
+
+        Assert.Equal("Send message", AutomationProperties.GetName(Part<Button>(input, "PART_SendButton")));
+        Assert.Equal("Message", AutomationProperties.GetName(Part<TextBox>(input, "PART_TextBox")));
     }
 
     [AvaloniaFact]

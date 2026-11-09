@@ -115,6 +115,7 @@
                             </Border>
 
                             <Button Name="PART_Edit"
+                                    AutomationProperties.Name="Edit profile"
                                     Theme="{StaticResource DialogixProfileEditButtonTheme}"
                                     Command="{TemplateBinding EditCommand}"
                                     IsVisible="{TemplateBinding IsEditVisible}"
@@ -138,6 +139,7 @@
                                        Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
 
                         <ListBox Name="PART_Items"
+                                 AutomationProperties.Name="Profile details"
                                  ItemsSource="{TemplateBinding Items}"
                                  ItemTemplate="{TemplateBinding ItemTemplate}"
                                  SelectedItem="{Binding SelectedItem,
