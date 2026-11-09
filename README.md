@@ -259,11 +259,25 @@ you need a different layout.
 </dx:MessengerView>
 ```
 
-With no selection the right side shows `PlaceholderText` (or the full composer if a conversation is
-selected). `IsListVisible` hides the inbox and `ListWidth` sets its width. `HasConversation` is
-read-only. Header and composer slots mirror their child controls:
-`HeaderLeadingContent`, `HeaderActionContent`, `ComposerLeadingContent` and `ComposerActionContent`
-(plus the matching templates).
+With no selection the right side shows `PlaceholderText`. `IsListVisible` hides the inbox and
+`ListWidth` sets its width. `HasConversation` is read-only.
+
+The chat side keeps its own empty state for a selected conversation without messages. It forwards
+to the nested `ChatView`:
+
+```xml
+<dx:MessengerView SelectedConversation="{Binding Current}"
+                  Messages="{Binding Current.Messages}"
+                  MessagesEmptyContentTemplate="{StaticResource EmptyMessages}">
+    <dx:MessengerView.MessagesEmptyContent>
+        <vm:EmptyState Title="No messages yet" Hint="Say hello to start." />
+    </dx:MessengerView.MessagesEmptyContent>
+</dx:MessengerView>
+```
+
+Header and composer slots mirror their child controls: `HeaderLeadingContent`,
+`HeaderActionContent`, `ComposerLeadingContent` and `ComposerActionContent` (plus the matching
+templates).
 
 ## Message bubble
 
@@ -324,7 +338,8 @@ when there is none.
 ```
 
 Enter saves and Escape cancels while the view has focus. Set `IsSaveOnEnterEnabled` or
-`IsCancelOnEscapeEnabled` to `false` when the host screen already owns those keys.
+`IsCancelOnEscapeEnabled` to `false` when the host screen already owns those keys. `BoxShadow` is a
+normal property on the editor too.
 
 ## Accessibility
 
@@ -350,24 +365,63 @@ Every icon property (`SendIcon`, `ScrollToEndIcon`, `PlaceholderIcon`, `EditIcon
 
 ## Theming
 
-Everything is a resource. Override the whole app:
+All colors are brushes in one resource dictionary. Override the full palette once and every
+Dialogix control follows it, in light and dark themes. No control templates are involved.
 
 ```xml
 <Application.Resources>
     <ResourceDictionary>
         <ResourceDictionary.ThemeDictionaries>
             <ResourceDictionary x:Key="Default">
-                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6366F1" />
+                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
+                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF111111" />
+                <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FFD6EEFF" />
+                <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FF111111" />
+                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FFE2E2E2" />
+                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FFF5F6F8" />
+                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FFFFFFFF" />
+                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF5F6B7A" />
+                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF4F46E5" />
+                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF5E55ED" />
+                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF4338CA" />
+                <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+                <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFDC2626" />
             </ResourceDictionary>
+
             <ResourceDictionary x:Key="Dark">
-                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
+                <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2B2B2B" />
+                <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFF2F2F2" />
+                <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF1F4E6B" />
+                <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFF2F2F2" />
+                <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3D3D3D" />
+                <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1C1C1C" />
+                <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF2A2A2A" />
+                <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF9CA3AF" />
+                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF4F46E5" />
+                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF5E55ED" />
+                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF4338CA" />
+                <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+                <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFF87171" />
             </ResourceDictionary>
         </ResourceDictionary.ThemeDictionaries>
     </ResourceDictionary>
 </Application.Resources>
 ```
 
-Or put the same keys into the `Resources` of any container to recolor just that subtree.
+Put the same keys into the `Resources` of any container to recolor only that subtree:
+
+```xml
+<Border>
+    <Border.Resources>
+        <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF0F2A33" />
+        <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF0F766E" />
+    </Border.Resources>
+
+    <dx:MessengerView />
+</Border>
+```
+
+The default palette keeps text contrast at WCAG AA in both themes.
 
 | Key | Used for |
 | --- | --- |
@@ -384,6 +438,35 @@ Or put the same keys into the `Resources` of any container to recolor just that 
 | `DialogixPrimaryPressedBrush` | Primary press. |
 | `DialogixPrimaryForegroundBrush` | Text and icons on primary. |
 | `DialogixDangerBrush` | Over-limit and error states. |
+
+### One element
+
+Every control exposes its paint as normal properties. Use them when one control should differ from
+the palette; no selector and no template override is needed.
+
+```xml
+<dx:ChatHeader Title="Ocean"
+               Status="Custom"
+               Background="#FF0F2A33"
+               Foreground="#FFE6FFFB"
+               BorderBrush="#FF235A66"
+               CornerRadius="14"
+               BoxShadow="0 10 30 -12 #66000000" />
+
+<dx:MessageBubble Text="Hello"
+                  Background="#FF1E293B"
+                  Foreground="#FFE2E8F0"
+                  CornerRadius="18" />
+
+<dx:MessageInput Watermark="Message"
+                 Background="#FF0C303A"
+                 Foreground="#FFE6FFFB"
+                 BorderBrush="#FF235A66" />
+```
+
+`Background`, `Foreground`, `BorderBrush`, `BorderThickness`, `CornerRadius`, `Padding` and
+`BoxShadow` are available where the control uses them. `ProfileEditorView` has `BoxShadow` too.
+Nested parts such as the composer text box follow the parent's `Foreground` and the palette.
 
 For your own text fields, use the library theme so they match:
 
