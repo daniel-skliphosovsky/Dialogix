@@ -56,11 +56,16 @@ public class ProfileView : TemplatedControl
     public ICommand? ItemCommand { get => GetValue(ItemCommandProperty); set => SetValue(ItemCommandProperty, value); }
     public object? SelectedItem { get => GetValue(SelectedItemProperty); set => SetValue(SelectedItemProperty, value); }
 
+    private const double ClickSlop = 4d;
+
     private ItemsControl? _items;
+    private object? _pressedItem;
+    private Point _pressedPosition;
 
     public ProfileView()
     {
         AddHandler(KeyDownEvent, OnItemKeyDown, RoutingStrategies.Bubble, handledEventsToo: true);
+        AddHandler(PointerPressedEvent, OnItemPointerPressed, RoutingStrategies.Tunnel, handledEventsToo: true);
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -73,17 +78,33 @@ public class ProfileView : TemplatedControl
     {
         base.OnPointerReleased(e);
 
-        if (e.Handled || e.InitialPressMouseButton != MouseButton.Left)
+        object? pressedItem = _pressedItem;
+        Point position = e.GetPosition(this);
+        _pressedItem = null;
+
+        if (e.Handled || e.InitialPressMouseButton != MouseButton.Left || pressedItem is null)
+            return;
+
+        if (Math.Abs(position.X - _pressedPosition.X) > ClickSlop
+            || Math.Abs(position.Y - _pressedPosition.Y) > ClickSlop)
             return;
 
         if (ItemCommand is not { } command || FindItem(e.Source as Visual) is not { } item)
             return;
 
-        if (!command.CanExecute(item))
+        if (!Equals(item, pressedItem) || !command.CanExecute(item))
             return;
 
         e.Handled = true;
         command.Execute(item);
+    }
+
+    private void OnItemPointerPressed(object? sender, PointerPressedEventArgs e)
+    {
+        _pressedItem = e.GetCurrentPoint(this).Properties.IsLeftButtonPressed
+            ? FindItem(e.Source as Visual)
+            : null;
+        _pressedPosition = e.GetPosition(this);
     }
 
     private void OnItemKeyDown(object? sender, KeyEventArgs e)
