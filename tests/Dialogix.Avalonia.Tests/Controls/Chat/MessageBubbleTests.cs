@@ -1,3 +1,4 @@
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Headless.XUnit;
 using Avalonia.Layout;
@@ -35,6 +36,15 @@ public class MessageBubbleTests
 
         bubble.IsOutgoing = false;
         Assert.DoesNotContain(":outgoing", bubble.Classes);
+    }
+
+    [AvaloniaFact]
+    public void Bubbles_are_rounded_by_default()
+    {
+        MessageBubble bubble = new MessageBubble();
+        Show(bubble);
+
+        Assert.Equal(new CornerRadius(12), bubble.CornerRadius);
     }
 
     [AvaloniaFact]
