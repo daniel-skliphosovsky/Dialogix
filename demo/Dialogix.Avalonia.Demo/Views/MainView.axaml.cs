@@ -11,6 +11,8 @@ namespace Dialogix.Avalonia.Demo.Views;
 
 public partial class MainView : UserControl
 {
+    private readonly Dictionary<string, Control> _pages = [];
+
     public MainView()
     {
         InitializeComponent();
@@ -31,8 +33,23 @@ public partial class MainView : UserControl
             ShowPage(tag);
     }
 
-    private void ShowPage(string tag) =>
-        PageHost.Content = tag switch
+    private void ShowPage(string tag)
+    {
+        if (!_pages.TryGetValue(tag, out Control? page))
+        {
+            page = CreatePage(tag);
+
+            if (page is null)
+                return;
+
+            _pages[tag] = page;
+        }
+
+        PageHost.Content = page;
+    }
+
+    private static Control? CreatePage(string tag) =>
+        tag switch
         {
             "bubble" => new BubblePage(),
             "input" => new InputPage(),
