@@ -34,6 +34,17 @@ public class ProfileEditorViewTests
         Assert.Equal("Cancel", editor.CancelText);
         Assert.True(editor.IsSaveOnEnterEnabled);
         Assert.True(editor.IsCancelOnEscapeEnabled);
+        Assert.NotEqual(default, editor.BoxShadow);
+    }
+
+    [AvaloniaFact]
+    public void Box_shadow_is_bound()
+    {
+        BoxShadows shadow = BoxShadows.Parse("0 2 8 0 #66FF0000");
+        ProfileEditorView editor = new ProfileEditorView { BoxShadow = shadow };
+        Show(editor);
+
+        Assert.Equal(shadow, Part<Border>(editor, "PART_Root").BoxShadow);
     }
 
     [AvaloniaFact]

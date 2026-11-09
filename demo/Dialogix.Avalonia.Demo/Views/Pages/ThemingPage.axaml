@@ -1,0 +1,140 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Dialogix.Avalonia.Controls"
+             xmlns:local="using:Dialogix.Avalonia.Demo.Views.Pages"
+             x:Class="Dialogix.Avalonia.Demo.Views.Pages.ThemingPage"
+             x:DataType="local:ThemingPage">
+
+    <UserControl.Styles>
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource DemoChatBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="BoxShadow" Value="0 6 48 -20 #1F000000" />
+        </Style>
+
+        <Style Selector="TextBlock.cardTitle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="TextBlock.cardHint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.55" />
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="1140"
+                    Margin="24"
+                    Spacing="20">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="Theming"
+                           FontSize="26"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="Override one palette for a whole subtree, or set properties on a single control."
+                           Opacity="0.6"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Classes="card">
+                <StackPanel Spacing="10">
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="One palette" />
+                        <TextBlock Classes="cardHint"
+                                   Text="These brushes are declared once on the card and reach every nested Dialogix control." />
+                    </StackPanel>
+
+                    <Border CornerRadius="14"
+                            Padding="12"
+                            ClipToBounds="True"
+                            Background="{DynamicResource DialogixChatBackgroundBrush}">
+                        <Border.Resources>
+                            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF0F2A33" />
+                            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFE6FFFB" />
+                            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF0E7490" />
+                            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF235A66" />
+                            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF08232B" />
+                            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF0C303A" />
+                            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFA7D8D2" />
+                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF0F766E" />
+                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF115E59" />
+                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF134E4A" />
+                            <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+                            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFF87171" />
+                        </Border.Resources>
+
+                        <Grid RowDefinitions="Auto,*,Auto" Height="360">
+                            <controls:ChatHeader Grid.Row="0"
+                                                 Title="Ocean"
+                                                 Status="Scoped palette" />
+
+                            <controls:ChatView Grid.Row="1"
+                                               Messages="{Binding OceanMessages}"
+                                               EmptyContent="No messages yet" />
+
+                            <controls:MessageInput Grid.Row="2"
+                                                   Watermark="Message"
+                                                   SendCommand="{Binding OceanSendCommand}"
+                                                   Margin="0,8,0,0" />
+                        </Grid>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card">
+                <StackPanel Spacing="10">
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="Per element" />
+                        <TextBlock Classes="cardHint"
+                                   Text="Set the same brushes as properties. No templates and no /template/ selectors." />
+                    </StackPanel>
+
+                    <Border Background="{DynamicResource DemoPageBackgroundBrush}"
+                            CornerRadius="14"
+                            Padding="12">
+                        <StackPanel Spacing="10">
+
+                        <controls:ChatHeader Title="Custom header"
+                                             Status="Foreground, border, radius and shadow"
+                                             Background="#FF0B1220"
+                                             Foreground="#FFF8FAFC"
+                                             BorderBrush="#FF38BDF8"
+                                             BorderThickness="1"
+                                             CornerRadius="14"
+                                             Padding="16,10"
+                                             BoxShadow="0 10 30 -12 #66000000" />
+
+                        <controls:MessageBubble Text="Bubble background, foreground, radius and shadow are properties."
+                                                Author="Nina"
+                                                Timestamp="12:41"
+                                                Background="#FF1E293B"
+                                                Foreground="#FFE2E8F0"
+                                                CornerRadius="18"
+                                                BoxShadow="0 8 22 -12 #66000000"
+                                                MaxBubbleWidth="420" />
+
+                        <controls:MessageBubble Text="No template edits."
+                                                Author="You"
+                                                Timestamp="12:42"
+                                                IsOutgoing="True"
+                                                Background="#FF065F46"
+                                                Foreground="#FFECFDF5"
+                                                CornerRadius="18" />
+
+                        <controls:MessageInput Watermark="Type a message..."
+                                               Background="#FF0B1220"
+                                               Foreground="#FFF8FAFC"
+                                               BorderBrush="#FF38BDF8"
+                                               CornerRadius="18" />
+
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
