@@ -36,6 +36,7 @@ not have to fix Fluent parts in your app.
 | --- | --- |
 | `ChatHeader` | Title and status over a rounded surface. |
 | `ChatView` | Scrolling conversation with auto-scroll, paging and a scroll-to-end button. |
+| `ConversationListView` | Virtualized chat list with selection and an empty state. |
 | `MessageBubble` | One message: author, text, timestamp, incoming or outgoing. |
 | `MessageInput` | Growing composer with Enter to send and Shift+Enter for a new line. |
 | `ProfileView` | Avatar, display name, clickable rows and an edit button. |
@@ -190,6 +191,43 @@ model). The pill itself can be restyled with a selector, like any other part:
 ```
 
 `ChatView.ScrollToEnd()` jumps to the latest message from code.
+
+## Conversation list
+
+`ConversationListView` is a virtualized list of chats. It takes any items, a template, and a
+two-way `SelectedConversation`. The list scrolls and reuses row containers, so a long inbox stays
+cheap.
+
+```xml
+<dx:ConversationListView Items="{Binding Conversations}"
+                         SelectedConversation="{Binding Current, Mode=TwoWay}"
+                         Height="480">
+    <dx:ConversationListView.ItemTemplate>
+        <DataTemplate x:DataType="vm:Conversation">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Border Width="38" Height="38" CornerRadius="19"
+                        Background="{DynamicResource DialogixAccentBrush}">
+                    <TextBlock Text="{Binding Initials}"
+                               Foreground="{DynamicResource DialogixAccentForegroundBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Text="{Binding Preview}" FontSize="12" Opacity="0.6" />
+                </StackPanel>
+                <TextBlock Grid.Column="2"
+                           Text="{Binding Time}"
+                           FontSize="11"
+                           Opacity="0.5" />
+            </Grid>
+        </DataTemplate>
+    </dx:ConversationListView.ItemTemplate>
+</dx:ConversationListView>
+```
+
+Rows are selected with the pointer or the keyboard. Like `ChatView`, the control accepts
+`EmptyContent` and `EmptyContentTemplate` while `IsEmpty` is true.
 
 ## Message bubble
 
