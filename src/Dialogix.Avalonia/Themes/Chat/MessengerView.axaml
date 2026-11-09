@@ -55,6 +55,8 @@
                                                    Grid.Row="1"
                                                    Messages="{TemplateBinding Messages}"
                                                    MessageTemplate="{TemplateBinding MessageTemplate}"
+                                                   EmptyContent="{TemplateBinding MessagesEmptyContent}"
+                                                   EmptyContentTemplate="{TemplateBinding MessagesEmptyContentTemplate}"
                                                    HasMore="{TemplateBinding HasMore}"
                                                    IsLoadingMore="{TemplateBinding IsLoadingMore}"
                                                    LoadMoreCommand="{TemplateBinding LoadMoreCommand}" />

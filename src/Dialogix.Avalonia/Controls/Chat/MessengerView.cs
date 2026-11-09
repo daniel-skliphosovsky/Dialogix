@@ -36,6 +36,12 @@ public class MessengerView : TemplatedControl
     public static readonly StyledProperty<IDataTemplate?> MessageTemplateProperty =
         AvaloniaProperty.Register<MessengerView, IDataTemplate?>(nameof(MessageTemplate));
 
+    public static readonly StyledProperty<object?> MessagesEmptyContentProperty =
+        AvaloniaProperty.Register<MessengerView, object?>(nameof(MessagesEmptyContent));
+
+    public static readonly StyledProperty<IDataTemplate?> MessagesEmptyContentTemplateProperty =
+        AvaloniaProperty.Register<MessengerView, IDataTemplate?>(nameof(MessagesEmptyContentTemplate));
+
     public static readonly StyledProperty<string?> TitleProperty =
         AvaloniaProperty.Register<MessengerView, string?>(nameof(Title));
 
@@ -104,6 +110,8 @@ public class MessengerView : TemplatedControl
     public IDataTemplate? ConversationsEmptyContentTemplate { get => GetValue(ConversationsEmptyContentTemplateProperty); set => SetValue(ConversationsEmptyContentTemplateProperty, value); }
     public IEnumerable? Messages { get => GetValue(MessagesProperty); set => SetValue(MessagesProperty, value); }
     public IDataTemplate? MessageTemplate { get => GetValue(MessageTemplateProperty); set => SetValue(MessageTemplateProperty, value); }
+    public object? MessagesEmptyContent { get => GetValue(MessagesEmptyContentProperty); set => SetValue(MessagesEmptyContentProperty, value); }
+    public IDataTemplate? MessagesEmptyContentTemplate { get => GetValue(MessagesEmptyContentTemplateProperty); set => SetValue(MessagesEmptyContentTemplateProperty, value); }
     public string? Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
     public string? Status { get => GetValue(StatusProperty); set => SetValue(StatusProperty, value); }
     public string? PlaceholderText { get => GetValue(PlaceholderTextProperty); set => SetValue(PlaceholderTextProperty, value); }
