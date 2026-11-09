@@ -36,6 +36,7 @@ public class ConversationListView : TemplatedControl
             view => view.IsEmpty);
 
     private INotifyCollectionChanged? _notifyItems;
+    private bool _isAttached;
     private bool _isEmpty = true;
 
     public IEnumerable? Items { get => GetValue(ItemsProperty); set => SetValue(ItemsProperty, value); }
@@ -45,6 +46,22 @@ public class ConversationListView : TemplatedControl
     public IDataTemplate? EmptyContentTemplate { get => GetValue(EmptyContentTemplateProperty); set => SetValue(EmptyContentTemplateProperty, value); }
     public bool IsEmpty { get => _isEmpty; private set => SetAndRaise(IsEmptyProperty, ref _isEmpty, value); }
 
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        _isAttached = true;
+        SubscribeToItems();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _isAttached = false;
+        UnsubscribeFromItems();
+
+        base.OnDetachedFromVisualTree(e);
+    }
+
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
     {
         base.OnPropertyChanged(change);
@@ -52,15 +69,34 @@ public class ConversationListView : TemplatedControl
         if (change.Property != ItemsProperty)
             return;
 
-        if (_notifyItems is not null)
-            _notifyItems.CollectionChanged -= OnItemsChanged;
+        UnsubscribeFromItems();
 
-        _notifyItems = change.GetNewValue<IEnumerable?>() as INotifyCollectionChanged;
+        if (_isAttached)
+            SubscribeToItems();
+
+        IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
+    }
+
+    private void SubscribeToItems()
+    {
+        if (_notifyItems is not null)
+            return;
+
+        _notifyItems = Items as INotifyCollectionChanged;
 
         if (_notifyItems is not null)
             _notifyItems.CollectionChanged += OnItemsChanged;
 
-        IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
+        IsEmpty = IsCollectionEmpty(Items);
+    }
+
+    private void UnsubscribeFromItems()
+    {
+        if (_notifyItems is null)
+            return;
+
+        _notifyItems.CollectionChanged -= OnItemsChanged;
+        _notifyItems = null;
     }
 
     private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
