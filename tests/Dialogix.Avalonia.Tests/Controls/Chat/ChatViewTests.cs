@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Controls.Templates;
@@ -44,6 +45,15 @@ public class ChatViewTests
 
         ItemsRepeater items = Part<ItemsRepeater>(chat, "PART_Items");
         Assert.Same(messages, items.ItemsSource);
+    }
+
+    [AvaloniaFact]
+    public void Scroll_button_is_labelled()
+    {
+        ChatView chat = new ChatView();
+        Show(chat);
+
+        Assert.Equal("Scroll to latest message", AutomationProperties.GetName(Part<Button>(chat, "PART_ScrollToEnd")));
     }
 
     [AvaloniaFact]

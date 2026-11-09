@@ -2,6 +2,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
 using Avalonia.Headless;
@@ -87,6 +88,16 @@ public class ProfileViewTests
         ItemsControl control = Part<ItemsControl>(profile, "PART_Items");
         Assert.Same(items, control.ItemsSource);
         Assert.Same(template, control.ItemTemplate);
+    }
+
+    [AvaloniaFact]
+    public void Edit_button_and_details_are_labelled()
+    {
+        ProfileView view = new ProfileView();
+        Show(view);
+
+        Assert.Equal("Edit profile", AutomationProperties.GetName(Part<Button>(view, "PART_Edit")));
+        Assert.Equal("Profile details", AutomationProperties.GetName(Part<ListBox>(view, "PART_Items")));
     }
 
     [AvaloniaFact]

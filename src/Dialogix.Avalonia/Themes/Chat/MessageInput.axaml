@@ -74,6 +74,7 @@
 
                             <TextBox Name="PART_TextBox"
                                      Grid.Column="1"
+                                     AutomationProperties.Name="{TemplateBinding Watermark}"
                                      Theme="{DynamicResource DialogixTextBoxTheme}"
                                      Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                      PlaceholderText="{TemplateBinding Watermark}"
@@ -111,6 +112,7 @@
 
                             <Button Name="PART_SendButton"
                                     Grid.Column="4"
+                                    AutomationProperties.Name="Send message"
                                     Theme="{StaticResource DialogixSendButtonTheme}"
                                     VerticalAlignment="Bottom"
                                     IsEnabled="{TemplateBinding CanSend}">

@@ -112,6 +112,7 @@
                             </Border>
 
                             <Button Name="PART_ScrollToEnd"
+                                    AutomationProperties.Name="Scroll to latest message"
                                     Theme="{StaticResource DialogixScrollButtonTheme}"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Bottom"
