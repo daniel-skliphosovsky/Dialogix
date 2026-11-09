@@ -1,6 +1,7 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:controls="using:Dialogix.Avalonia.Controls">
+        xmlns:controls="using:Dialogix.Avalonia.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters">
 
     <Styles.Resources>
 
@@ -62,9 +63,17 @@
                             CornerRadius="{TemplateBinding CornerRadius}"
                             Padding="{TemplateBinding Padding}">
 
-                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*,Auto,Auto,Auto" ColumnSpacing="8">
+
+                            <ContentPresenter Name="PART_Leading"
+                                              Content="{TemplateBinding LeadingContent}"
+                                              ContentTemplate="{TemplateBinding LeadingContentTemplate}"
+                                              IsVisible="{TemplateBinding LeadingContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
 
                             <TextBox Name="PART_TextBox"
+                                     Grid.Column="1"
                                      Theme="{DynamicResource DialogixTextBoxTheme}"
                                      Text="{Binding Text, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                      PlaceholderText="{TemplateBinding Watermark}"
@@ -85,15 +94,23 @@
                                      Foreground="{TemplateBinding Foreground}" />
 
                             <TextBlock Name="PART_Counter"
-                                       Grid.Column="1"
+                                       Grid.Column="2"
                                        IsVisible="False"
                                        Margin="0,0,2,0"
                                        FontSize="11"
                                        VerticalAlignment="Center"
                                        Foreground="{DynamicResource DialogixMutedForegroundBrush}" />
 
+                            <ContentPresenter Name="PART_Action"
+                                              Grid.Column="3"
+                                              Content="{TemplateBinding ActionContent}"
+                                              ContentTemplate="{TemplateBinding ActionContentTemplate}"
+                                              IsVisible="{TemplateBinding ActionContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
+
                             <Button Name="PART_SendButton"
-                                    Grid.Column="2"
+                                    Grid.Column="4"
                                     Theme="{StaticResource DialogixSendButtonTheme}"
                                     VerticalAlignment="Bottom"
                                     IsEnabled="{TemplateBinding CanSend}">

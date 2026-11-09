@@ -2,6 +2,8 @@ using System.Windows.Input;
 
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Templates;
 using Avalonia.Headless;
 using Avalonia.Headless.XUnit;
 using Avalonia.Input;
@@ -27,6 +29,10 @@ public class MessageInputTests
         Assert.Equal(5, input.MaxLines);
         Assert.Equal(0, input.MaxLength);
         Assert.Null(input.SendCommand);
+        Assert.Null(input.LeadingContent);
+        Assert.Null(input.LeadingContentTemplate);
+        Assert.Null(input.ActionContent);
+        Assert.Null(input.ActionContentTemplate);
     }
 
     [AvaloniaFact]
@@ -375,6 +381,39 @@ public class MessageInputTests
         Dispatcher.UIThread.RunJobs();
 
         Assert.False(button.IsFocused);
+    }
+
+    [AvaloniaFact]
+    public void Leading_and_action_content_are_hosted()
+    {
+        TextBlock leading = new() { Text = "Attach" };
+        Button action = new() { Content = "More" };
+        MessageInput input = new() { LeadingContent = leading, ActionContent = action };
+        Show(input);
+
+        ContentPresenter leadingHost = Part<ContentPresenter>(input, "PART_Leading");
+        ContentPresenter actionHost = Part<ContentPresenter>(input, "PART_Action");
+
+        Assert.Same(leading, leadingHost.Content);
+        Assert.Same(action, actionHost.Content);
+        Assert.True(leadingHost.IsVisible);
+        Assert.True(actionHost.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Slot_content_can_come_from_templates()
+    {
+        MessageInput input = new()
+        {
+            LeadingContent = "pin",
+            LeadingContentTemplate = new FuncDataTemplate<string>((text, _) => new TextBlock { Text = text }),
+            ActionContent = "extra",
+            ActionContentTemplate = new FuncDataTemplate<string>((text, _) => new TextBlock { Text = text })
+        };
+        Show(input);
+
+        Assert.Single(input.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "pin");
+        Assert.Single(input.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "extra");
     }
 
     [AvaloniaFact]

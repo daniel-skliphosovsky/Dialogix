@@ -44,14 +44,27 @@
                                                      TextWrapping="Wrap"
                                                      Foreground="{TemplateBinding Foreground}" />
 
-                                <TextBlock Name="PART_Timestamp"
-                                           Text="{TemplateBinding Timestamp}"
-                                           FontSize="11"
-                                           HorizontalAlignment="Right"
-                                           Opacity="0.7"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           IsVisible="{TemplateBinding Timestamp,
-                                               Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+                                <StackPanel Orientation="Horizontal"
+                                            Spacing="4"
+                                            HorizontalAlignment="Right">
+
+                                    <TextBlock Name="PART_Timestamp"
+                                               Text="{TemplateBinding Timestamp}"
+                                               FontSize="11"
+                                               VerticalAlignment="Center"
+                                               Opacity="0.7"
+                                               Foreground="{TemplateBinding Foreground}"
+                                               IsVisible="{TemplateBinding Timestamp,
+                                                   Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+
+                                    <ContentPresenter Name="PART_Status"
+                                                      Content="{TemplateBinding Status}"
+                                                      ContentTemplate="{TemplateBinding StatusTemplate}"
+                                                      IsVisible="{TemplateBinding Status,
+                                                          Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                                      VerticalAlignment="Center" />
+
+                                </StackPanel>
 
                             </StackPanel>
                         </Border>
