@@ -1,6 +1,7 @@
 using System.Windows.Input;
 
 using Avalonia;
+using Avalonia.Automation;
 using Avalonia.Controls;
 using Avalonia.Controls.Presenters;
 using Avalonia.Headless;
@@ -33,6 +34,16 @@ public class ProfileEditorViewTests
         Assert.Equal("Cancel", editor.CancelText);
         Assert.True(editor.IsSaveOnEnterEnabled);
         Assert.True(editor.IsCancelOnEscapeEnabled);
+    }
+
+    [AvaloniaFact]
+    public void Actions_are_labelled()
+    {
+        ProfileEditorView view = new ProfileEditorView();
+        Show(view);
+
+        Assert.Equal("Cancel editing", AutomationProperties.GetName(Part<Button>(view, "PART_Cancel")));
+        Assert.Equal("Save profile", AutomationProperties.GetName(Part<Button>(view, "PART_Save")));
     }
 
     [AvaloniaFact]

@@ -144,11 +144,13 @@
                                         HorizontalAlignment="Right">
 
                                 <Button Name="PART_Cancel"
+                                        AutomationProperties.Name="Cancel editing"
                                         Theme="{StaticResource DialogixProfileSecondaryButtonTheme}"
                                         Content="{TemplateBinding CancelText}"
                                         Command="{TemplateBinding CancelCommand}" />
 
                                 <Button Name="PART_Save"
+                                        AutomationProperties.Name="Save profile"
                                         Theme="{StaticResource DialogixProfilePrimaryButtonTheme}"
                                         Content="{TemplateBinding SaveText}"
                                         Command="{TemplateBinding SaveCommand}" />
