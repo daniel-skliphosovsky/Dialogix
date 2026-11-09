@@ -269,6 +269,21 @@
                     </StackPanel>
                 </Border>
 
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Stress" />
+                            <TextBlock Classes="cardHint" Text="2,000 messages. Only the visible ones are realized." />
+                        </StackPanel>
+                        <controls:ChatView x:Name="ChatStress"
+                                           Height="360"
+                                           CornerRadius="12"
+                                           Padding="14" />
+                        <controls:MessageInput x:Name="InputStress" />
+                    </StackPanel>
+                </Border>
+
             </WrapPanel>
         </StackPanel>
     </ScrollViewer>
