@@ -26,28 +26,49 @@
                             Padding="{TemplateBinding Padding}"
                             BoxShadow="{TemplateBinding BoxShadow}">
 
-                        <StackPanel Spacing="1" HorizontalAlignment="Center">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
 
-                            <TextBlock Name="PART_Title"
-                                       Text="{TemplateBinding Title}"
-                                       FontSize="14"
-                                       FontWeight="SemiBold"
-                                       TextTrimming="CharacterEllipsis"
-                                       HorizontalAlignment="Center"
-                                       Foreground="{TemplateBinding Foreground}"
-                                       IsVisible="{TemplateBinding Title,
-                                           Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+                            <ContentPresenter Name="PART_Leading"
+                                              Content="{TemplateBinding LeadingContent}"
+                                              ContentTemplate="{TemplateBinding LeadingContentTemplate}"
+                                              IsVisible="{TemplateBinding LeadingContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
 
-                            <TextBlock Name="PART_Status"
-                                       Text="{TemplateBinding Status}"
-                                       FontSize="11"
-                                       TextTrimming="CharacterEllipsis"
-                                       HorizontalAlignment="Center"
-                                       Foreground="{DynamicResource DialogixMutedForegroundBrush}"
-                                       IsVisible="{TemplateBinding Status,
-                                           Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+                            <StackPanel Grid.Column="1"
+                                        Spacing="1"
+                                        HorizontalAlignment="Center">
 
-                        </StackPanel>
+                                <TextBlock Name="PART_Title"
+                                           Text="{TemplateBinding Title}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           IsVisible="{TemplateBinding Title,
+                                               Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+
+                                <TextBlock Name="PART_Status"
+                                           Text="{TemplateBinding Status}"
+                                           FontSize="11"
+                                           TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource DialogixMutedForegroundBrush}"
+                                           IsVisible="{TemplateBinding Status,
+                                               Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+
+                            </StackPanel>
+
+                            <ContentPresenter Name="PART_Action"
+                                              Grid.Column="2"
+                                              Content="{TemplateBinding ActionContent}"
+                                              ContentTemplate="{TemplateBinding ActionContentTemplate}"
+                                              IsVisible="{TemplateBinding ActionContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
+
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter>

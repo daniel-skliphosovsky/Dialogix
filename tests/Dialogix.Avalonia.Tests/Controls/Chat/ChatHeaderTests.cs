@@ -1,4 +1,5 @@
 using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
 using Avalonia.Headless.XUnit;
 using Avalonia.Layout;
 using Avalonia.Threading;
@@ -19,6 +20,10 @@ public class ChatHeaderTests
         Assert.Null(header.Status);
         Assert.Equal(0, header.BoxShadow.Count);
         Assert.False(header.HasContent);
+        Assert.Null(header.LeadingContent);
+        Assert.Null(header.LeadingContentTemplate);
+        Assert.Null(header.ActionContent);
+        Assert.Null(header.ActionContentTemplate);
     }
 
     [AvaloniaFact]
@@ -53,6 +58,24 @@ public class ChatHeaderTests
         Assert.True(Part<Border>(header, "PART_Island").IsVisible);
         Assert.True(Part<TextBlock>(header, "PART_Title").IsVisible);
         Assert.True(Part<TextBlock>(header, "PART_Status").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Leading_and_action_content_are_hosted()
+    {
+        Button back = new() { Content = "Back" };
+        Button more = new() { Content = "More" };
+        ChatHeader header = new() { Title = "Nina", LeadingContent = back, ActionContent = more };
+        Show(header);
+
+        ContentPresenter leading = Part<ContentPresenter>(header, "PART_Leading");
+        ContentPresenter action = Part<ContentPresenter>(header, "PART_Action");
+
+        Assert.Same(back, leading.Content);
+        Assert.Same(more, action.Content);
+        Assert.True(leading.IsVisible);
+        Assert.True(action.IsVisible);
+        Assert.True(header.HasContent);
     }
 
     [AvaloniaFact]
