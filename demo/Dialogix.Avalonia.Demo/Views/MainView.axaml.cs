@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 
+using Dialogix.Avalonia.Demo.Infrastructure;
 using Dialogix.Avalonia.Demo.Views.Pages;
 
 using FluentAvalonia.UI.Controls;
@@ -21,10 +22,24 @@ public partial class MainView : UserControl
         ShowPage("bubble");
     }
 
-    private void OnThemeSwitchChanged(object? sender, RoutedEventArgs e)
+    private void OnThemeSwitchChanged(object? sender, RoutedEventArgs e) => ApplyTheme();
+
+    private void OnHackerSwitchChanged(object? sender, RoutedEventArgs e) => ApplyTheme();
+
+    private void ApplyTheme()
     {
-        if (sender is ToggleSwitch toggle && Application.Current is { } app)
-            app.RequestedThemeVariant = toggle.IsChecked == true ? ThemeVariant.Dark : ThemeVariant.Light;
+        if (Application.Current is not { } app)
+            return;
+
+        bool hacker = HackerSwitch.IsChecked == true;
+
+        app.RequestedThemeVariant = hacker
+            ? DemoTheme.Hacker
+            : ThemeSwitch.IsChecked == true
+                ? ThemeVariant.Dark
+                : ThemeVariant.Light;
+
+        Nav.FontFamily = hacker ? DemoTheme.HackerFont : DemoTheme.DefaultFont;
     }
 
     private void OnNavigationSelectionChanged(object? sender, FANavigationViewSelectionChangedEventArgs e)

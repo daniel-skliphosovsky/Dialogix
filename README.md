@@ -473,3 +473,7 @@ For your own text fields, use the library theme so they match:
 ```xml
 <TextBox Theme="{DynamicResource DialogixTextBoxTheme}" PlaceholderText="Search" />
 ```
+
+The demo also ships a **Hacker skin** toggle. It switches the app to a custom theme variant with a
+green terminal palette and a monospace font, so the same controls can be checked in a completely
+different skin.

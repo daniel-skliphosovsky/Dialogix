@@ -55,11 +55,15 @@
         </fa:FANavigationView.MenuItems>
 
         <fa:FANavigationView.PaneFooter>
-            <ToggleSwitch x:Name="ThemeSwitch"
-                          Margin="12,8,12,16"
-                          IsChecked="True"
-                          Content="Dark theme"
-                          IsCheckedChanged="OnThemeSwitchChanged" />
+            <StackPanel Margin="12,8,12,16" Spacing="4">
+                <ToggleSwitch x:Name="ThemeSwitch"
+                              IsChecked="True"
+                              Content="Dark theme"
+                              IsCheckedChanged="OnThemeSwitchChanged" />
+                <ToggleSwitch x:Name="HackerSwitch"
+                              Content="Hacker skin"
+                              IsCheckedChanged="OnHackerSwitchChanged" />
+            </StackPanel>
         </fa:FANavigationView.PaneFooter>
 
         <fa:FANavigationView.Content>
