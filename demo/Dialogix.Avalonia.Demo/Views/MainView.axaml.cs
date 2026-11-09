@@ -55,6 +55,7 @@ public partial class MainView : UserControl
             "input" => new InputPage(),
             "chat" => new ChatPage(),
             "conversations" => new ConversationListPage(),
+            "messenger" => new MessengerPage(),
             "profile" => new ProfilePage(),
             _ => null
         };

@@ -17,6 +17,7 @@
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ChatView.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ChatHeader.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ConversationListView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/MessengerView.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Profile/ProfileView.axaml" />
     <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Profile/ProfileEditorView.axaml" />
 </Styles>
