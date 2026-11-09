@@ -37,6 +37,7 @@ not have to fix Fluent parts in your app.
 | `ChatHeader` | Title and status over a rounded surface. |
 | `ChatView` | Scrolling conversation with auto-scroll, paging and a scroll-to-end button. |
 | `ConversationListView` | Virtualized chat list with selection and an empty state. |
+| `MessengerView` | Inbox, active chat and composer composed in one control. |
 | `MessageBubble` | One message: author, text, timestamp, incoming or outgoing. |
 | `MessageInput` | Growing composer with Enter to send and Shift+Enter for a new line. |
 | `ProfileView` | Avatar, display name, clickable rows and an edit button. |
@@ -228,6 +229,41 @@ cheap.
 
 Rows are selected with the pointer or the keyboard. Like `ChatView`, the control accepts
 `EmptyContent` and `EmptyContentTemplate` while `IsEmpty` is true.
+
+## Messenger view
+
+`MessengerView` composes the list, the header, the conversation and the composer. It is a thin
+wrapper: every part is still a normal Dialogix control, and the primitives remain available when
+you need a different layout.
+
+```xml
+<dx:MessengerView Conversations="{Binding Conversations}"
+                  SelectedConversation="{Binding Current, Mode=TwoWay}"
+                  Messages="{Binding Current.Messages}"
+                  Title="{Binding Current.Name}"
+                  Status="{Binding Current.Status}"
+                  SendCommand="{Binding SendCommand}">
+    <dx:MessengerView.ConversationTemplate>
+        <DataTemplate x:DataType="vm:Conversation">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+    </dx:MessengerView.ConversationTemplate>
+
+    <dx:MessengerView.MessageTemplate>
+        <DataTemplate x:DataType="vm:Message">
+            <dx:MessageBubble Text="{Binding Text}"
+                              Author="{Binding Author}"
+                              IsOutgoing="{Binding IsOutgoing}" />
+        </DataTemplate>
+    </dx:MessengerView.MessageTemplate>
+</dx:MessengerView>
+```
+
+With no selection the right side shows `PlaceholderText` (or the full composer if a conversation is
+selected). `IsListVisible` hides the inbox and `ListWidth` sets its width. `HasConversation` is
+read-only. Header and composer slots mirror their child controls:
+`HeaderLeadingContent`, `HeaderActionContent`, `ComposerLeadingContent` and `ComposerActionContent`
+(plus the matching templates).
 
 ## Message bubble
 
