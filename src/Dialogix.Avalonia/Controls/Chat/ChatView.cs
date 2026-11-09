@@ -64,6 +64,7 @@ public class ChatView : TemplatedControl
     private ScrollViewer? _scroll;
     private Button? _scrollToEnd;
     private INotifyCollectionChanged? _notifyMessages;
+    private bool _isAttached;
     private bool _canLoadMore = true;
     private double _anchorExtent;
     private double _anchorOffset;
@@ -87,6 +88,22 @@ public class ChatView : TemplatedControl
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
     public object? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
     public bool SmoothScrolling { get => GetValue(SmoothScrollingProperty); set => SetValue(SmoothScrollingProperty, value); }
+
+    protected override void OnAttachedToVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        base.OnAttachedToVisualTree(e);
+
+        _isAttached = true;
+        SubscribeToMessages();
+    }
+
+    protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
+    {
+        _isAttached = false;
+        UnsubscribeFromMessages();
+
+        base.OnDetachedFromVisualTree(e);
+    }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
     {
@@ -188,13 +205,10 @@ public class ChatView : TemplatedControl
 
         if (change.Property == MessagesProperty)
         {
-            if (_notifyMessages is not null)
-                _notifyMessages.CollectionChanged -= OnMessagesChanged;
+            UnsubscribeFromMessages();
 
-            _notifyMessages = change.GetNewValue<IEnumerable?>() as INotifyCollectionChanged;
-
-            if (_notifyMessages is not null)
-                _notifyMessages.CollectionChanged += OnMessagesChanged;
+            if (_isAttached)
+                SubscribeToMessages();
 
             IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
             _canLoadMore = true;
@@ -207,6 +221,28 @@ public class ChatView : TemplatedControl
         {
             Dispatcher.UIThread.Post(TryLoadMore, DispatcherPriority.Loaded);
         }
+    }
+
+    private void SubscribeToMessages()
+    {
+        if (_notifyMessages is not null)
+            return;
+
+        _notifyMessages = Messages as INotifyCollectionChanged;
+
+        if (_notifyMessages is not null)
+            _notifyMessages.CollectionChanged += OnMessagesChanged;
+
+        IsEmpty = IsCollectionEmpty(Messages);
+    }
+
+    private void UnsubscribeFromMessages()
+    {
+        if (_notifyMessages is null)
+            return;
+
+        _notifyMessages.CollectionChanged -= OnMessagesChanged;
+        _notifyMessages = null;
     }
 
     private void OnScrollChanged(object? sender, ScrollChangedEventArgs e)

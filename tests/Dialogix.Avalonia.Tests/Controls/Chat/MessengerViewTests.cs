@@ -26,6 +26,8 @@ public class MessengerViewTests
         Assert.Null(view.ConversationsEmptyContentTemplate);
         Assert.Null(view.Messages);
         Assert.Null(view.MessageTemplate);
+        Assert.Null(view.MessagesEmptyContent);
+        Assert.Null(view.MessagesEmptyContentTemplate);
         Assert.Null(view.Title);
         Assert.Null(view.Status);
         Assert.Equal("Select a conversation", view.PlaceholderText);
@@ -152,6 +154,24 @@ public class MessengerViewTests
         Dispatcher.UIThread.RunJobs();
 
         Assert.False(host.IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Empty_messages_state_is_forwarded_to_the_chat()
+    {
+        TextBlock empty = new() { Text = "No messages yet" };
+        IDataTemplate template = new FuncDataTemplate<object>((_, _) => new TextBlock());
+        MessengerView view = new MessengerView
+        {
+            SelectedConversation = "Nina",
+            MessagesEmptyContent = empty,
+            MessagesEmptyContentTemplate = template
+        };
+        Show(view);
+
+        ChatView chat = Part<ChatView>(view, "PART_Chat");
+        Assert.Same(empty, chat.EmptyContent);
+        Assert.Same(template, chat.EmptyContentTemplate);
     }
 
     [AvaloniaFact]

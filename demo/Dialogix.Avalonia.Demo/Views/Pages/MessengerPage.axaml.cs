@@ -9,6 +9,8 @@ namespace Dialogix.Avalonia.Demo.Views.Pages;
 
 public sealed record MessengerMessage(string Author, string Text, string Time, bool IsOutgoing);
 
+public sealed record MessengerEmptyState(string Title, string Hint);
+
 public sealed class MessengerConversation(
     string name,
     string initials,
@@ -46,15 +48,27 @@ public partial class MessengerPage : UserControl
             Conversation("Project room", "PR", "Denis: pushed the fix.", "11:32", true, "5",
                 ("Denis", "Pushed the fix.", "11:32", false)),
             Conversation("Support", "S", "Ticket #1842 was resolved.", "10:47", false, "",
-                ("Support", "Ticket #1842 was resolved.", "10:47", false))
+                ("Support", "Ticket #1842 was resolved.", "10:47", false)),
+            Conversation("New chat", "NC", "No messages yet.", "", false, "")
         ];
 
-        Messenger.Conversations = conversations;
-        Messenger.SendCommand = new RelayCommand(parameter =>
+        Configure(Messenger, conversations, conversations[0]);
+        Configure(EmptyChat, conversations, conversations[^1]);
+        Configure(NoSelection, conversations, null);
+    }
+
+    private static void Configure(
+        MessengerView view,
+        MessengerConversation[] conversations,
+        MessengerConversation? selected)
+    {
+        view.Conversations = conversations;
+        view.MessagesEmptyContent = new MessengerEmptyState("No messages yet", "Say hello to start the conversation.");
+        view.SendCommand = new RelayCommand(parameter =>
         {
             if (parameter is not string text
                 || string.IsNullOrWhiteSpace(text)
-                || Messenger.SelectedConversation is not MessengerConversation conversation)
+                || view.SelectedConversation is not MessengerConversation conversation)
             {
                 return;
             }
@@ -62,27 +76,31 @@ public partial class MessengerPage : UserControl
             conversation.Messages.Add(new MessengerMessage("You", text, "Now", true));
         });
 
-        Messenger.PropertyChanged += (_, e) =>
+        view.PropertyChanged += (_, e) =>
         {
             if (e.Property == MessengerView.SelectedConversationProperty)
-                ShowConversation();
+                ShowConversation(view);
         };
 
-        Messenger.SelectedConversation = conversations[0];
-        ShowConversation();
+        view.SelectedConversation = selected;
+        ShowConversation(view);
     }
 
-    private void ShowConversation()
+    private static void ShowConversation(MessengerView view)
     {
-        if (Messenger.SelectedConversation is not MessengerConversation conversation)
+        if (view.SelectedConversation is not MessengerConversation conversation)
         {
-            Messenger.Messages = null;
+            view.Messages = null;
             return;
         }
 
-        Messenger.Title = conversation.Name;
-        Messenger.Status = conversation.IsUnread ? "New messages" : "Online";
-        Messenger.Messages = conversation.Messages;
+        view.Title = conversation.Name;
+        view.Status = conversation.Messages.Count == 0
+            ? "No messages yet"
+            : conversation.IsUnread
+                ? "New messages"
+                : "Online";
+        view.Messages = conversation.Messages;
     }
 
     private static MessengerConversation Conversation(

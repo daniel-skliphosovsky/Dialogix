@@ -42,6 +42,11 @@
                     <fa:FASymbolIconSource Symbol="Contact" />
                 </fa:FANavigationViewItem.IconSource>
             </fa:FANavigationViewItem>
+            <fa:FANavigationViewItem x:Name="ThemingItem" Content="Theming" Tag="theming">
+                <fa:FANavigationViewItem.IconSource>
+                    <fa:FASymbolIconSource Symbol="Setting" />
+                </fa:FANavigationViewItem.IconSource>
+            </fa:FANavigationViewItem>
             <fa:FANavigationViewItem x:Name="ProfileNavItem" Content="Profile" Tag="profile">
                 <fa:FANavigationViewItem.IconSource>
                     <fa:FASymbolIconSource Symbol="Contact" />

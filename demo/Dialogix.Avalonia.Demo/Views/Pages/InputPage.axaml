@@ -108,9 +108,9 @@
                                 <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
                                 <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF241540" />
                                 <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
-                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
-                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF9F7BFA" />
-                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF7C4BEF" />
+                                <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6D3EE0" />
+                                <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7C4BEF" />
+                                <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5B30C4" />
                             </controls:MessageInput.Resources>
                         </controls:MessageInput>
                         <TextBlock x:Name="SentViolet"

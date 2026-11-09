@@ -523,6 +523,31 @@ public class ChatViewTests
         Assert.True(rendered.IsVisible);
     }
 
+    [AvaloniaFact]
+    public void Detaching_stops_tracking_the_collection()
+    {
+        ObservableCollection<MessageBubble> messages = [];
+        ChatView chat = new ChatView { Messages = messages };
+        Window window = new Window { Content = chat, Width = 400, Height = 300 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(chat.IsEmpty);
+
+        window.Content = null;
+        Dispatcher.UIThread.RunJobs();
+
+        messages.Add(new MessageBubble { Text = "Hello" });
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(chat.IsEmpty);
+
+        window.Content = chat;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(chat.IsEmpty);
+    }
+
     private sealed record ChatMessage(string Text, string Author);
 
     private static ObservableCollection<MessageBubble> ManyMessages(int count)

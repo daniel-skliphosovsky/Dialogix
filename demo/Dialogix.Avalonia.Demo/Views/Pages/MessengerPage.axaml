@@ -4,6 +4,81 @@
              xmlns:local="using:Dialogix.Avalonia.Demo.Views.Pages"
              x:Class="Dialogix.Avalonia.Demo.Views.Pages.MessengerPage">
 
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="ConversationTemplate" x:DataType="local:MessengerConversation">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Border Width="38"
+                        Height="38"
+                        CornerRadius="19"
+                        Background="{DynamicResource DialogixAccentBrush}">
+                    <TextBlock Text="{Binding Initials}"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource DialogixAccentForegroundBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="2"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Preview}"
+                               FontSize="12"
+                               Opacity="0.6"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Spacing="4"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Time}"
+                               FontSize="11"
+                               Opacity="0.5"
+                               HorizontalAlignment="Right" />
+                    <Border IsVisible="{Binding IsUnread}"
+                            MinWidth="18"
+                            Height="18"
+                            Padding="4,0"
+                            CornerRadius="9"
+                            Background="{DynamicResource DialogixPrimaryBrush}"
+                            HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding Unread}"
+                                   FontSize="10"
+                                   Foreground="{DynamicResource DialogixPrimaryForegroundBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="MessageTemplate" x:DataType="local:MessengerMessage">
+            <controls:MessageBubble Text="{Binding Text}"
+                                    Author="{Binding Author}"
+                                    Timestamp="{Binding Time}"
+                                    IsOutgoing="{Binding IsOutgoing}" />
+        </DataTemplate>
+
+        <DataTemplate x:Key="EmptyMessagesTemplate" x:DataType="local:MessengerEmptyState">
+            <StackPanel Spacing="4"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                <TextBlock Text="{Binding Title}"
+                           FontWeight="SemiBold"
+                           HorizontalAlignment="Center" />
+                <TextBlock Text="{Binding Hint}"
+                           FontSize="12"
+                           Opacity="0.6"
+                           HorizontalAlignment="Center" />
+            </StackPanel>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
     <UserControl.Styles>
 
         <Style Selector="Border.card">
@@ -48,70 +123,47 @@
 
                     <controls:MessengerView x:Name="Messenger"
                                             Height="620"
-                                            ListWidth="300">
-                        <controls:MessengerView.ConversationTemplate>
-                            <DataTemplate x:DataType="local:MessengerConversation">
-                                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                                    <Border Width="38"
-                                            Height="38"
-                                            CornerRadius="19"
-                                            Background="{DynamicResource DialogixAccentBrush}">
-                                        <TextBlock Text="{Binding Initials}"
-                                                   FontSize="13"
-                                                   FontWeight="SemiBold"
-                                                   Foreground="{DynamicResource DialogixAccentForegroundBrush}"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center" />
-                                    </Border>
-
-                                    <StackPanel Grid.Column="1"
-                                                Spacing="2"
-                                                VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Name}"
-                                                   FontWeight="SemiBold"
-                                                   TextTrimming="CharacterEllipsis" />
-                                        <TextBlock Text="{Binding Preview}"
-                                                   FontSize="12"
-                                                   Opacity="0.6"
-                                                   TextTrimming="CharacterEllipsis" />
-                                    </StackPanel>
-
-                                    <StackPanel Grid.Column="2"
-                                                Spacing="4"
-                                                VerticalAlignment="Center">
-                                        <TextBlock Text="{Binding Time}"
-                                                   FontSize="11"
-                                                   Opacity="0.5"
-                                                   HorizontalAlignment="Right" />
-                                        <Border IsVisible="{Binding IsUnread}"
-                                                MinWidth="18"
-                                                Height="18"
-                                                Padding="4,0"
-                                                CornerRadius="9"
-                                                Background="{DynamicResource DialogixPrimaryBrush}"
-                                                HorizontalAlignment="Right">
-                                            <TextBlock Text="{Binding Unread}"
-                                                       FontSize="10"
-                                                       Foreground="{DynamicResource DialogixPrimaryForegroundBrush}"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
-                                        </Border>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </controls:MessengerView.ConversationTemplate>
-
-                        <controls:MessengerView.MessageTemplate>
-                            <DataTemplate x:DataType="local:MessengerMessage">
-                                <controls:MessageBubble Text="{Binding Text}"
-                                                        Author="{Binding Author}"
-                                                        Timestamp="{Binding Time}"
-                                                        IsOutgoing="{Binding IsOutgoing}" />
-                            </DataTemplate>
-                        </controls:MessengerView.MessageTemplate>
-                    </controls:MessengerView>
+                                            ListWidth="300"
+                                            ConversationTemplate="{StaticResource ConversationTemplate}"
+                                            MessageTemplate="{StaticResource MessageTemplate}"
+                                            MessagesEmptyContentTemplate="{StaticResource EmptyMessagesTemplate}" />
                 </StackPanel>
             </Border>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+                <Border Grid.Column="0" Classes="card">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Empty chat" />
+                            <TextBlock Classes="cardHint" Text="A selected conversation without messages." />
+                        </StackPanel>
+
+                        <controls:MessengerView x:Name="EmptyChat"
+                                                Height="440"
+                                                ListWidth="240"
+                                                ConversationTemplate="{StaticResource ConversationTemplate}"
+                                                MessageTemplate="{StaticResource MessageTemplate}"
+                                                MessagesEmptyContentTemplate="{StaticResource EmptyMessagesTemplate}" />
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="card">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="No selection" />
+                            <TextBlock Classes="cardHint" Text="The placeholder fills the chat pane." />
+                        </StackPanel>
+
+                        <controls:MessengerView x:Name="NoSelection"
+                                                Height="440"
+                                                ListWidth="240"
+                                                PlaceholderText="Pick a conversation to start"
+                                                ConversationTemplate="{StaticResource ConversationTemplate}"
+                                                MessageTemplate="{StaticResource MessageTemplate}"
+                                                MessagesEmptyContentTemplate="{StaticResource EmptyMessagesTemplate}" />
+                    </StackPanel>
+                </Border>
+            </Grid>
 
         </StackPanel>
     </ScrollViewer>

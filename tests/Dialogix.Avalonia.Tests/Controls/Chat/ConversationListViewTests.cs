@@ -114,6 +114,31 @@ public class ConversationListViewTests
         Assert.Equal("Conversations", AutomationProperties.GetName(Part<ListBox>(list, "PART_Items")));
     }
 
+    [AvaloniaFact]
+    public void Detaching_stops_tracking_the_collection()
+    {
+        ObservableCollection<string> items = [];
+        ConversationListView list = new ConversationListView { Items = items };
+        Window window = new Window { Content = list, Width = 400, Height = 300 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(list.IsEmpty);
+
+        window.Content = null;
+        Dispatcher.UIThread.RunJobs();
+
+        items.Add("Settings");
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.True(list.IsEmpty);
+
+        window.Content = list;
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(list.IsEmpty);
+    }
+
     private static void Show(Control control)
     {
         Window window = new Window { Content = control, Width = 400, Height = 300 };
