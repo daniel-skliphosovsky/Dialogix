@@ -159,6 +159,47 @@ public class ProfileViewTests
     }
 
     [AvaloniaFact]
+    public void Pointer_click_does_not_leave_a_focus_ring_on_the_row()
+    {
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate()
+        };
+        Show(profile);
+
+        Click(RowText(profile, "Settings"));
+
+        ListBox list = Part<ListBox>(profile, "PART_Items");
+        ListBoxItem row = (ListBoxItem)list.ContainerFromIndex(0)!;
+        Border root = row.GetVisualDescendants().OfType<Border>().First(x => x.Name == "PART_Root");
+
+        Assert.True(row.IsSelected);
+        Assert.Equal(Brushes.Transparent, root.BorderBrush);
+    }
+
+    [AvaloniaFact]
+    public void Keyboard_focus_marks_the_row()
+    {
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate()
+        };
+        Show(profile);
+
+        ListBox list = Part<ListBox>(profile, "PART_Items");
+        ListBoxItem row = (ListBoxItem)list.ContainerFromIndex(0)!;
+        row.Focus(NavigationMethod.Tab);
+        Dispatcher.UIThread.RunJobs();
+
+        Border root = row.GetVisualDescendants().OfType<Border>().First(x => x.Name == "PART_Root");
+
+        Assert.True(row.IsFocused);
+        Assert.NotEqual(Brushes.Transparent, root.BorderBrush);
+    }
+
+    [AvaloniaFact]
     public void Item_command_ignores_clicks_outside_the_items()
     {
         Recorder recorder = new Recorder();

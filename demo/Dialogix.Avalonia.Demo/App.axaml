@@ -10,10 +10,18 @@
                 <ResourceDictionary x:Key="Default">
                     <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FFF4F5F7" />
                     <SolidColorBrush x:Key="DemoChatBackgroundBrush" Color="#FFEDEFF3" />
+                    <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#14000000" />
+                    <SolidColorBrush x:Key="DemoMonoSurfaceBrush" Color="#FFFFFFFF" />
+                    <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF111111" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FF121212" />
                     <SolidColorBrush x:Key="DemoChatBackgroundBrush" Color="#FF1C1C1C" />
+                    <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#1AFFFFFF" />
+                    <SolidColorBrush x:Key="DemoMonoSurfaceBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FFF2F2F2" />
+                    <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF3D3D3D" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

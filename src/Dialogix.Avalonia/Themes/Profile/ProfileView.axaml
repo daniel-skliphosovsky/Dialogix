@@ -64,11 +64,11 @@
                 </ControlTemplate>
             </Setter>
 
-            <Style Selector="^:focus /template/ Border#PART_Root">
+            <Style Selector="^:focus-visible /template/ Border#PART_Root">
                 <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
             </Style>
 
-            <Style Selector="^:selected /template/ Border#PART_Root">
+            <Style Selector="^:selected:focus-visible /template/ Border#PART_Root">
                 <Setter Property="Background" Value="{DynamicResource DialogixInputBackgroundBrush}" />
             </Style>
 
