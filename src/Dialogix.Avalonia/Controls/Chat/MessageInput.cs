@@ -14,6 +14,9 @@ using Avalonia.VisualTree;
 
 namespace Dialogix.Avalonia.Controls;
 
+/// <summary>
+/// A growing message composer with Enter to send and Shift+Enter for a new line.
+/// </summary>
 public class MessageInput : TemplatedControl
 {
     public static readonly StyledProperty<string?> TextProperty =
@@ -84,9 +87,13 @@ public class MessageInput : TemplatedControl
     public bool CanSend { get => GetValue(CanSendProperty); private set => SetValue(CanSendProperty, value); }
     public ICommand? SendCommand { get => GetValue(SendCommandProperty); set => SetValue(SendCommandProperty, value); }
     public object? SendIcon { get => GetValue(SendIconProperty); set => SetValue(SendIconProperty, value); }
+    /// <summary>Content shown before the text box.</summary>
     public object? LeadingContent { get => GetValue(LeadingContentProperty); set => SetValue(LeadingContentProperty, value); }
+    /// <summary>Template used to render <see cref="LeadingContent"/>.</summary>
     public IDataTemplate? LeadingContentTemplate { get => GetValue(LeadingContentTemplateProperty); set => SetValue(LeadingContentTemplateProperty, value); }
+    /// <summary>Content shown between the counter and the send button.</summary>
     public object? ActionContent { get => GetValue(ActionContentProperty); set => SetValue(ActionContentProperty, value); }
+    /// <summary>Template used to render <see cref="ActionContent"/>.</summary>
     public IDataTemplate? ActionContentTemplate { get => GetValue(ActionContentTemplateProperty); set => SetValue(ActionContentTemplateProperty, value); }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)

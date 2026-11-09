@@ -12,7 +12,7 @@ dependency on the host theme, so the controls look the same in light and dark th
 dotnet add package Dialogix.Avalonia --prerelease
 ```
 
-Avalonia 12 and .NET 10 are required.
+Avalonia 12 and .NET 8 or .NET 10 are required.
 
 ## Include the styles
 
@@ -84,6 +84,35 @@ public MainWindow()
 
 `SendCommand` gets the current text as its parameter, and the composer clears itself after a
 successful send. `ScrollToEndIcon` accepts anything `IconPresenter` accepts.
+
+`MessageSpacing` sets the gap between bubbles (8 by default).
+
+### Header and composer slots
+
+Both the header and the composer can host your own controls without a custom template. Put a
+control into `LeadingContent` or `ActionContent`; `LeadingContentTemplate` and
+`ActionContentTemplate` do the same for a bound view model. The header stays centered and the
+composer keeps its layout.
+
+```xml
+<dx:ChatHeader Title="Guest" Status="Online">
+    <dx:ChatHeader.LeadingContent>
+        <Button Content="Back" />
+    </dx:ChatHeader.LeadingContent>
+    <dx:ChatHeader.ActionContent>
+        <Button Content="More" />
+    </dx:ChatHeader.ActionContent>
+</dx:ChatHeader>
+
+<dx:MessageInput Watermark="Message">
+    <dx:MessageInput.LeadingContent>
+        <Button Content="Attach" />
+    </dx:MessageInput.LeadingContent>
+    <dx:MessageInput.ActionContent>
+        <Button Content="Emoji" />
+    </dx:MessageInput.ActionContent>
+</dx:MessageInput>
+```
 
 ## Messages as data
 
@@ -171,7 +200,19 @@ model). The pill itself can be restyled with a selector, like any other part:
                   IsOutgoing="False" />
 ```
 
-`MaxBubbleWidth` defaults to 520 and the text is selectable.
+`MaxBubbleWidth` defaults to 520, the corner radius is 12, and the text is selectable.
+
+### Delivery status
+
+`Status` shows a small piece of content next to the timestamp. It is hidden when null.
+`StatusTemplate` renders a view model instead:
+
+```xml
+<dx:MessageBubble Text="Hello"
+                  Timestamp="12:41"
+                  Status="Read"
+                  IsOutgoing="True" />
+```
 
 ## Profile
 
@@ -206,7 +247,15 @@ hides the pencil. `Avatar` takes an `IImage`; `PlaceholderIcon` is shown when th
 </dx:ProfileEditorView>
 ```
 
-Enter saves and Escape cancels while the view has focus.
+Enter saves and Escape cancels while the view has focus. Set `IsSaveOnEnterEnabled` or
+`IsCancelOnEscapeEnabled` to `false` when the host screen already owns those keys.
+
+## Accessibility
+
+The built-in actions have stable automation names: `Send message`, `Scroll to latest message`,
+`Edit profile`, `Save profile`, `Cancel editing` and `Profile details`. The composer's text box
+takes its name from `Watermark`. The profile rows are reachable with Tab, the arrow keys and
+Enter or Space.
 
 ## Icons
 

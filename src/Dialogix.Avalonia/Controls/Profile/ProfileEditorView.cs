@@ -52,7 +52,9 @@ public class ProfileEditorView : TemplatedControl
     public ICommand? CancelCommand { get => GetValue(CancelCommandProperty); set => SetValue(CancelCommandProperty, value); }
     public string? SaveText { get => GetValue(SaveTextProperty); set => SetValue(SaveTextProperty, value); }
     public string? CancelText { get => GetValue(CancelTextProperty); set => SetValue(CancelTextProperty, value); }
+    /// <summary>Whether Enter runs <see cref="SaveCommand"/>.</summary>
     public bool IsSaveOnEnterEnabled { get => GetValue(IsSaveOnEnterEnabledProperty); set => SetValue(IsSaveOnEnterEnabledProperty, value); }
+    /// <summary>Whether Escape runs <see cref="CancelCommand"/>.</summary>
     public bool IsCancelOnEscapeEnabled { get => GetValue(IsCancelOnEscapeEnabledProperty); set => SetValue(IsCancelOnEscapeEnabledProperty, value); }
 
     protected override void OnKeyDown(KeyEventArgs e)

@@ -13,6 +13,9 @@ using Avalonia.Threading;
 
 namespace Dialogix.Avalonia.Controls;
 
+/// <summary>
+/// A scrolling conversation with auto-scroll, paging and an empty state.
+/// </summary>
 public class ChatView : TemplatedControl
 {
     public static readonly StyledProperty<IEnumerable?> MessagesProperty =
@@ -79,6 +82,7 @@ public class ChatView : TemplatedControl
     public object? LoadingContent { get => GetValue(LoadingContentProperty); set => SetValue(LoadingContentProperty, value); }
     public IDataTemplate? LoadingContentTemplate { get => GetValue(LoadingContentTemplateProperty); set => SetValue(LoadingContentTemplateProperty, value); }
     public ICommand? LoadMoreCommand { get => GetValue(LoadMoreCommandProperty); set => SetValue(LoadMoreCommandProperty, value); }
+    /// <summary>Gap between messages, in device-independent pixels.</summary>
     public double MessageSpacing { get => GetValue(MessageSpacingProperty); set => SetValue(MessageSpacingProperty, value); }
     public double LoadMoreThreshold { get => GetValue(LoadMoreThresholdProperty); set => SetValue(LoadMoreThresholdProperty, value); }
     public object? ScrollToEndIcon { get => GetValue(ScrollToEndIconProperty); set => SetValue(ScrollToEndIconProperty, value); }
