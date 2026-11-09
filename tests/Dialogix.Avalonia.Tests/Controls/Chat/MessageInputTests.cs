@@ -366,6 +366,25 @@ public class MessageInputTests
     }
 
     [AvaloniaFact]
+    public void Escape_removes_focus_from_any_part_of_the_composer()
+    {
+        MessageInput input = new MessageInput { Text = "Hello" };
+        Window window = new() { Content = input, Width = 400, Height = 200 };
+        window.Show();
+        Dispatcher.UIThread.RunJobs();
+
+        Button button = Part<Button>(input, "PART_SendButton");
+        button.Focus();
+        Dispatcher.UIThread.RunJobs();
+        Assert.True(button.IsFocused);
+
+        window.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.False(button.IsFocused);
+    }
+
+    [AvaloniaFact]
     public void Send_button_and_text_box_are_labelled()
     {
         MessageInput input = new MessageInput();
@@ -406,25 +425,6 @@ public class MessageInputTests
 
         Assert.Single(input.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "pin");
         Assert.Single(input.GetVisualDescendants().OfType<TextBlock>(), x => x.Text == "extra");
-    }
-
-    [AvaloniaFact]
-    public void Escape_removes_focus_from_any_part_of_the_composer()
-    {
-        MessageInput input = new MessageInput { Text = "Hello" };
-        Window window = new() { Content = input, Width = 400, Height = 200 };
-        window.Show();
-        Dispatcher.UIThread.RunJobs();
-
-        Button button = Part<Button>(input, "PART_SendButton");
-        button.Focus();
-        Dispatcher.UIThread.RunJobs();
-        Assert.True(button.IsFocused);
-
-        window.KeyPress(Key.Escape, RawInputModifiers.None, PhysicalKey.Escape, null);
-        Dispatcher.UIThread.RunJobs();
-
-        Assert.False(button.IsFocused);
     }
 
     [AvaloniaFact]

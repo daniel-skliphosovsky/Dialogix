@@ -6,6 +6,9 @@ using Avalonia.Media;
 
 namespace Dialogix.Avalonia.Controls;
 
+/// <summary>
+/// One message: author, text, timestamp and an optional delivery status.
+/// </summary>
 public class MessageBubble : TemplatedControl
 {
     public static readonly StyledProperty<string?> TextProperty =
@@ -42,7 +45,9 @@ public class MessageBubble : TemplatedControl
     public double MinBubbleWidth { get => GetValue(MinBubbleWidthProperty); set => SetValue(MinBubbleWidthProperty, value); }
     public double MaxBubbleWidth { get => GetValue(MaxBubbleWidthProperty); set => SetValue(MaxBubbleWidthProperty, value); }
     public BoxShadows BoxShadow { get => GetValue(BoxShadowProperty); set => SetValue(BoxShadowProperty, value); }
+    /// <summary>Optional content shown next to the timestamp. Hidden when null.</summary>
     public object? Status { get => GetValue(StatusProperty); set => SetValue(StatusProperty, value); }
+    /// <summary>Template used to render <see cref="Status"/>.</summary>
     public IDataTemplate? StatusTemplate { get => GetValue(StatusTemplateProperty); set => SetValue(StatusTemplateProperty, value); }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
