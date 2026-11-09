@@ -32,6 +32,8 @@ public class ProfileEditorViewTests
         Assert.Null(editor.CancelCommand);
         Assert.Equal("Save", editor.SaveText);
         Assert.Equal("Cancel", editor.CancelText);
+        Assert.True(editor.IsSaveOnEnterEnabled);
+        Assert.True(editor.IsCancelOnEscapeEnabled);
     }
 
     [AvaloniaFact]
@@ -84,6 +86,24 @@ public class ProfileEditorViewTests
 
         Assert.False(Part<IconPresenter>(editor, "PART_Placeholder").IsVisible);
         Assert.True(Part<Image>(editor, "PART_Image").IsVisible);
+    }
+
+    [AvaloniaFact]
+    public void Keyboard_shortcuts_can_be_disabled()
+    {
+        Recorder recorder = new Recorder();
+        ProfileEditorView editor = new ProfileEditorView
+        {
+            SaveCommand = recorder,
+            CancelCommand = recorder,
+            IsSaveOnEnterEnabled = false,
+            IsCancelOnEscapeEnabled = false
+        };
+        Show(editor);
+
+        Assert.False(Press(editor, Key.Enter).Handled);
+        Assert.False(Press(editor, Key.Escape).Handled);
+        Assert.Empty(recorder.Executed);
     }
 
     [AvaloniaFact]

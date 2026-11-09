@@ -177,6 +177,33 @@ public class ProfileViewTests
     }
 
     [AvaloniaFact]
+    public void Item_command_ignores_a_drag_that_ends_on_the_row()
+    {
+        Recorder recorder = new Recorder();
+        ProfileView profile = new ProfileView
+        {
+            Items = new[] { "Settings" },
+            ItemTemplate = RowTemplate(),
+            ItemCommand = recorder
+        };
+        Show(profile);
+
+        TextBlock row = RowText(profile, "Settings");
+        Window window = (Window)TopLevel.GetTopLevel(row)!;
+        window.UpdateLayout();
+
+        Point start = row.TranslatePoint(new Point(row.Bounds.Width / 2, row.Bounds.Height / 2), window)!.Value;
+        Point end = start + new Vector(16, 0);
+
+        window.MouseDown(start, MouseButton.Left);
+        window.MouseMove(end, RawInputModifiers.LeftMouseButton);
+        window.MouseUp(end, MouseButton.Left);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Empty(recorder.Executed);
+    }
+
+    [AvaloniaFact]
     public void Item_command_is_not_run_when_it_cannot_execute()
     {
         Recorder recorder = new Recorder { CanRun = false };
