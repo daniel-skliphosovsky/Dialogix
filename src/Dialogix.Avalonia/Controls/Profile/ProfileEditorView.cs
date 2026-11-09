@@ -37,6 +37,12 @@ public class ProfileEditorView : TemplatedControl
     public static readonly StyledProperty<string?> CancelTextProperty =
         AvaloniaProperty.Register<ProfileEditorView, string?>(nameof(CancelText), "Cancel");
 
+    public static readonly StyledProperty<bool> IsSaveOnEnterEnabledProperty =
+        AvaloniaProperty.Register<ProfileEditorView, bool>(nameof(IsSaveOnEnterEnabled), true);
+
+    public static readonly StyledProperty<bool> IsCancelOnEscapeEnabledProperty =
+        AvaloniaProperty.Register<ProfileEditorView, bool>(nameof(IsCancelOnEscapeEnabled), true);
+
     public IImage? Avatar { get => GetValue(AvatarProperty); set => SetValue(AvatarProperty, value); }
     public object? PlaceholderIcon { get => GetValue(PlaceholderIconProperty); set => SetValue(PlaceholderIconProperty, value); }
     public string? Title { get => GetValue(TitleProperty); set => SetValue(TitleProperty, value); }
@@ -46,6 +52,8 @@ public class ProfileEditorView : TemplatedControl
     public ICommand? CancelCommand { get => GetValue(CancelCommandProperty); set => SetValue(CancelCommandProperty, value); }
     public string? SaveText { get => GetValue(SaveTextProperty); set => SetValue(SaveTextProperty, value); }
     public string? CancelText { get => GetValue(CancelTextProperty); set => SetValue(CancelTextProperty, value); }
+    public bool IsSaveOnEnterEnabled { get => GetValue(IsSaveOnEnterEnabledProperty); set => SetValue(IsSaveOnEnterEnabledProperty, value); }
+    public bool IsCancelOnEscapeEnabled { get => GetValue(IsCancelOnEscapeEnabledProperty); set => SetValue(IsCancelOnEscapeEnabledProperty, value); }
 
     protected override void OnKeyDown(KeyEventArgs e)
     {
@@ -56,8 +64,8 @@ public class ProfileEditorView : TemplatedControl
 
         ICommand? command = e.Key switch
         {
-            Key.Enter => SaveCommand,
-            Key.Escape => CancelCommand,
+            Key.Enter when IsSaveOnEnterEnabled => SaveCommand,
+            Key.Escape when IsCancelOnEscapeEnabled => CancelCommand,
             _ => null
         };
 
