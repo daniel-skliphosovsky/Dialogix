@@ -19,7 +19,7 @@
                         </GeometryDrawing.Geometry>
                         <GeometryDrawing.Brush>
                             <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
-                                <GradientStop Color="#FF8B5CF6" Offset="0" />
+                                <GradientStop Color="#FF6D3EE0" Offset="0" />
                                 <GradientStop Color="#FF6366F1" Offset="1" />
                             </LinearGradientBrush>
                         </GeometryDrawing.Brush>
@@ -206,9 +206,9 @@
                             <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF3A2763" />
                             <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#33FFFFFF" />
                             <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
-                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF8B5CF6" />
-                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF9F7BFA" />
-                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF7C4BEF" />
+                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6D3EE0" />
+                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7C4BEF" />
+                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5B30C4" />
                             <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
                         </StackPanel.Resources>
 
