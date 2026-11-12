@@ -55,6 +55,7 @@ public partial class MessengerPage : UserControl
         Configure(Messenger, conversations, conversations[0]);
         Configure(EmptyChat, conversations, conversations[^1]);
         Configure(NoSelection, conversations, null);
+        Configure(MatrixMessenger, conversations, conversations[0]);
     }
 
     private static void Configure(

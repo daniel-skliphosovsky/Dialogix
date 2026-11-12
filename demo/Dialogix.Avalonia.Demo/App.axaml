@@ -1,6 +1,5 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:infra="using:Dialogix.Avalonia.Demo.Infrastructure"
              xmlns:sty="using:FluentAvalonia.Styling"
              x:Class="Dialogix.Avalonia.Demo.App"
              RequestedThemeVariant="Dark">
@@ -24,28 +23,6 @@
                     <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FFF2F2F2" />
                     <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF3D3D3D" />
                 </ResourceDictionary>
-                <ResourceDictionary x:Key="{x:Static infra:DemoTheme.Hacker}">
-                    <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FF050807" />
-                    <SolidColorBrush x:Key="DemoChatBackgroundBrush" Color="#FF0B120D" />
-                    <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#2200FF66" />
-                    <SolidColorBrush x:Key="DemoMonoSurfaceBrush" Color="#FF0B120D" />
-                    <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FFC9FFD8" />
-                    <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF1F6F43" />
-
-                    <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF0B120D" />
-                    <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFC9FFD8" />
-                    <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF103B25" />
-                    <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFB7FFC9" />
-                    <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF1F6F43" />
-                    <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF050807" />
-                    <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF0B120D" />
-                    <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF6FCF97" />
-                    <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF00C853" />
-                    <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF00E676" />
-                    <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF00A344" />
-                    <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FF001B0C" />
-                    <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFFF5252" />
-                </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>
     </Application.Resources>
@@ -53,6 +30,7 @@
     <Application.Styles>
         <sty:FluentAvaloniaTheme />
         <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Generic.axaml" />
+        <StyleInclude Source="avares://Dialogix.Avalonia.Demo/Themes/MatrixStyles.axaml" />
     </Application.Styles>
 
 </Application>
