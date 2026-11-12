@@ -1,0 +1,39 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#146D3EE0" />
+            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FF2E1065" />
+            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FFEDE9FE" />
+            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FF3B1E8A" />
+            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FFC4B5FD" />
+            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FFF7F4FF" />
+            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FF6D5A9E" />
+            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6D3EE0" />
+            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7C4BEF" />
+            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5B30C4" />
+            <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFB91C1C" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#33FFFFFF" />
+            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2A1B4D" />
+            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFEDE9FE" />
+            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF6D3EE0" />
+            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
+            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1B1035" />
+            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF3A2763" />
+            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
+            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6D3EE0" />
+            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7C4BEF" />
+            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5B30C4" />
+            <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFF87171" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>
