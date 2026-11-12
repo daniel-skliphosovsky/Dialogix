@@ -474,6 +474,5 @@ For your own text fields, use the library theme so they match:
 <TextBox Theme="{DynamicResource DialogixTextBoxTheme}" PlaceholderText="Search" />
 ```
 
-The demo also ships a **Hacker skin** toggle. It switches the app to a custom theme variant with a
-green terminal palette and a monospace font, so the same controls can be checked in a completely
-different skin.
+The demo also shows scoped **Matrix** skins: a green terminal palette with monospace text and square
+edges, applied per card on the chat, input, profile, conversation list and messenger pages.

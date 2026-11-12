@@ -15,6 +15,7 @@ public partial class InputPage : UserControl
         Wire(InputDefault, SentDefault);
         Wire(InputViolet, SentViolet);
         Wire(InputMono, SentMono);
+        Wire(InputMatrix, SentMatrix);
         Wire(InputMulti, SentMulti);
         Wire(InputLimit, SentLimit);
         Wire(InputIcon, SentIcon);

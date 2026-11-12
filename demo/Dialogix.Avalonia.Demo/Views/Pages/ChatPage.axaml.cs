@@ -46,6 +46,14 @@ public partial class ChatPage : UserControl
         ("You", "And the scroll-down button still works.")
     ];
 
+    private static readonly (string Author, string Text)[] MatrixSeed =
+    [
+        ("Guest", "Connection established."),
+        ("You", "Knock, knock."),
+        ("Guest", "Follow the white rabbit."),
+        ("You", "I am in.")
+    ];
+
     private static readonly (string Author, string Text)[] TemplateSeed =
     [
         ("Guest", "This card keeps plain view models."),
@@ -62,6 +70,7 @@ public partial class ChatPage : UserControl
         Setup(ChatDefault, InputDefault, DefaultSeed, 3);
         Setup(ChatViolet, InputViolet, VioletSeed, 2);
         Setup(ChatMono, InputMono, MonoSeed, 2);
+        Setup(ChatMatrix, InputMatrix, MatrixSeed, 2);
         SetupTemplate(ChatTemplate, InputTemplate, TemplateSeed, 2);
         SetupEmpty(ChatEmpty, InputEmpty);
         SetupStress(ChatStress, InputStress);

@@ -43,6 +43,9 @@ public partial class ConversationListPage : UserControl
         UpdateStatus();
 
         EmptyConversations.Items = Array.Empty<ConversationItem>();
+
+        MatrixConversations.Items = items;
+        MatrixConversations.SelectedConversation = items[1];
     }
 
     private void UpdateStatus() =>

@@ -4,6 +4,60 @@
              xmlns:local="using:Dialogix.Avalonia.Demo.Views.Pages"
              x:Class="Dialogix.Avalonia.Demo.Views.Pages.ConversationListPage">
 
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="ConversationRowTemplate" x:DataType="local:ConversationItem">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Border Width="38"
+                        Height="38"
+                        CornerRadius="19"
+                        Background="{DynamicResource DialogixAccentBrush}">
+                    <TextBlock Text="{Binding Initials}"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource DialogixAccentForegroundBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="2"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Preview}"
+                               FontSize="12"
+                               Opacity="0.6"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Spacing="4"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Time}"
+                               FontSize="11"
+                               Opacity="0.5"
+                               HorizontalAlignment="Right" />
+                    <Border IsVisible="{Binding IsUnread}"
+                            MinWidth="18"
+                            Height="18"
+                            Padding="4,0"
+                            CornerRadius="9"
+                            Background="{DynamicResource DialogixPrimaryBrush}"
+                            HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding Unread}"
+                                   FontSize="10"
+                                   Foreground="{DynamicResource DialogixPrimaryForegroundBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
     <UserControl.Styles>
 
         <Style Selector="Border.card">
@@ -54,58 +108,8 @@
                         <controls:ConversationListView x:Name="Conversations"
                                                        Height="420"
                                                        CornerRadius="12"
-                                                       Padding="8">
-                            <controls:ConversationListView.ItemTemplate>
-                                <DataTemplate x:DataType="local:ConversationItem">
-                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
-                                        <Border Width="38"
-                                                Height="38"
-                                                CornerRadius="19"
-                                                Background="{DynamicResource DialogixAccentBrush}">
-                                            <TextBlock Text="{Binding Initials}"
-                                                       FontSize="13"
-                                                       FontWeight="SemiBold"
-                                                       Foreground="{DynamicResource DialogixAccentForegroundBrush}"
-                                                       HorizontalAlignment="Center"
-                                                       VerticalAlignment="Center" />
-                                        </Border>
-
-                                        <StackPanel Grid.Column="1"
-                                                    Spacing="2"
-                                                    VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Name}"
-                                                       FontWeight="SemiBold"
-                                                       TextTrimming="CharacterEllipsis" />
-                                            <TextBlock Text="{Binding Preview}"
-                                                       FontSize="12"
-                                                       Opacity="0.6"
-                                                       TextTrimming="CharacterEllipsis" />
-                                        </StackPanel>
-
-                                        <StackPanel Grid.Column="2"
-                                                    Spacing="4"
-                                                    VerticalAlignment="Center">
-                                            <TextBlock Text="{Binding Time}"
-                                                       FontSize="11"
-                                                       Opacity="0.5"
-                                                       HorizontalAlignment="Right" />
-                                            <Border IsVisible="{Binding IsUnread}"
-                                                    MinWidth="18"
-                                                    Height="18"
-                                                    Padding="4,0"
-                                                    CornerRadius="9"
-                                                    Background="{DynamicResource DialogixPrimaryBrush}"
-                                                    HorizontalAlignment="Right">
-                                                <TextBlock Text="{Binding Unread}"
-                                                           FontSize="10"
-                                                           Foreground="{DynamicResource DialogixPrimaryForegroundBrush}"
-                                                           HorizontalAlignment="Center"
-                                                           VerticalAlignment="Center" />
-                                            </Border>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </controls:ConversationListView.ItemTemplate>
+                                                       Padding="8"
+                                                       ItemTemplate="{StaticResource ConversationRowTemplate}">
                         </controls:ConversationListView>
 
                         <TextBlock x:Name="SelectedStatus"
@@ -141,6 +145,35 @@
                                 </StackPanel>
                             </controls:ConversationListView.EmptyContent>
                         </controls:ConversationListView>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10"
+                        Background="#FF050807"
+                        BorderBrush="#FF1F6F43"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        BoxShadow="0 0 30 -12 #6600FF66">
+                    <StackPanel Spacing="10">
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/MatrixPalette.axaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Matrix" />
+                            <TextBlock Classes="cardHint" Text="Terminal green rows with a neon selected state." />
+                        </StackPanel>
+
+                        <controls:ConversationListView x:Name="MatrixConversations"
+                                                       Classes="matrix"
+                                                       Height="420"
+                                                       CornerRadius="4"
+                                                       Padding="8"
+                                                       ItemTemplate="{StaticResource ConversationRowTemplate}" />
                     </StackPanel>
                 </Border>
 

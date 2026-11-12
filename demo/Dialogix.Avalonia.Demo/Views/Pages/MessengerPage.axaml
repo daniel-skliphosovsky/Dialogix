@@ -165,6 +165,35 @@
                 </Border>
             </Grid>
 
+            <Border Classes="card"
+                    Background="#FF050807"
+                    BorderBrush="#FF1F6F43"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    BoxShadow="0 0 30 -12 #6600FF66">
+                <StackPanel Spacing="10">
+                    <StackPanel.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/MatrixPalette.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </StackPanel.Resources>
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="Matrix" />
+                        <TextBlock Classes="cardHint" Text="Terminal green across list, chat and composer." />
+                    </StackPanel>
+
+                    <controls:MessengerView x:Name="MatrixMessenger"
+                                            Classes="matrix"
+                                            Height="620"
+                                            ListWidth="300"
+                                            ConversationTemplate="{StaticResource ConversationTemplate}"
+                                            MessageTemplate="{StaticResource MessageTemplate}"
+                                            MessagesEmptyContentTemplate="{StaticResource EmptyMessagesTemplate}" />
+                </StackPanel>
+            </Border>
+
         </StackPanel>
     </ScrollViewer>
 </UserControl>

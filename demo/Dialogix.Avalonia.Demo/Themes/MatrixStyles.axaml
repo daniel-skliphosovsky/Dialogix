@@ -1,0 +1,76 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dialogix.Avalonia.Controls">
+
+    <Style Selector="controls|ChatView.matrix">
+        <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|ChatView.matrix controls|MessageBubble">
+        <Setter Property="Background" Value="{DynamicResource DialogixSurfaceBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BoxShadow" Value="0 0 18 -6 #6600FF66" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|ChatView.matrix controls|MessageBubble:outgoing">
+        <Setter Property="Background" Value="{DynamicResource DialogixAccentBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DialogixAccentForegroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DialogixPrimaryBrush}" />
+        <Setter Property="BoxShadow" Value="0 0 22 -6 #9900C853" />
+    </Style>
+
+    <Style Selector="controls|ChatHeader.matrix">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="BoxShadow" Value="0 0 24 -10 #6600FF66" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|MessageInput.matrix">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|ProfileView.matrix">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|ProfileEditorView.matrix">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|ProfileEditorView.matrix /template/ Border#PART_Root">
+        <Setter Property="BoxShadow" Value="0 0 24 -10 #6600FF66" />
+    </Style>
+
+    <Style Selector="controls|ProfileEditorView.matrix /template/ Button">
+        <Setter Property="CornerRadius" Value="4" />
+    </Style>
+
+    <Style Selector="controls|ConversationListView.matrix">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+    <Style Selector="controls|MessengerView.matrix">
+        <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+        <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
+    </Style>
+
+</Styles>
