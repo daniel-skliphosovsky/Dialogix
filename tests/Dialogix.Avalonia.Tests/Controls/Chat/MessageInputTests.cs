@@ -66,6 +66,19 @@ public class MessageInputTests
     }
 
     [AvaloniaFact]
+    public void Sent_text_is_trimmed()
+    {
+        Recorder recorder = new Recorder();
+        MessageInput input = new MessageInput { Text = "  Hello  ", SendCommand = recorder };
+        Show(input);
+
+        Press(input, Key.Enter, KeyModifiers.None);
+
+        Assert.Equal(["Hello"], recorder.Sent);
+        Assert.Equal(string.Empty, input.Text);
+    }
+
+    [AvaloniaFact]
     public void Shift_enter_does_not_send_and_keeps_text()
     {
         Recorder recorder = new Recorder();

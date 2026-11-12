@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Layout;
 
 using Dialogix.Avalonia.Controls;
 using Dialogix.Avalonia.Demo.Infrastructure;
@@ -40,7 +41,10 @@ public partial class InputPage : UserControl
         Cards.ItemWidth = narrow ? available : 326;
 
         foreach (Border card in Cards.Children.OfType<Border>())
+        {
             card.Margin = narrow ? new Thickness(0, 0, 0, 12) : new Thickness(0, 0, 10, 10);
+            card.VerticalAlignment = VerticalAlignment.Top;
+        }
     }
 
     private static void Wire(MessageInput input, TextBlock result) =>

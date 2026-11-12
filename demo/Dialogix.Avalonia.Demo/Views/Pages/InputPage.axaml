@@ -142,7 +142,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Classes="card"
+                <Border Classes="card matrixCard"
                         Margin="0,0,10,10"
                         Background="#FF050807"
                         BorderBrush="#FF1F6F43"

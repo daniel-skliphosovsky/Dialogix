@@ -277,9 +277,9 @@ public class MessageInput : TemplatedControl
 
     private void Send()
     {
-        string? text = Text;
+        string? text = Text?.Trim();
 
-        if (string.IsNullOrWhiteSpace(text) || IsTextTooLong)
+        if (string.IsNullOrEmpty(text) || IsTextTooLong)
             return;
 
         ICommand? command = SendCommand;

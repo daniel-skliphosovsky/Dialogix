@@ -120,6 +120,7 @@
                                     IsVisible="False">
                                 <controls:IconPresenter Width="18"
                                                         Height="18"
+                                                        RenderTransform="translate(0,4px)"
                                                         Source="{TemplateBinding ScrollToEndIcon}"
                                                         Stroke="{DynamicResource DialogixSurfaceForegroundBrush}"
                                                         StrokeThickness="2" />
