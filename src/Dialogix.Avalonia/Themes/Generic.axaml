@@ -10,12 +10,14 @@
         </ResourceDictionary>
     </Styles.Resources>
 
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ScrollBar.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/TextBox.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageBubble.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/MessageInput.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatView.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ChatHeader.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ProfileView.axaml" />
-    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Controls/ProfileEditorView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Primitives/ScrollBar.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Primitives/TextBox.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/MessageBubble.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/MessageInput.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ChatView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ChatHeader.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/ConversationListView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Chat/MessengerView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Profile/ProfileView.axaml" />
+    <StyleInclude Source="avares://Dialogix.Avalonia/Themes/Profile/ProfileEditorView.axaml" />
 </Styles>

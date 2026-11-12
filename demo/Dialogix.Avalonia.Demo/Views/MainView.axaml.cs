@@ -3,7 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Styling;
 
-using Dialogix.Avalonia.Demo.Views.Controls;
+using Dialogix.Avalonia.Demo.Views.Pages;
 
 using FluentAvalonia.UI.Controls;
 
@@ -11,6 +11,8 @@ namespace Dialogix.Avalonia.Demo.Views;
 
 public partial class MainView : UserControl
 {
+    private readonly Dictionary<string, Control> _pages = [];
+
     public MainView()
     {
         InitializeComponent();
@@ -31,12 +33,30 @@ public partial class MainView : UserControl
             ShowPage(tag);
     }
 
-    private void ShowPage(string tag) =>
-        PageHost.Content = tag switch
+    private void ShowPage(string tag)
+    {
+        if (!_pages.TryGetValue(tag, out Control? page))
         {
-            "bubble" => new MessageBubbleView(),
-            "input" => new MessageInputView(),
-            "chat" => new ChatViewView(),
+            page = CreatePage(tag);
+
+            if (page is null)
+                return;
+
+            _pages[tag] = page;
+        }
+
+        PageHost.Content = page;
+    }
+
+    private static Control? CreatePage(string tag) =>
+        tag switch
+        {
+            "bubble" => new BubblePage(),
+            "input" => new InputPage(),
+            "chat" => new ChatPage(),
+            "conversations" => new ConversationListPage(),
+            "messenger" => new MessengerPage(),
+            "theming" => new ThemingPage(),
             "profile" => new ProfilePage(),
             _ => null
         };

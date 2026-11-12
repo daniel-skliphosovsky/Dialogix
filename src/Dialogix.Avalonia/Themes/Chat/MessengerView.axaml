@@ -1,0 +1,96 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dialogix.Avalonia.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters">
+
+    <Styles.Resources>
+
+        <ControlTheme x:Key="{x:Type controls:MessengerView}"
+                      TargetType="controls:MessengerView">
+
+            <Setter Property="Background" Value="{DynamicResource DialogixChatBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Grid ColumnDefinitions="Auto,*"
+                          Background="{TemplateBinding Background}">
+
+                        <Border Name="PART_ListHost"
+                                Grid.Column="0"
+                                Width="{TemplateBinding ListWidth}"
+                                IsVisible="{TemplateBinding IsListVisible}"
+                                Background="{DynamicResource DialogixSurfaceBrush}"
+                                BorderBrush="{DynamicResource DialogixBorderBrush}"
+                                BorderThickness="0,0,1,0">
+                            <controls:ConversationListView Name="PART_List"
+                                                           Items="{TemplateBinding Conversations}"
+                                                           ItemTemplate="{TemplateBinding ConversationTemplate}"
+                                                           SelectedConversation="{Binding SelectedConversation,
+                                                               RelativeSource={RelativeSource TemplatedParent},
+                                                               Mode=TwoWay}"
+                                                           EmptyContent="{TemplateBinding ConversationsEmptyContent}"
+                                                           EmptyContentTemplate="{TemplateBinding ConversationsEmptyContentTemplate}"
+                                                           Background="Transparent"
+                                                           Padding="8" />
+                        </Border>
+
+                        <Grid Grid.Column="1">
+
+                            <Grid Name="PART_Conversation"
+                                  RowDefinitions="Auto,*,Auto"
+                                  IsVisible="{TemplateBinding HasConversation}">
+
+                                <controls:ChatHeader Name="PART_Header"
+                                                     Grid.Row="0"
+                                                     Title="{TemplateBinding Title}"
+                                                     Status="{TemplateBinding Status}"
+                                                     LeadingContent="{TemplateBinding HeaderLeadingContent}"
+                                                     LeadingContentTemplate="{TemplateBinding HeaderLeadingContentTemplate}"
+                                                     ActionContent="{TemplateBinding HeaderActionContent}"
+                                                     ActionContentTemplate="{TemplateBinding HeaderActionContentTemplate}"
+                                                     Margin="12,10,12,0" />
+
+                                <controls:ChatView Name="PART_Chat"
+                                                   Grid.Row="1"
+                                                   Messages="{TemplateBinding Messages}"
+                                                   MessageTemplate="{TemplateBinding MessageTemplate}"
+                                                   EmptyContent="{TemplateBinding MessagesEmptyContent}"
+                                                   EmptyContentTemplate="{TemplateBinding MessagesEmptyContentTemplate}"
+                                                   HasMore="{TemplateBinding HasMore}"
+                                                   IsLoadingMore="{TemplateBinding IsLoadingMore}"
+                                                   LoadMoreCommand="{TemplateBinding LoadMoreCommand}" />
+
+                                <controls:MessageInput Name="PART_Input"
+                                                       Grid.Row="2"
+                                                       Watermark="{TemplateBinding Watermark}"
+                                                       SendCommand="{TemplateBinding SendCommand}"
+                                                       LeadingContent="{TemplateBinding ComposerLeadingContent}"
+                                                       LeadingContentTemplate="{TemplateBinding ComposerLeadingContentTemplate}"
+                                                       ActionContent="{TemplateBinding ComposerActionContent}"
+                                                       ActionContentTemplate="{TemplateBinding ComposerActionContentTemplate}"
+                                                       Margin="12" />
+
+                            </Grid>
+
+                            <TextBlock Name="PART_Placeholder"
+                                       Text="{TemplateBinding PlaceholderText}"
+                                       FontSize="14"
+                                       Foreground="{DynamicResource DialogixMutedForegroundBrush}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       IsVisible="{TemplateBinding HasConversation,
+                                           Converter={x:Static converters:BoolConverters.Not}}" />
+
+                        </Grid>
+
+                    </Grid>
+                </ControlTemplate>
+            </Setter>
+
+        </ControlTheme>
+
+    </Styles.Resources>
+
+</Styles>

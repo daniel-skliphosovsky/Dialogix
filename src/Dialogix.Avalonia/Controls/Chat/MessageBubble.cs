@@ -1,0 +1,60 @@
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
+using Avalonia.Media;
+
+namespace Dialogix.Avalonia.Controls;
+
+/// <summary>
+/// One message: author, text, timestamp and an optional delivery status.
+/// </summary>
+public class MessageBubble : TemplatedControl
+{
+    public static readonly StyledProperty<string?> TextProperty =
+        AvaloniaProperty.Register<MessageBubble, string?>(nameof(Text));
+
+    public static readonly StyledProperty<string?> AuthorProperty =
+        AvaloniaProperty.Register<MessageBubble, string?>(nameof(Author));
+
+    public static readonly StyledProperty<string?> TimestampProperty =
+        AvaloniaProperty.Register<MessageBubble, string?>(nameof(Timestamp));
+
+    public static readonly StyledProperty<bool> IsOutgoingProperty =
+        AvaloniaProperty.Register<MessageBubble, bool>(nameof(IsOutgoing));
+
+    public static readonly StyledProperty<double> MinBubbleWidthProperty =
+        AvaloniaProperty.Register<MessageBubble, double>(nameof(MinBubbleWidth));
+
+    public static readonly StyledProperty<double> MaxBubbleWidthProperty =
+        AvaloniaProperty.Register<MessageBubble, double>(nameof(MaxBubbleWidth), 520d);
+
+    public static readonly StyledProperty<BoxShadows> BoxShadowProperty =
+        AvaloniaProperty.Register<MessageBubble, BoxShadows>(nameof(BoxShadow));
+
+    public static readonly StyledProperty<object?> StatusProperty =
+        AvaloniaProperty.Register<MessageBubble, object?>(nameof(Status));
+
+    public static readonly StyledProperty<IDataTemplate?> StatusTemplateProperty =
+        AvaloniaProperty.Register<MessageBubble, IDataTemplate?>(nameof(StatusTemplate));
+
+    public string? Text { get => GetValue(TextProperty); set => SetValue(TextProperty, value); }
+    public string? Author { get => GetValue(AuthorProperty); set => SetValue(AuthorProperty, value); }
+    public string? Timestamp { get => GetValue(TimestampProperty); set => SetValue(TimestampProperty, value); }
+    public bool IsOutgoing { get => GetValue(IsOutgoingProperty); set => SetValue(IsOutgoingProperty, value); }
+    public double MinBubbleWidth { get => GetValue(MinBubbleWidthProperty); set => SetValue(MinBubbleWidthProperty, value); }
+    public double MaxBubbleWidth { get => GetValue(MaxBubbleWidthProperty); set => SetValue(MaxBubbleWidthProperty, value); }
+    public BoxShadows BoxShadow { get => GetValue(BoxShadowProperty); set => SetValue(BoxShadowProperty, value); }
+    /// <summary>Optional content shown next to the timestamp. Hidden when null.</summary>
+    public object? Status { get => GetValue(StatusProperty); set => SetValue(StatusProperty, value); }
+    /// <summary>Template used to render <see cref="Status"/>.</summary>
+    public IDataTemplate? StatusTemplate { get => GetValue(StatusTemplateProperty); set => SetValue(StatusTemplateProperty, value); }
+
+    protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+    {
+        base.OnPropertyChanged(change);
+
+        if (change.Property == IsOutgoingProperty)
+            PseudoClasses.Set(":outgoing", change.GetNewValue<bool>());
+    }
+}

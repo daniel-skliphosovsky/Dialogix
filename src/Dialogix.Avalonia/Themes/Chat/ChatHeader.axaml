@@ -1,0 +1,78 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:Dialogix.Avalonia.Controls"
+        xmlns:converters="using:Avalonia.Data.Converters">
+
+    <Styles.Resources>
+        <ControlTheme x:Key="{x:Type controls:ChatHeader}"
+                      TargetType="controls:ChatHeader">
+
+            <Setter Property="Background" Value="{DynamicResource DialogixSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource DialogixBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="24" />
+            <Setter Property="Padding" Value="18,7" />
+            <Setter Property="BoxShadow" Value="0 8 24 -10 #33000000" />
+
+            <Setter Property="Template">
+                <ControlTemplate>
+                    <Border Name="PART_Island"
+                            IsVisible="{TemplateBinding HasContent}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding CornerRadius}"
+                            Padding="{TemplateBinding Padding}"
+                            BoxShadow="{TemplateBinding BoxShadow}">
+
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+
+                            <ContentPresenter Name="PART_Leading"
+                                              Content="{TemplateBinding LeadingContent}"
+                                              ContentTemplate="{TemplateBinding LeadingContentTemplate}"
+                                              IsVisible="{TemplateBinding LeadingContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
+
+                            <StackPanel Grid.Column="1"
+                                        Spacing="1"
+                                        HorizontalAlignment="Center">
+
+                                <TextBlock Name="PART_Title"
+                                           Text="{TemplateBinding Title}"
+                                           FontSize="14"
+                                           FontWeight="SemiBold"
+                                           TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           IsVisible="{TemplateBinding Title,
+                                               Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+
+                                <TextBlock Name="PART_Status"
+                                           Text="{TemplateBinding Status}"
+                                           FontSize="11"
+                                           TextTrimming="CharacterEllipsis"
+                                           HorizontalAlignment="Center"
+                                           Foreground="{DynamicResource DialogixMutedForegroundBrush}"
+                                           IsVisible="{TemplateBinding Status,
+                                               Converter={x:Static converters:StringConverters.IsNotNullOrEmpty}}" />
+
+                            </StackPanel>
+
+                            <ContentPresenter Name="PART_Action"
+                                              Grid.Column="2"
+                                              Content="{TemplateBinding ActionContent}"
+                                              ContentTemplate="{TemplateBinding ActionContentTemplate}"
+                                              IsVisible="{TemplateBinding ActionContent,
+                                                  Converter={x:Static converters:ObjectConverters.IsNotNull}}"
+                                              VerticalAlignment="Center" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter>
+
+        </ControlTheme>
+    </Styles.Resources>
+</Styles>

@@ -1,0 +1,184 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="using:Dialogix.Avalonia.Controls"
+             xmlns:local="using:Dialogix.Avalonia.Demo.Views.Pages"
+             x:Class="Dialogix.Avalonia.Demo.Views.Pages.ConversationListPage">
+
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="ConversationRowTemplate" x:DataType="local:ConversationItem">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                <Border Width="38"
+                        Height="38"
+                        CornerRadius="19"
+                        Background="{DynamicResource DialogixAccentBrush}">
+                    <TextBlock Text="{Binding Initials}"
+                               FontSize="13"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource DialogixAccentForegroundBrush}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center" />
+                </Border>
+
+                <StackPanel Grid.Column="1"
+                            Spacing="2"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Name}"
+                               FontWeight="SemiBold"
+                               TextTrimming="CharacterEllipsis" />
+                    <TextBlock Text="{Binding Preview}"
+                               FontSize="12"
+                               Opacity="0.6"
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <StackPanel Grid.Column="2"
+                            Spacing="4"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding Time}"
+                               FontSize="11"
+                               Opacity="0.5"
+                               HorizontalAlignment="Right" />
+                    <Border IsVisible="{Binding IsUnread}"
+                            MinWidth="18"
+                            Height="18"
+                            Padding="4,0"
+                            CornerRadius="9"
+                            Background="{DynamicResource DialogixPrimaryBrush}"
+                            HorizontalAlignment="Right">
+                        <TextBlock Text="{Binding Unread}"
+                                   FontSize="10"
+                                   Foreground="{DynamicResource DialogixPrimaryForegroundBrush}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                    </Border>
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+
+        <Style Selector="Border.card">
+            <Setter Property="Background" Value="{DynamicResource DemoChatBackgroundBrush}" />
+            <Setter Property="CornerRadius" Value="18" />
+            <Setter Property="Padding" Value="12" />
+            <Setter Property="BoxShadow" Value="0 6 48 -20 #1F000000" />
+        </Style>
+
+        <Style Selector="TextBlock.cardTitle">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="TextBlock.cardHint">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.55" />
+        </Style>
+
+    </UserControl.Styles>
+
+    <ScrollViewer>
+        <StackPanel MaxWidth="1140"
+                    Margin="24"
+                    Spacing="20">
+
+            <StackPanel Spacing="4">
+                <TextBlock Text="Conversations"
+                           FontSize="26"
+                           FontWeight="SemiBold" />
+                <TextBlock Text="A virtualized chat list with selection and an empty state."
+                           Opacity="0.6"
+                           TextWrapping="Wrap" />
+            </StackPanel>
+
+            <WrapPanel x:Name="Cards"
+                       Orientation="Horizontal"
+                       ItemWidth="326">
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Default" />
+                            <TextBlock Classes="cardHint" Text="Scroll the list and pick a conversation." />
+                        </StackPanel>
+
+                        <controls:ConversationListView x:Name="Conversations"
+                                                       Height="420"
+                                                       CornerRadius="12"
+                                                       Padding="8"
+                                                       ItemTemplate="{StaticResource ConversationRowTemplate}">
+                        </controls:ConversationListView>
+
+                        <TextBlock x:Name="SelectedStatus"
+                                   Classes="cardHint"
+                                   HorizontalAlignment="Center" />
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10">
+                    <StackPanel Spacing="10">
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Empty" />
+                            <TextBlock Classes="cardHint" Text="EmptyContent stands in until the first conversation." />
+                        </StackPanel>
+
+                        <controls:ConversationListView x:Name="EmptyConversations"
+                                                       Height="420"
+                                                       CornerRadius="12"
+                                                       Padding="8">
+                            <controls:ConversationListView.EmptyContent>
+                                <StackPanel Spacing="4"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <TextBlock Text="No conversations yet"
+                                               FontSize="14"
+                                               FontWeight="SemiBold"
+                                               HorizontalAlignment="Center" />
+                                    <TextBlock Text="Start a chat to see it here."
+                                               FontSize="12"
+                                               Opacity="0.6"
+                                               HorizontalAlignment="Center" />
+                                </StackPanel>
+                            </controls:ConversationListView.EmptyContent>
+                        </controls:ConversationListView>
+                    </StackPanel>
+                </Border>
+
+                <Border Classes="card"
+                        Margin="0,0,10,10"
+                        Background="#FF050807"
+                        BorderBrush="#FF1F6F43"
+                        BorderThickness="1"
+                        CornerRadius="8"
+                        BoxShadow="0 0 30 -12 #6600FF66">
+                    <StackPanel Spacing="10">
+                        <StackPanel.Resources>
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/MatrixPalette.axaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
+                        </StackPanel.Resources>
+                        <StackPanel Spacing="2">
+                            <TextBlock Classes="cardTitle" Text="Matrix" />
+                            <TextBlock Classes="cardHint" Text="Terminal green rows with a neon selected state." />
+                        </StackPanel>
+
+                        <controls:ConversationListView x:Name="MatrixConversations"
+                                                       Classes="matrix"
+                                                       Height="420"
+                                                       CornerRadius="4"
+                                                       Padding="8"
+                                                       ItemTemplate="{StaticResource ConversationRowTemplate}" />
+                    </StackPanel>
+                </Border>
+
+            </WrapPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

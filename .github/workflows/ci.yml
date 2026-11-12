@@ -13,20 +13,24 @@ concurrency:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     env:
       FULL: ${{ github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || github.base_ref == 'develop' || github.base_ref == 'main' || startsWith(github.ref, 'refs/tags/v') }}
       MAIN: ${{ github.ref == 'refs/heads/main' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: 10.0.x
           cache: true
-          cache-dependency-path: "**/*.csproj"
+          cache-dependency-path: |
+            Directory.Packages.props
+            **/*.csproj
 
       - run: dotnet restore Dialogix.slnx
       - run: dotnet format Dialogix.slnx --verify-no-changes --no-restore
@@ -36,6 +40,9 @@ jobs:
 
       - if: env.FULL == 'true'
         run: dotnet test tests/Dialogix.Avalonia.Tests -c Release --no-build
+
+      - if: env.FULL == 'true'
+        run: dotnet pack src/Dialogix.Avalonia/Dialogix.Avalonia.csproj -c Release --no-build -o artifacts
 
       - if: env.MAIN == 'true'
         run: dotnet workload install wasm-tools
@@ -47,26 +54,30 @@ jobs:
         run: touch demo-pub/wwwroot/.nojekyll
 
       - if: env.MAIN == 'true'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: demo-pub/wwwroot
 
   publish:
     needs: check
     if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: write
       id-token: write
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-dotnet@v4
+      - uses: actions/setup-dotnet@0f4a354dd5547a28c70b7853dbd95d5b67886e73 # v6.1.0
         with:
           dotnet-version: 10.0.x
           cache: true
-          cache-dependency-path: "**/*.csproj"
+          cache-dependency-path: |
+            Directory.Packages.props
+            **/*.csproj
 
       - name: Compute version
         run: |
@@ -79,7 +90,7 @@ jobs:
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "Publishing $VERSION"
 
-      - uses: NuGet/login@v1
+      - uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1
         id: login
         with:
           user: daniel-skliphosovsky
@@ -100,7 +111,7 @@ jobs:
   deploy:
     needs: check
     if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       pages: write
       id-token: write
@@ -109,4 +120,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
