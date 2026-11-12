@@ -38,6 +38,34 @@
             </DrawingImage.Drawing>
         </DrawingImage>
 
+        <DrawingImage x:Key="MatrixAvatar">
+            <DrawingImage.Drawing>
+                <DrawingGroup>
+                    <GeometryDrawing>
+                        <GeometryDrawing.Geometry>
+                            <RectangleGeometry Rect="0,0,100,100" />
+                        </GeometryDrawing.Geometry>
+                        <GeometryDrawing.Brush>
+                            <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+                                <GradientStop Color="#FF00C853" Offset="0" />
+                                <GradientStop Color="#FF0B3D1E" Offset="1" />
+                            </LinearGradientBrush>
+                        </GeometryDrawing.Brush>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF001B0C">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="50,36" RadiusX="14" RadiusY="14" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                    <GeometryDrawing Brush="#FF001B0C">
+                        <GeometryDrawing.Geometry>
+                            <EllipseGeometry Center="50,78" RadiusX="27" RadiusY="19" />
+                        </GeometryDrawing.Geometry>
+                    </GeometryDrawing>
+                </DrawingGroup>
+            </DrawingImage.Drawing>
+        </DrawingImage>
+
         <DataTemplate x:Key="ProfileItemTemplate" x:DataType="local:ProfileItem">
             <Border Classes="row">
                 <StackPanel Orientation="Horizontal" Spacing="12">
@@ -256,7 +284,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Classes="card"
+                <Border Classes="card matrixCard"
                         Margin="0,0,10,10"
                         Background="#FF050807"
                         BorderBrush="#FF1F6F43"
@@ -281,7 +309,7 @@
                                                     Title="operator.profile"
                                                     SaveText="run"
                                                     CancelText="exit"
-                                                    Avatar="{StaticResource SampleAvatar}">
+                                                    Avatar="{StaticResource MatrixAvatar}">
                             <controls:ProfileEditorView.Fields>
                                 <StackPanel Spacing="12">
                                     <StackPanel Spacing="4">

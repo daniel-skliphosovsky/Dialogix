@@ -84,8 +84,8 @@ public MainWindow()
 }
 ```
 
-`SendCommand` gets the current text as its parameter, and the composer clears itself after a
-successful send. `ScrollToEndIcon` accepts anything `IconPresenter` accepts.
+`SendCommand` gets the current text, trimmed, as its parameter, and the composer clears itself
+after a successful send. `ScrollToEndIcon` accepts anything `IconPresenter` accepts.
 
 `MessageSpacing` sets the gap between bubbles (8 by default).
 
@@ -229,6 +229,10 @@ cheap.
 
 Rows are selected with the pointer or the keyboard. Like `ChatView`, the control accepts
 `EmptyContent` and `EmptyContentTemplate` while `IsEmpty` is true.
+
+The list shows items in collection order. When a chat gets a notification, reorder it in the app
+(for example with `ObservableCollection.Move`); the control observes `INotifyCollectionChanged`
+and updates without rebuilding the list.
 
 ## Messenger view
 

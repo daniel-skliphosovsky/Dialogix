@@ -71,7 +71,8 @@
                                                  Title="Ocean"
                                                  Status="Scoped palette" />
 
-                            <controls:ChatView Grid.Row="1"
+                            <controls:ChatView x:Name="OceanChat"
+                                               Grid.Row="1"
                                                Messages="{Binding OceanMessages}"
                                                EmptyContent="No messages yet" />
 
@@ -107,30 +108,82 @@
                                              Padding="16,10"
                                              BoxShadow="0 10 30 -12 #66000000" />
 
-                        <controls:MessageBubble Text="Bubble background, foreground, radius and shadow are properties."
-                                                Author="Nina"
-                                                Timestamp="12:41"
-                                                Background="#FF1E293B"
-                                                Foreground="#FFE2E8F0"
-                                                CornerRadius="18"
-                                                BoxShadow="0 8 22 -12 #66000000"
-                                                MaxBubbleWidth="420" />
+                        <StackPanel x:Name="PerElementMessages" Spacing="10">
 
-                        <controls:MessageBubble Text="No template edits."
-                                                Author="You"
-                                                Timestamp="12:42"
-                                                IsOutgoing="True"
-                                                Background="#FF065F46"
-                                                Foreground="#FFECFDF5"
-                                                CornerRadius="18" />
+                            <controls:MessageBubble Text="Bubble background, foreground, radius and shadow are properties."
+                                                    Author="Nina"
+                                                    Timestamp="12:41"
+                                                    Background="#FF1E293B"
+                                                    Foreground="#FFE2E8F0"
+                                                    CornerRadius="18"
+                                                    BoxShadow="0 8 22 -12 #66000000"
+                                                    MaxBubbleWidth="420" />
+
+                            <controls:MessageBubble Text="No template edits."
+                                                    Author="You"
+                                                    Timestamp="12:42"
+                                                    IsOutgoing="True"
+                                                    Background="#FF065F46"
+                                                    Foreground="#FFECFDF5"
+                                                    CornerRadius="18" />
+
+                        </StackPanel>
 
                         <controls:MessageInput Watermark="Type a message..."
+                                               SendCommand="{Binding PerElementSendCommand}"
                                                Background="#FF0B1220"
                                                Foreground="#FFF8FAFC"
                                                BorderBrush="#FF38BDF8"
                                                CornerRadius="18" />
 
                         </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <Border Classes="card matrixCard"
+                    Background="#FF050807"
+                    BorderBrush="#FF1F6F43"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    BoxShadow="0 0 30 -12 #6600FF66">
+                <StackPanel Spacing="10">
+                    <StackPanel.Resources>
+                        <ResourceDictionary>
+                            <ResourceDictionary.MergedDictionaries>
+                                <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/MatrixPalette.axaml" />
+                            </ResourceDictionary.MergedDictionaries>
+                        </ResourceDictionary>
+                    </StackPanel.Resources>
+
+                    <StackPanel Spacing="2">
+                        <TextBlock Classes="cardTitle" Text="Matrix" />
+                        <TextBlock Classes="cardHint"
+                                   Text="The same scoped palette, with monospace text and square edges." />
+                    </StackPanel>
+
+                    <Border CornerRadius="4"
+                            Padding="12"
+                            ClipToBounds="True"
+                            Background="{DynamicResource DialogixChatBackgroundBrush}">
+                        <Grid RowDefinitions="Auto,*,Auto" Height="360">
+                            <controls:ChatHeader Grid.Row="0"
+                                                 Classes="matrix"
+                                                 Title="root@dialogix"
+                                                 Status="Scoped palette" />
+
+                            <controls:ChatView x:Name="MatrixChat"
+                                               Grid.Row="1"
+                                               Classes="matrix"
+                                               Messages="{Binding MatrixMessages}"
+                                               EmptyContent="No messages yet" />
+
+                            <controls:MessageInput Grid.Row="2"
+                                                   Classes="matrix"
+                                                   Watermark="ssh message"
+                                                   SendCommand="{Binding MatrixSendCommand}"
+                                                   Margin="0,8,0,0" />
+                        </Grid>
                     </Border>
                 </StackPanel>
             </Border>

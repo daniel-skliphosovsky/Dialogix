@@ -47,7 +47,7 @@
         </Style>
 
         <Style Selector="controls|ChatView /template/ Border#PART_LoadingMore">
-            <Setter Property="Margin" Value="0,64,0,0" />
+            <Setter Property="Margin" Value="0,88,0,0" />
         </Style>
 
         <Style Selector="controls|ChatView.mono /template/ Border#PART_LoadingMore">
@@ -239,7 +239,7 @@
                     </StackPanel>
                 </Border>
 
-                <Border Classes="card"
+                <Border Classes="card matrixCard"
                         Margin="0,0,10,10"
                         Background="#FF050807"
                         BorderBrush="#FF1F6F43"
