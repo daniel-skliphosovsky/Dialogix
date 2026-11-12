@@ -34,7 +34,7 @@ public partial class MessengerPage : UserControl
     {
         InitializeComponent();
 
-        MessengerConversation[] conversations =
+        ObservableCollection<MessengerConversation> conversations =
         [
             Conversation("Nina", "N", "Sent the updated mockups.", "12:41", true, "2",
                 ("Nina", "Hey! The new chat list looks great.", "12:38", false),
@@ -60,7 +60,7 @@ public partial class MessengerPage : UserControl
 
     private static void Configure(
         MessengerView view,
-        MessengerConversation[] conversations,
+        ObservableCollection<MessengerConversation> conversations,
         MessengerConversation? selected)
     {
         view.Conversations = conversations;
@@ -75,6 +75,11 @@ public partial class MessengerPage : UserControl
             }
 
             conversation.Messages.Add(new MessengerMessage("You", text, "Now", true));
+
+            int index = conversations.IndexOf(conversation);
+
+            if (index > 0)
+                conversations.Move(index, 0);
         });
 
         view.PropertyChanged += (_, e) =>
