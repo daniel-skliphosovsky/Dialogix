@@ -73,4 +73,19 @@
         <Setter Property="FontFamily" Value="Menlo, Consolas, monospace" />
     </Style>
 
+    <Style Selector="Border.matrixCard TextBlock.cardTitle">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+    </Style>
+
+    <Style Selector="Border.matrixCard TextBlock.cardHint">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+    </Style>
+
+    <Style Selector="Border.matrixCard TextBlock.result">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixSurfaceForegroundBrush}" />
+    </Style>
+
+    <Style Selector="Border.matrixCard TextBlock.fieldLabel">
+        <Setter Property="Foreground" Value="{DynamicResource DialogixMutedForegroundBrush}" />
+    </Style>
 </Styles>

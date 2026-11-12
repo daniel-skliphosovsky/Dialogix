@@ -17,7 +17,8 @@
                                FontWeight="SemiBold"
                                Foreground="{DynamicResource DialogixAccentForegroundBrush}"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center"
+                               RenderTransform="translate(0,1px)" />
                 </Border>
 
                 <StackPanel Grid.Column="1"
@@ -165,7 +166,7 @@
                 </Border>
             </Grid>
 
-            <Border Classes="card"
+            <Border Classes="card matrixCard"
                     Background="#FF050807"
                     BorderBrush="#FF1F6F43"
                     BorderThickness="1"
