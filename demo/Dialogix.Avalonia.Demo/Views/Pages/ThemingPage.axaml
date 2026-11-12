@@ -51,19 +51,11 @@
                             ClipToBounds="True"
                             Background="{DynamicResource DialogixChatBackgroundBrush}">
                         <Border.Resources>
-                            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF0F2A33" />
-                            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFE6FFFB" />
-                            <SolidColorBrush x:Key="DialogixAccentBrush" Color="#FF0E7490" />
-                            <SolidColorBrush x:Key="DialogixAccentForegroundBrush" Color="#FFFFFFFF" />
-                            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF235A66" />
-                            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF08232B" />
-                            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF0C303A" />
-                            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFA7D8D2" />
-                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF0F766E" />
-                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF115E59" />
-                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF134E4A" />
-                            <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
-                            <SolidColorBrush x:Key="DialogixDangerBrush" Color="#FFF87171" />
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/OceanPalette.axaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
                         </Border.Resources>
 
                         <Grid RowDefinitions="Auto,*,Auto" Height="360">
@@ -100,9 +92,9 @@
 
                         <controls:ChatHeader Title="Custom header"
                                              Status="Foreground, border, radius and shadow"
-                                             Background="#FF0B1220"
-                                             Foreground="#FFF8FAFC"
-                                             BorderBrush="#FF38BDF8"
+                                             Background="{DynamicResource DemoCodeHeaderBrush}"
+                                             Foreground="{DynamicResource DemoCodeHeaderForegroundBrush}"
+                                             BorderBrush="{DynamicResource DemoCodeBorderBrush}"
                                              BorderThickness="1"
                                              CornerRadius="14"
                                              Padding="16,10"
@@ -113,8 +105,8 @@
                             <controls:MessageBubble Text="Bubble background, foreground, radius and shadow are properties."
                                                     Author="Nina"
                                                     Timestamp="12:41"
-                                                    Background="#FF1E293B"
-                                                    Foreground="#FFE2E8F0"
+                                                    Background="{DynamicResource DemoCodeBubbleBrush}"
+                                                    Foreground="{DynamicResource DemoCodeBubbleForegroundBrush}"
                                                     CornerRadius="18"
                                                     BoxShadow="0 8 22 -12 #66000000"
                                                     MaxBubbleWidth="420" />
@@ -123,17 +115,17 @@
                                                     Author="You"
                                                     Timestamp="12:42"
                                                     IsOutgoing="True"
-                                                    Background="#FF065F46"
-                                                    Foreground="#FFECFDF5"
+                                                    Background="{DynamicResource DemoCodeOutgoingBrush}"
+                                                    Foreground="{DynamicResource DemoCodeOutgoingForegroundBrush}"
                                                     CornerRadius="18" />
 
                         </StackPanel>
 
                         <controls:MessageInput Watermark="Type a message..."
                                                SendCommand="{Binding PerElementSendCommand}"
-                                               Background="#FF0B1220"
-                                               Foreground="#FFF8FAFC"
-                                               BorderBrush="#FF38BDF8"
+                                               Background="{DynamicResource DemoCodeHeaderBrush}"
+                                               Foreground="{DynamicResource DemoCodeHeaderForegroundBrush}"
+                                               BorderBrush="{DynamicResource DemoCodeBorderBrush}"
                                                CornerRadius="18" />
 
                         </StackPanel>
@@ -142,8 +134,8 @@
             </Border>
 
             <Border Classes="card matrixCard"
-                    Background="#FF050807"
-                    BorderBrush="#FF1F6F43"
+                    Background="{DynamicResource DemoMatrixSurfaceBrush}"
+                    BorderBrush="{DynamicResource DemoMatrixBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
                     BoxShadow="0 0 30 -12 #6600FF66">

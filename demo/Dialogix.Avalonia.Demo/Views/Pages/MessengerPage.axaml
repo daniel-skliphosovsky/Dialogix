@@ -167,8 +167,8 @@
             </Grid>
 
             <Border Classes="card matrixCard"
-                    Background="#FF050807"
-                    BorderBrush="#FF1F6F43"
+                    Background="{DynamicResource DemoMatrixSurfaceBrush}"
+                    BorderBrush="{DynamicResource DemoMatrixBorderBrush}"
                     BorderThickness="1"
                     CornerRadius="8"
                     BoxShadow="0 0 30 -12 #6600FF66">

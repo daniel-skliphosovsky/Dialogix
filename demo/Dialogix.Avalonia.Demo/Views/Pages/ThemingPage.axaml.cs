@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
+using Avalonia.Styling;
 
 using Dialogix.Avalonia.Controls;
 using Dialogix.Avalonia.Demo.Infrastructure;
@@ -49,14 +50,16 @@ public partial class ThemingPage : UserControl
             if (parameter is not string text || string.IsNullOrWhiteSpace(text))
                 return;
 
+            bool dark = ActualThemeVariant == ThemeVariant.Dark;
+
             PerElementMessages.Children.Add(new MessageBubble
             {
                 Author = "You",
                 Text = text,
                 Timestamp = "Now",
                 IsOutgoing = true,
-                Background = new SolidColorBrush(Color.Parse("#FF065F46")),
-                Foreground = new SolidColorBrush(Color.Parse("#FFECFDF5")),
+                Background = new SolidColorBrush(Color.Parse(dark ? "#FF065F46" : "#FFCCFBF1")),
+                Foreground = new SolidColorBrush(Color.Parse(dark ? "#FFECFDF5" : "#FF064E3B")),
                 CornerRadius = new CornerRadius(18)
             });
         });

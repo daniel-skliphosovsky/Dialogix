@@ -227,17 +227,11 @@
                         Margin="0,0,10,10">
                     <StackPanel Spacing="10">
                         <StackPanel.Resources>
-                            <SolidColorBrush x:Key="DialogixSurfaceBrush" Color="#FF2A1B4D" />
-                            <SolidColorBrush x:Key="DialogixSurfaceForegroundBrush" Color="#FFEDE9FE" />
-                            <SolidColorBrush x:Key="DialogixBorderBrush" Color="#FF3B2A66" />
-                            <SolidColorBrush x:Key="DialogixChatBackgroundBrush" Color="#FF1B1035" />
-                            <SolidColorBrush x:Key="DialogixInputBackgroundBrush" Color="#FF3A2763" />
-                            <SolidColorBrush x:Key="DemoRowHoverBrush" Color="#33FFFFFF" />
-                            <SolidColorBrush x:Key="DialogixMutedForegroundBrush" Color="#FFB4A6E0" />
-                            <SolidColorBrush x:Key="DialogixPrimaryBrush" Color="#FF6D3EE0" />
-                            <SolidColorBrush x:Key="DialogixPrimaryHoverBrush" Color="#FF7C4BEF" />
-                            <SolidColorBrush x:Key="DialogixPrimaryPressedBrush" Color="#FF5B30C4" />
-                            <SolidColorBrush x:Key="DialogixPrimaryForegroundBrush" Color="#FFFFFFFF" />
+                            <ResourceDictionary>
+                                <ResourceDictionary.MergedDictionaries>
+                                    <ResourceInclude Source="avares://Dialogix.Avalonia.Demo/Themes/VioletPalette.axaml" />
+                                </ResourceDictionary.MergedDictionaries>
+                            </ResourceDictionary>
                         </StackPanel.Resources>
 
                         <StackPanel Spacing="2">
@@ -286,8 +280,8 @@
 
                 <Border Classes="card matrixCard"
                         Margin="0,0,10,10"
-                        Background="#FF050807"
-                        BorderBrush="#FF1F6F43"
+                        Background="{DynamicResource DemoMatrixSurfaceBrush}"
+                        BorderBrush="{DynamicResource DemoMatrixBorderBrush}"
                         BorderThickness="1"
                         CornerRadius="8"
                         BoxShadow="0 0 30 -12 #6600FF66">

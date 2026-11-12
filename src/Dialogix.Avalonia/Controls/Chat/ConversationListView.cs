@@ -5,6 +5,7 @@ using Avalonia;
 using Avalonia.Controls.Primitives;
 using Avalonia.Controls.Templates;
 using Avalonia.Data;
+using Avalonia.Threading;
 
 namespace Dialogix.Avalonia.Controls;
 
@@ -36,6 +37,7 @@ public class ConversationListView : TemplatedControl
             view => view.IsEmpty);
 
     private INotifyCollectionChanged? _notifyItems;
+    private object? _lastSelected;
     private bool _isAttached;
     private bool _isEmpty = true;
 
@@ -66,15 +68,20 @@ public class ConversationListView : TemplatedControl
     {
         base.OnPropertyChanged(change);
 
-        if (change.Property != ItemsProperty)
-            return;
+        if (change.Property == SelectedConversationProperty)
+        {
+            if (change.GetNewValue<object?>() is { } selected)
+                _lastSelected = selected;
+        }
+        else if (change.Property == ItemsProperty)
+        {
+            UnsubscribeFromItems();
 
-        UnsubscribeFromItems();
+            if (_isAttached)
+                SubscribeToItems();
 
-        if (_isAttached)
-            SubscribeToItems();
-
-        IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
+            IsEmpty = IsCollectionEmpty(change.GetNewValue<IEnumerable?>());
+        }
     }
 
     private void SubscribeToItems()
@@ -99,8 +106,24 @@ public class ConversationListView : TemplatedControl
         _notifyItems = null;
     }
 
-    private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e) =>
+    private void OnItemsChanged(object? sender, NotifyCollectionChangedEventArgs e)
+    {
         IsEmpty = IsCollectionEmpty(Items);
+
+        if (e.Action != NotifyCollectionChangedAction.Move || _lastSelected is null)
+            return;
+
+        object selected = _lastSelected;
+
+        Dispatcher.UIThread.Post(() =>
+        {
+            if (SelectedConversation is null && ContainsItem(selected))
+                SetCurrentValue(SelectedConversationProperty, selected);
+        }, DispatcherPriority.Loaded);
+    }
+
+    private bool ContainsItem(object value) =>
+        Items is { } items && items.Cast<object?>().Contains(value);
 
     private static bool IsCollectionEmpty(IEnumerable? items)
     {

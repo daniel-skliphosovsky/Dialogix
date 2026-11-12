@@ -154,6 +154,8 @@ public class ChatView : TemplatedControl
 
     private void OnScrollToEndClick(object? sender, RoutedEventArgs e)
     {
+        _stickToBottom = true;
+
         if (SmoothScrolling)
             ScrollToEndSmoothly();
         else
@@ -169,9 +171,9 @@ public class ChatView : TemplatedControl
 
         const double duration = 280d;
         double start = scroll.Offset.Y;
-        double target = Math.Max(0d, scroll.Extent.Height - scroll.Viewport.Height);
+        double initialTarget = MaxOffset(scroll);
 
-        if (Math.Abs(target - start) < 0.5)
+        if (Math.Abs(initialTarget - start) < 0.5)
             return;
 
         _scrollTimer?.Stop();
@@ -183,6 +185,7 @@ public class ChatView : TemplatedControl
         {
             double progress = Math.Min(1d, elapsed.Elapsed.TotalMilliseconds / duration);
             double eased = 1d - Math.Pow(1d - progress, 3d);
+            double target = MaxOffset(scroll);
 
             scroll.Offset = new Vector(scroll.Offset.X, start + ((target - start) * eased));
 
@@ -191,8 +194,19 @@ public class ChatView : TemplatedControl
 
             timer.Stop();
 
-            if (ReferenceEquals(_scrollTimer, timer))
-                _scrollTimer = null;
+            if (!ReferenceEquals(_scrollTimer, timer))
+                return;
+
+            _scrollTimer = null;
+
+            Dispatcher.UIThread.Post(() =>
+            {
+                if (_scrollTimer is not null || !_stickToBottom)
+                    return;
+
+                _scroll?.UpdateLayout();
+                _scroll?.ScrollToEnd();
+            }, DispatcherPriority.Loaded);
         };
 
         _scrollTimer = timer;
@@ -261,8 +275,10 @@ public class ChatView : TemplatedControl
             return;
         }
 
-        _stickToBottom = _scroll.Offset.Y >= _scroll.Extent.Height - _scroll.Viewport.Height - 1;
-        _scrollToEnd?.SetCurrentValue(IsVisibleProperty, !_stickToBottom && _scroll.Extent.Height > _scroll.Viewport.Height);
+        double maxOffset = MaxOffset(_scroll);
+
+        _stickToBottom = _scroll.Offset.Y >= maxOffset - 2d;
+        _scrollToEnd?.SetCurrentValue(IsVisibleProperty, !_stickToBottom && maxOffset > 2d);
 
         if (_scroll.Offset.Y > LoadMoreThreshold)
         {
@@ -275,6 +291,9 @@ public class ChatView : TemplatedControl
 
         TryLoadMore();
     }
+
+    private static double MaxOffset(ScrollViewer scroll) =>
+        Math.Max(0d, scroll.Extent.Height - scroll.Viewport.Height);
 
     private void UpdateMessageSpacing()
     {
