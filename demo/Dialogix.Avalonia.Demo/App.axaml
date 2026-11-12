@@ -14,6 +14,15 @@
                     <SolidColorBrush x:Key="DemoMonoSurfaceBrush" Color="#FFFFFFFF" />
                     <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FF111111" />
                     <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF111111" />
+                    <SolidColorBrush x:Key="DemoMatrixSurfaceBrush" Color="#FFF2FFF6" />
+                    <SolidColorBrush x:Key="DemoMatrixBorderBrush" Color="#FF2E8B57" />
+                    <SolidColorBrush x:Key="DemoCodeHeaderBrush" Color="#FFF8FAFC" />
+                    <SolidColorBrush x:Key="DemoCodeHeaderForegroundBrush" Color="#FF0F172A" />
+                    <SolidColorBrush x:Key="DemoCodeBorderBrush" Color="#FF0284C7" />
+                    <SolidColorBrush x:Key="DemoCodeBubbleBrush" Color="#FFE0F2FE" />
+                    <SolidColorBrush x:Key="DemoCodeBubbleForegroundBrush" Color="#FF0F172A" />
+                    <SolidColorBrush x:Key="DemoCodeOutgoingBrush" Color="#FFCCFBF1" />
+                    <SolidColorBrush x:Key="DemoCodeOutgoingForegroundBrush" Color="#FF064E3B" />
                 </ResourceDictionary>
                 <ResourceDictionary x:Key="Dark">
                     <SolidColorBrush x:Key="DemoPageBackgroundBrush" Color="#FF121212" />
@@ -22,6 +31,15 @@
                     <SolidColorBrush x:Key="DemoMonoSurfaceBrush" Color="#FF111111" />
                     <SolidColorBrush x:Key="DemoMonoForegroundBrush" Color="#FFF2F2F2" />
                     <SolidColorBrush x:Key="DemoMonoBorderBrush" Color="#FF3D3D3D" />
+                    <SolidColorBrush x:Key="DemoMatrixSurfaceBrush" Color="#FF050807" />
+                    <SolidColorBrush x:Key="DemoMatrixBorderBrush" Color="#FF1F6F43" />
+                    <SolidColorBrush x:Key="DemoCodeHeaderBrush" Color="#FF0B1220" />
+                    <SolidColorBrush x:Key="DemoCodeHeaderForegroundBrush" Color="#FFF8FAFC" />
+                    <SolidColorBrush x:Key="DemoCodeBorderBrush" Color="#FF38BDF8" />
+                    <SolidColorBrush x:Key="DemoCodeBubbleBrush" Color="#FF1E293B" />
+                    <SolidColorBrush x:Key="DemoCodeBubbleForegroundBrush" Color="#FFE2E8F0" />
+                    <SolidColorBrush x:Key="DemoCodeOutgoingBrush" Color="#FF065F46" />
+                    <SolidColorBrush x:Key="DemoCodeOutgoingForegroundBrush" Color="#FFECFDF5" />
                 </ResourceDictionary>
             </ResourceDictionary.ThemeDictionaries>
         </ResourceDictionary>

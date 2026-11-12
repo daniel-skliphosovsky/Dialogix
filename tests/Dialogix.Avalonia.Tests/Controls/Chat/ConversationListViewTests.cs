@@ -63,6 +63,27 @@ public class ConversationListViewTests
     }
 
     [AvaloniaFact]
+    public void Moving_the_selected_item_keeps_selection()
+    {
+        ObservableCollection<string> items = ["Settings", "Privacy", "About"];
+        ConversationListView list = new ConversationListView
+        {
+            Items = items,
+            ItemTemplate = new FuncDataTemplate<object>((item, _) => new TextBlock { Text = item?.ToString() }),
+            SelectedConversation = "Privacy"
+        };
+        Show(list);
+
+        ListBox inner = Part<ListBox>(list, "PART_Items");
+
+        items.Move(1, 0);
+        Dispatcher.UIThread.RunJobs();
+
+        Assert.Equal("Privacy", list.SelectedConversation);
+        Assert.Equal("Privacy", inner.SelectedItem);
+    }
+
+    [AvaloniaFact]
     public void Empty_state_tracks_the_collection()
     {
         ObservableCollection<string> items = [];

@@ -232,7 +232,7 @@ Rows are selected with the pointer or the keyboard. Like `ChatView`, the control
 
 The list shows items in collection order. When a chat gets a notification, reorder it in the app
 (for example with `ObservableCollection.Move`); the control observes `INotifyCollectionChanged`
-and updates without rebuilding the list.
+and updates without rebuilding the list. The selected conversation stays selected after a move.
 
 ## Messenger view
 
