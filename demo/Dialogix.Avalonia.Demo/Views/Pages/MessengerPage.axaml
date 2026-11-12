@@ -119,7 +119,7 @@
                 <StackPanel Spacing="10">
                     <StackPanel Spacing="2">
                         <TextBlock Classes="cardTitle" Text="Inbox" />
-                        <TextBlock Classes="cardHint" Text="Pick a conversation and send a message." />
+                        <TextBlock Classes="cardHint" Text="Pick a conversation and send a message; it moves to the top." />
                     </StackPanel>
 
                     <controls:MessengerView x:Name="Messenger"
