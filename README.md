@@ -9,7 +9,7 @@ dependency on the host theme, so the controls look the same in light and dark th
 ## Install
 
 ```bash
-dotnet add package Dialogix.Avalonia --prerelease
+dotnet add package Dialogix.Avalonia
 ```
 
 Avalonia 12 and .NET 8 or .NET 10 are required.
