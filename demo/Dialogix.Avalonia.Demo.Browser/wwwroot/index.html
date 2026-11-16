@@ -84,9 +84,17 @@
             opacity: .7;
         }
 
+        #splash .error {
+            max-width: 300px;
+            color: #fca5a5;
+            text-align: center;
+            line-height: 1.5;
+        }
+
         @media (prefers-color-scheme: light) {
             #splash { background: #f6f7fb; color: #12141a; }
             #splash .spinner { border-color: rgba(0, 0, 0, .12); border-top-color: #6366F1; }
+            #splash .error { color: #b91c1c; }
         }
     </style>
 </head>
@@ -111,12 +119,20 @@
             The demo is desktop only for now.<br>
             Open it on a computer.
         </div>
+        <div class="error" id="error" hidden>
+            The demo failed to start.<br>
+            Reload the page and try again.
+        </div>
     </div>
 
     <script>
+        const out = document.getElementById('out');
+        const splash = document.getElementById('splash');
+        const errorNote = document.getElementById('error');
         const ua = navigator.userAgent;
         const mobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(ua)
             || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+        let failed = false;
 
         if (mobile) {
             document.body.dataset.mobile = 'true';
@@ -124,8 +140,18 @@
             document.getElementById('note').hidden = false;
         }
 
-        const out = document.getElementById('out');
-        const splash = document.getElementById('splash');
+        const showError = error => {
+            if (failed || splash.classList.contains('gone')) return;
+
+            failed = true;
+            document.querySelector('#splash .spinner')?.remove();
+            errorNote.hidden = false;
+            console.error(error);
+        };
+
+        addEventListener('unhandledrejection', event => showError(event.reason));
+        addEventListener('error', event => showError(event.error ?? event.message));
+
         new MutationObserver(() => {
             if (!out.querySelector('canvas')) return;
             splash.classList.add('gone');

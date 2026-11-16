@@ -32,6 +32,9 @@ jobs:
             Directory.Packages.props
             **/*.csproj
 
+      - if: env.FULL == 'true'
+        run: dotnet workload install wasm-tools
+
       - run: dotnet restore Dialogix.slnx
       - run: dotnet format Dialogix.slnx --verify-no-changes --no-restore
 
@@ -45,10 +48,17 @@ jobs:
         run: dotnet pack src/Dialogix.Avalonia/Dialogix.Avalonia.csproj -c Release --no-build -o artifacts
 
       - if: env.MAIN == 'true'
-        run: dotnet workload install wasm-tools
+        run: dotnet publish demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj -c Release -o demo-pub -p:WasmBuildNative=true
 
       - if: env.MAIN == 'true'
-        run: dotnet publish demo/Dialogix.Avalonia.Demo.Browser/Dialogix.Avalonia.Demo.Browser.csproj -c Release -o demo-pub
+        name: Verify browser native assets
+        run: |
+          native="$(find demo-pub/wwwroot/_framework -name 'dotnet.native.*.wasm' -print -quit)"
+          test -n "$native"
+          strings "$native" | grep -q 'SkiaSharp' || {
+            echo "SkiaSharp is missing from $native"
+            exit 1
+          }
 
       - if: env.MAIN == 'true'
         run: touch demo-pub/wwwroot/.nojekyll
