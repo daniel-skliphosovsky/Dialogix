@@ -95,7 +95,11 @@ jobs:
             VERSION="${GITHUB_REF_NAME#v}"
           else
             BASE="$(dotnet msbuild src/Dialogix.Avalonia/Dialogix.Avalonia.csproj -getProperty:Version)"
-            VERSION="${BASE}.${GITHUB_RUN_NUMBER}"
+            if [[ "$BASE" == *-* ]]; then
+              VERSION="${BASE}.${GITHUB_RUN_NUMBER}"
+            else
+              VERSION="${BASE}-preview.${GITHUB_RUN_NUMBER}"
+            fi
           fi
           echo "VERSION=$VERSION" >> "$GITHUB_ENV"
           echo "Publishing $VERSION"
