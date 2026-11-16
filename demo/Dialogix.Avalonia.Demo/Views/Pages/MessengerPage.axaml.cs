@@ -1,4 +1,6 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 using Avalonia.Controls;
 
@@ -17,15 +19,43 @@ public sealed class MessengerConversation(
     string preview,
     string time,
     bool isUnread,
-    string unread)
+    string unread) : INotifyPropertyChanged
 {
+    private string _preview = preview;
+    private string _time = time;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
     public string Name { get; } = name;
     public string Initials { get; } = initials;
-    public string Preview { get; } = preview;
-    public string Time { get; } = time;
+    public string Preview
+    {
+        get => _preview;
+        private set => SetField(ref _preview, value);
+    }
+    public string Time
+    {
+        get => _time;
+        private set => SetField(ref _time, value);
+    }
     public bool IsUnread { get; } = isUnread;
     public string Unread { get; } = unread;
     public ObservableCollection<MessengerMessage> Messages { get; } = [];
+
+    public void RecordSentMessage(string text)
+    {
+        Preview = $"You: {text}";
+        Time = "Now";
+    }
+
+    private void SetField(ref string field, string value, [CallerMemberName] string? propertyName = null)
+    {
+        if (field == value)
+            return;
+
+        field = value;
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
 }
 
 public partial class MessengerPage : UserControl
@@ -75,6 +105,7 @@ public partial class MessengerPage : UserControl
             }
 
             conversation.Messages.Add(new MessengerMessage("You", text, "Now", true));
+            conversation.RecordSentMessage(text);
 
             int index = conversations.IndexOf(conversation);
 
