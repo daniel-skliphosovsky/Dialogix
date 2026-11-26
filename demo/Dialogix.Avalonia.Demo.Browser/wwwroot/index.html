@@ -132,7 +132,9 @@
         const ua = navigator.userAgent;
         const mobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini|Mobile/i.test(ua)
             || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
+        const reloadKey = 'dialogix-stale-cache';
         let failed = false;
+        let recovering = false;
 
         if (mobile) {
             document.body.dataset.mobile = 'true';
@@ -141,7 +143,16 @@
         }
 
         const showError = error => {
-            if (failed || splash.classList.contains('gone')) return;
+            if (failed || recovering || splash.classList.contains('gone')) return;
+
+            if (!sessionStorage.getItem(reloadKey)) {
+                recovering = true;
+                sessionStorage.setItem(reloadKey, '1');
+                const url = new URL(location.href);
+                url.searchParams.set('reload', Date.now().toString());
+                location.replace(url);
+                return;
+            }
 
             failed = true;
             document.querySelector('#splash .spinner')?.remove();
@@ -154,6 +165,7 @@
 
         new MutationObserver(() => {
             if (!out.querySelector('canvas')) return;
+            sessionStorage.removeItem(reloadKey);
             splash.classList.add('gone');
             setTimeout(() => splash.remove(), 300);
         }).observe(out, { childList: true, subtree: true });
